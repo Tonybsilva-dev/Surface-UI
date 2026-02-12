@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "@surface/ui/button";
+import type { ButtonVariant, ButtonSize } from "@surface/ui/button";
 import {
   lightColorScheme,
   typographyTokens,
@@ -7,8 +8,9 @@ import {
 } from "@surface/ui/foundation";
 import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
 
-const meta: Meta = {
+const meta: Meta<typeof Button> = {
   title: "Components/Atoms/Button",
+  component: Button,
   parameters: {
     layout: "padded",
     docs: {
@@ -18,11 +20,99 @@ const meta: Meta = {
       },
     },
   },
+  argTypes: {
+    children: {
+      description: "Texto ou conteúdo do botão.",
+      control: "text",
+      table: {
+        type: { summary: "ReactNode" },
+      },
+    },
+    variant: {
+      description: "Variante visual: primary (filled), secondary (outlined), ghost (text).",
+      control: "select",
+      options: ["primary", "secondary", "ghost"] as ButtonVariant[],
+      table: {
+        type: { summary: "ButtonVariant" },
+        defaultValue: { summary: "primary" },
+      },
+    },
+    size: {
+      description: "Tamanho: sm, md (padrão), lg.",
+      control: "select",
+      options: ["sm", "md", "lg"] as ButtonSize[],
+      table: {
+        type: { summary: "ButtonSize" },
+        defaultValue: { summary: "md" },
+      },
+    },
+    fullWidth: {
+      description: "Se true, o botão ocupa 100% da largura disponível.",
+      control: "boolean",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+      },
+    },
+    disabled: {
+      description: "Desabilita o botão (opacidade reduzida, sem interação).",
+      control: "boolean",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+      },
+    },
+    type: {
+      description: "Tipo nativo do botão.",
+      control: "select",
+      options: ["button", "submit", "reset"],
+      table: {
+        type: { summary: "string" },
+      },
+    },
+    style: {
+      description: "Estilos inline (sobrescrevem os do componente).",
+      control: "object",
+      table: {
+        type: { summary: "CSSProperties" },
+      },
+    },
+    leadingIcon: {
+      description: "Ícone ou elemento exibido antes do texto.",
+      table: { type: { summary: "ReactNode" } },
+      control: false,
+    },
+    trailingIcon: {
+      description: "Ícone ou elemento exibido depois do texto.",
+      table: { type: { summary: "ReactNode" } },
+      control: false,
+    },
+  },
+  args: {
+    children: "Hello",
+    variant: "primary",
+    size: "md",
+    fullWidth: false,
+    disabled: false,
+    type: "button",
+  },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Button>;
+
+/** Use esta story para testar todas as props no painel Controls. */
+export const Default: Story = {
+  args: {
+    children: "Hello",
+    variant: "primary",
+    size: "md",
+    fullWidth: false,
+    disabled: false,
+    type: "button",
+  },
+};
 
 const typo = {
   fontFamily: typographyTokens.fontFamily.default,

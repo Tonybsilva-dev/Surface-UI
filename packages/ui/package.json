@@ -9,6 +9,21 @@
       "import": "./dist/button.mjs",
       "require": "./dist/button.js"
     },
+    "./divider": {
+      "types": "./src/divider.tsx",
+      "import": "./dist/divider.mjs",
+      "require": "./dist/divider.js"
+    },
+    "./icon-button": {
+      "types": "./src/icon-button.tsx",
+      "import": "./dist/icon-button.mjs",
+      "require": "./dist/icon-button.js"
+    },
+    "./badge": {
+      "types": "./src/badge.tsx",
+      "import": "./dist/badge.mjs",
+      "require": "./dist/badge.js"
+    },
     "./foundation": {
       "types": "./src/foundation/index.ts",
       "import": "./dist/foundation/index.mjs",
