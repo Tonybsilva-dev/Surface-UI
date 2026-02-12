@@ -1,5 +1,5 @@
 {
-  "name": "@acme/ui",
+  "name": "@surface/ui",
   "version": "0.0.0",
   "sideEffects": false,
   "license": "MIT",
@@ -8,6 +8,11 @@
       "types": "./src/button.tsx",
       "import": "./dist/button.mjs",
       "require": "./dist/button.js"
+    },
+    "./foundation": {
+      "types": "./src/foundation/index.ts",
+      "import": "./dist/foundation/index.mjs",
+      "require": "./dist/foundation/index.js"
     }
   },
   "scripts": {
