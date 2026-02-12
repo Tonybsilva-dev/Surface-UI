@@ -1,15 +1,6 @@
-# Interaction – Material Design 3
+# Interaction
 
-Fundações de **interação**: gestos, inputs, seleção e estados (overview, state layers, applying states). Use os exemplos práticos e visuais no Storybook em **Foundation → Interaction**.
-
-Fontes oficiais:
-
-- [Gestures](https://m3.material.io/foundations/interaction/gestures)
-- [Inputs](https://m3.material.io/foundations/interaction/inputs)
-- [Selection](https://m3.material.io/foundations/interaction/selection)
-- [States – Overview](https://m3.material.io/foundations/interaction/states/overview)
-- [State layers](https://m3.material.io/foundations/interaction/states/state-layers)
-- [Applying states](https://m3.material.io/foundations/interaction/states/applying-states)
+Fundações de **interação**: gestos, inputs, seleção e estados (overview, state layers, applying states). Use os exemplos no Storybook em **Foundation → Interaction**.
 
 ---
 

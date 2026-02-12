@@ -1,8 +1,5 @@
 /**
- * Guidelines de BUILDING FOR ALL – Material Design 3
- * Baseado em "user needs" e "co-design".
- * @see https://m3.material.io/foundations/building-for-all/user-needs
- * @see https://m3.material.io/foundations/building-for-all/co-design
+ * Guidelines de building for all – user needs, co-design
  */
 
 /** Dimensões de necessidades de usuários a considerar em cada decisão de design */

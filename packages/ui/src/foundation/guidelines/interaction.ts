@@ -1,12 +1,5 @@
 /**
- * Interaction – Material Design 3
- * Gestures, inputs, selection, states (overview, state layers, applying states).
- * @see https://m3.material.io/foundations/interaction/gestures
- * @see https://m3.material.io/foundations/interaction/inputs
- * @see https://m3.material.io/foundations/interaction/selection
- * @see https://m3.material.io/foundations/interaction/states/overview
- * @see https://m3.material.io/foundations/interaction/states/state-layers
- * @see https://m3.material.io/foundations/interaction/states/applying-states
+ * Interaction – gestures, inputs, selection, states (overview, state layers, applying states)
  */
 
 /** Princípio: interações previsíveis e feedback claro */

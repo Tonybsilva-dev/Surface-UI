@@ -15,7 +15,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Shape M3: princípios, escala de corner radius, shape morph. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
+          "Shape: princípios, escala de corner radius, shape morph. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
       },
     },
   },
@@ -44,9 +44,6 @@ export const Overview: StoryObj = {
                   <li key={p.slice(0, 24)} style={{ marginBottom: 8 }}>{p}</li>
                 ))}
               </ul>
-              <a href={shapeOverview.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – Overview & principles →
-              </a>
             </StoryCard>
           }
           right={
@@ -93,9 +90,6 @@ export const CornerRadiusScale: StoryObj = {
                   <li key={c.slice(0, 20)} style={{ marginBottom: 6, fontSize: 13 }}>{c}</li>
                 ))}
               </ul>
-              <a href={shapeCornerRadiusScale.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – Corner radius scale →
-              </a>
             </StoryCard>
           }
           right={
@@ -155,9 +149,6 @@ export const ShapeMorph: StoryObj = {
                   <li key={u.slice(0, 24)} style={{ marginBottom: 8 }}>{u}</li>
                 ))}
               </ul>
-              <a href={shapeMorph.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – Shape morph →
-              </a>
             </StoryCard>
           }
           right={

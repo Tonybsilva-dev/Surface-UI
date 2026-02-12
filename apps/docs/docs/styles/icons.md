@@ -1,12 +1,6 @@
-# Icons (Styles) – Material Design 3
+# Icons (Styles)
 
-Princípios de **overview**, **designing** e **applying** ícones. Este design system pode utilizar **Lucide Icons** ou **Phosphor Icons**, aplicando os mesmos princípios M3 de consistência, escala e uso semântico.
-
-Fontes oficiais M3:
-
-- [Icons – Overview](https://m3.material.io/styles/icons/overview)
-- [Icons – Designing icons](https://m3.material.io/styles/icons/designing-icons)
-- [Icons – Applying icons](https://m3.material.io/styles/icons/applying-icons)
+Princípios de **overview**, **designing** e **applying** ícones. Este design system pode utilizar **Lucide Icons** ou **Phosphor Icons**, com consistência de escala e uso semântico.
 
 Referências das bibliotecas adotáveis:
 
@@ -23,7 +17,7 @@ No Storybook: **Styles → Icons** (conceitos à esquerda, exemplos visuais à d
 - Mantenha **consistência visual** (peso, tamanho, estilo) em toda a UI.
 - Use ícones **em conjunto com labels** quando a clareza exigir; ícone sozinho só quando o contexto for óbvio (ex.: icon button com tooltip).
 
-**Lucide e Phosphor:** ambas oferecem stroke consistente, múltiplos pesos e boa cobertura. Escolha uma biblioteca por produto e aplique os princípios M3 (escala, grid, acessibilidade).
+**Lucide e Phosphor:** ambas oferecem stroke consistente, múltiplos pesos e boa cobertura. Escolha uma biblioteca por produto e aplique escala, grid e acessibilidade.
 
 ---
 

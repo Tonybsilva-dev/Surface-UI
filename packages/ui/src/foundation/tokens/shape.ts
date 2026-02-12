@@ -1,10 +1,7 @@
 /**
- * Design tokens de forma (shape) – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- * @see https://m3.material.io/styles/shape/shape-scale-tokens
- *
- * Corner radius: de nenhum (0) a fully rounded (9999px / 50%).
- * M3 usa uma escala de “roundness” (extra-small a full).
+ * Design tokens de forma (shape) – design system
+ * Corner radius: de nenhum (0) a fully rounded (9999px).
+ * Escala de “roundness” (extra-small a full).
  */
 
 export interface ShapeTokens {
@@ -22,23 +19,23 @@ export interface ShapeTokens {
   full: string;
 }
 
-/** Escala de shape – referência M3 (0, 4, 8, 12, 16, 28, full) */
+/** Escala de shape – estilo Ant Design (2–8px para UI, full para chip) */
 export const shapeTokens: ShapeTokens = {
-  extraSmall: '4px',
-  small: '8px',
-  medium: '12px',
-  large: '16px',
-  extraLarge: '28px',
+  extraSmall: '2px',
+  small: '6px',
+  medium: '8px',
+  large: '12px',
+  extraLarge: '16px',
   full: '9999px',
 };
 
-/** Mapa de shapes por componente (opcional, para consistência) */
+/** Mapa de shapes por componente (botão/card com cantos moderados, não pill) */
 export const componentShapeTokens = {
-  button: shapeTokens.full,
+  button: shapeTokens.small,
   card: shapeTokens.medium,
   chip: shapeTokens.full,
-  dialog: shapeTokens.large,
+  dialog: shapeTokens.medium,
   textField: shapeTokens.small,
   fab: shapeTokens.medium,
-  sheet: shapeTokens.large,
+  sheet: shapeTokens.medium,
 } as const;

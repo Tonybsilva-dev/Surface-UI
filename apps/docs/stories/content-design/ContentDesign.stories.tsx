@@ -18,7 +18,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Content Design M3: escrita efetiva, alt text, global writing, notificações, style guide. Demonstração com exemplos aplicados.",
+          "Content Design: escrita efetiva, alt text, global writing, notificações, style guide. Demonstração com exemplos aplicados.",
       },
     },
   },

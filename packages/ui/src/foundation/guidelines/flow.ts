@@ -1,8 +1,5 @@
 /**
- * Guidelines de fluxo e navegação – Material Design 3
- * @see https://m3.material.io/foundations/designing/flow
- *
- * Fluxo do usuário, destinos, pilha de navegação.
+ * Guidelines de fluxo e navegação – fluxo do usuário, destinos, pilha
  */
 
 /** Boas práticas de flow */
@@ -17,5 +14,5 @@ export const flowGuidelines = {
   adaptiveLayout: 'adaptive-layout',
 } as const;
 
-/** Número recomendado de destinos na navigation bar (M3) */
+/** Número recomendado de destinos na navigation bar */
 export const navigationBarDestinations = { min: 3, max: 5 } as const;

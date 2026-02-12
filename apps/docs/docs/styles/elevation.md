@@ -1,19 +1,13 @@
-# Elevation (Styles) – Material Design 3
+# Elevation (Styles)
 
 Elevação comunica **hierarquia e sobreposição** entre superfícies no eixo z. No Storybook: **Styles → Elevation** (overview, applying e tokens com exemplos visuais).
-
-Fontes oficiais:
-
-- [Elevation – Overview](https://m3.material.io/styles/elevation/overview)
-- [Elevation – Applying elevation](https://m3.material.io/styles/elevation/applying-elevation)
-- [Elevation – Tokens](https://m3.material.io/styles/elevation/tokens)
 
 ---
 
 ## Overview
 
 - Elevação representa a **distância relativa** entre superfícies (z-index visual).
-- O M3 usa níveis **0–5** com sombras em múltiplas camadas para cada nível.
+- O sistema usa níveis **0–5** com sombras em múltiplas camadas para cada nível.
 - Mais elevação = maior destaque e prioridade na hierarquia visual.
 
 Tokens relevantes em `@surface/ui/foundation`:

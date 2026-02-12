@@ -1,9 +1,5 @@
 /**
- * Design tokens de tipografia – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- * @see https://m3.material.io/styles/typography/type-scale-tokens
- *
- * Type scale: Display, Headline, Title, Body, Label
+ * Design tokens de tipografia – type scale: Display, Headline, Title, Body, Label
  */
 
 export interface TypeScaleToken {
@@ -47,9 +43,10 @@ export interface TypographyTokens {
   };
 }
 
-const defaultFontFamily = '"Roboto", "Helvetica", "Arial", sans-serif';
+const defaultFontFamily =
+  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif';
 
-/** Type scale – referência M3 (valores aproximados em rem) */
+/** Type scale (valores em rem) */
 export const typographyTokens: TypographyTokens = {
   fontFamily: {
     default: defaultFontFamily,

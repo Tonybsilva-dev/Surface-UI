@@ -1,13 +1,8 @@
 /**
- * Guidelines de escrita e texto – Material Design 3
- * @see https://m3.material.io/foundations/writing/best-practices
- * @see https://m3.material.io/foundations/writing/text-truncation
- * @see https://m3.material.io/foundations/writing/text-resizing
- *
- * Best practices, truncamento e redimensionamento de texto para acessibilidade.
+ * Guidelines de escrita e texto – best practices, truncation, resizing
  */
 
-/** Boas práticas de escrita (M3) */
+/** Boas práticas de escrita */
 export const writingBestPractices = {
   /** Use linguagem neutra e direta; evite avisos alarmantes */
   explainConsequences: 'explain-consequences',
@@ -21,7 +16,7 @@ export const writingBestPractices = {
   understandableAnywhere: 'understandable-anywhere',
 } as const;
 
-/** Opções de truncamento de texto (M3 / CSS) */
+/** Opções de truncamento de texto (CSS) */
 export const textTruncation = {
   /** Uma linha com reticências (...) */
   singleLine: {
@@ -40,7 +35,7 @@ export const textTruncation = {
   maxLines: { one: 1, two: 2, three: 3 } as const,
 } as const;
 
-/** Requisitos de redimensionamento de texto (WCAG 1.4.4 / M3) */
+/** Requisitos de redimensionamento de texto (WCAG 1.4.4) */
 export const textResizing = {
   /** Texto deve poder ser ampliado até 200% sem perda de conteúdo ou função */
   maxScalePercent: 200,

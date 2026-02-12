@@ -1,13 +1,7 @@
 /**
- * Design guidelines – Material Design 3
+ * Design guidelines
  * Overview, acessibilidade, contraste, estrutura, flow, elementos, escrita,
  * adaptive design, building for all.
- * @see https://m3.material.io/foundations/designing/overview
- * @see https://m3.material.io/foundations/designing/color-contrast
- * @see https://m3.material.io/foundations/designing/structure
- * @see https://m3.material.io/foundations/designing/flow
- * @see https://m3.material.io/foundations/designing/elements
- * @see https://m3.material.io/foundations/adaptive-design/large-screens/overview
  */
 
 export { contrastRatios, focusRing, touchTarget } from './accessibility';

@@ -1,9 +1,5 @@
 /**
- * Design tokens de motion – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- * @see https://m3.material.io/styles/motion/overview
- *
- * Duração e easing para transições consistentes.
+ * Design tokens de motion – duração e easing para transições consistentes.
  */
 
 export interface MotionTokens {
@@ -34,7 +30,7 @@ export interface MotionTokens {
   };
 }
 
-/** Duração em ms – referência M3 */
+/** Duração em ms */
 export const motionTokens: MotionTokens = {
   duration: {
     short1: '50ms',

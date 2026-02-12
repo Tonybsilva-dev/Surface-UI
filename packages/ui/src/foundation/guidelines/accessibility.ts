@@ -1,13 +1,8 @@
 /**
- * Guidelines de acessibilidade – Material Design 3
- * @see https://m3.material.io/foundations/designing/overview
- * @see https://m3.material.io/foundations/designing/color-contrast
- * @see https://m3.material.io/styles/color/the-color-system/accessibility
- *
- * Contraste, foco visível e requisitos mínimos para acessibilidade.
+ * Guidelines de acessibilidade – contraste, foco visível, touch target
  */
 
-/** Razões de contraste mínimas (WCAG 2.1 / referência M3) */
+/** Razões de contraste mínimas (WCAG 2.1) */
 export const contrastRatios = {
   /** Texto normal (< 18px ou < 14px bold): mínimo 4.5:1 */
   textNormal: 4.5,
@@ -20,7 +15,7 @@ export const contrastRatios = {
   aaa: { normal: 7, large: 4.5 },
 } as const;
 
-/** Espessura mínima do anel de foco visível (M3 / WCAG 2.4.7) */
+/** Espessura mínima do anel de foco visível (WCAG 2.4.7) */
 export const focusRing = {
   width: '2px',
   offset: '2px',
@@ -28,7 +23,7 @@ export const focusRing = {
   style: 'solid',
 } as const;
 
-/** Área mínima de toque (M3) */
+/** Área mínima de toque */
 export const touchTarget = {
   minHeight: 48,
   minWidth: 48,

@@ -1,29 +1,14 @@
-# Content Design – Material Design 3
+# Content Design
 
 Referência de **content design**: escrita efetiva, alt text, global writing, notificações e style guide. Fica **fora** dos Design Foundations; complementa com foco em conteúdo e copy.
 
 Fontes oficiais:
 
-- [Content design – Overview](https://m3.material.io/foundations/content-design/overview)
-- [Alt text](https://m3.material.io/foundations/content-design/alt-text)
-- [Global writing – Overview](https://m3.material.io/foundations/content-design/global-writing/overview)
-- [Global writing – Word choice](https://m3.material.io/foundations/content-design/global-writing/word-choice)
-- [Notifications](https://m3.material.io/foundations/content-design/notifications)
-- [Style guide – UX writing best practices](https://m3.material.io/foundations/content-design/style-guide/ux-writing-best-practices)
-- [Style guide – Word choice](https://m3.material.io/foundations/content-design/style-guide/word-choice)
-- [Style guide – Grammar and punctuation](https://m3.material.io/foundations/content-design/style-guide/grammar-and-punctuation)
-
-Referências relacionadas (customização e tokens):
-
-- [Customization](https://m3.material.io/foundations/customization)
-- [Design tokens – Overview](https://m3.material.io/foundations/design-tokens/overview)
-- [Design tokens – How to use](https://m3.material.io/foundations/design-tokens/how-to-use-tokens)
-
 ---
 
 ## Visão geral
 
-Content design no M3 visa **conteúdo compreensível por qualquer pessoa, em qualquer lugar**. Isso inclui:
+Content design visa **conteúdo compreensível por qualquer pessoa, em qualquer lugar**. Isso inclui:
 
 - Texto de interface (labels, botões, títulos, mensagens de erro).
 - Alt text e descrições para imagens e ícones.
@@ -89,7 +74,7 @@ Para avatares e ilustrações (ex.: 3D avatars), o alt deve descrever o que é r
 
 ## Customization e design tokens
 
-- **Customization:** o M3 permite personalizar tema (cor, tipografia, shape) mantendo consistência; ver [Customization](https://m3.material.io/foundations/customization).
+- **Customization:** personalize tema (cor, tipografia, shape) mantendo consistência.
 - **Design tokens:** cores, tipo, shape, elevação etc. são expostos como tokens para uso em temas e componentes; no nosso DS isso está em **Foundation / Design Tokens** e em `@surface/ui/foundation`.
 
 Content design aplica-se ao **conteúdo** (copy, alt text, notificações); customization e tokens aplicam-se à **aparência** e ao **comportamento** dos componentes.

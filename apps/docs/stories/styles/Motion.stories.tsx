@@ -14,7 +14,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Motion M3: overview, easing & duration, transições. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
+          "Motion: overview, easing & duration, transições. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
       },
     },
   },
@@ -37,13 +37,6 @@ export const Overview: StoryObj = {
             <StoryCard title={motionOverview.title}>
               <p style={{ margin: "0 0 12px" }}>{motionOverview.description}</p>
               <p style={{ margin: "0 0 12px", color: typo.muted }}>{motionOverview.howItWorks}</p>
-              <a href={motionOverview.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – How it works →
-              </a>
-              <br />
-              <a href={motionOverview.specsLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – Specs →
-              </a>
             </StoryCard>
           }
           right={
@@ -79,9 +72,6 @@ export const EasingAndDuration: StoryObj = {
                   <li key={item} style={{ marginBottom: 8 }}>{item}</li>
                 ))}
               </ul>
-              <a href={motionEasingAndDuration.applyingLink} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – Applying easing and duration →
-              </a>
             </StoryCard>
           }
           right={
@@ -117,9 +107,6 @@ export const EasingAndDuration: StoryObj = {
                   </table>
                 </div>
               </div>
-              <a href={motionEasingAndDuration.tokensLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#6750a4", marginTop: 8, display: "inline-block" }}>
-                M3 – Tokens & specs →
-              </a>
             </StoryCard>
           }
         />
@@ -148,9 +135,6 @@ export const Transitions: StoryObj = {
                   <li key={a} style={{ marginBottom: 6 }}>{a}</li>
                 ))}
               </ul>
-              <a href={motionTransitions.patternsLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4", display: "inline-block", marginTop: 12 }}>
-                M3 – Transition patterns →
-              </a>
             </StoryCard>
           }
           right={

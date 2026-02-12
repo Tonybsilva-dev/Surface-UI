@@ -1,11 +1,8 @@
-# Usability – Material Design 3
+# Usability
 
-Usabilidade no M3 significa **clareza**, **previsibilidade** e **recuperação de erros**, aplicada de forma expressiva (cores, shape, motion) sem perder acessibilidade. Os exemplos estão disponíveis no Storybook em **Foundation → Usability**.
+Usabilidade significa **clareza**, **previsibilidade** e **recuperação de erros**, aplicada de forma expressiva (cores, shape, motion) sem perder acessibilidade. Os exemplos estão disponíveis no Storybook em **Foundation → Usability**.
 
 Fontes oficiais:
-
-- [Usability – Overview](https://m3.material.io/foundations/usability/overview)
-- [Usability – Applying M3 expressive](https://m3.material.io/foundations/usability/applying-m-3-expressive)
 
 ---
 
@@ -32,13 +29,13 @@ As stories mostram bons/maus exemplos de contraste e um banner de erro com açã
 
 ---
 
-## Applying M3 expressive
+## Applying expressive
 
 - **Cor:** usa roles (primary, secondary, error) para hierarquia e estados, sem depender apenas de cor para significado.
 - **Shape:** variações de corner radius diferenciam containers, botões e superfícies interativas.
 - **Motion:** animações cuidadosas explicam transições e foco; evite exageros que distraiam ou causem desconforto.
 
-Use a expressividade do M3 para reforçar a usabilidade, não para competir com o conteúdo.
+Use a expressividade para reforçar a usabilidade, não para competir com o conteúdo.
 
 ---
 

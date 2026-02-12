@@ -21,7 +21,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Interação M3: gestos, inputs, seleção, estados (overview, state layers, applying states). Esquerda: exemplos práticos. Direita: exemplos visuais.",
+          "Interação: gestos, inputs, seleção, estados (overview, state layers, applying states). Esquerda: exemplos práticos. Direita: exemplos visuais.",
       },
     },
   },

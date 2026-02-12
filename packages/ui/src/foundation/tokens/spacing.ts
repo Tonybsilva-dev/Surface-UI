@@ -1,8 +1,5 @@
 /**
- * Design tokens de espaçamento – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- *
- * Escala base para padding, margin e gap (4px base).
+ * Design tokens de espaçamento – escala base para padding, margin e gap (4px base).
  */
 
 export interface SpacingTokens {
@@ -26,7 +23,7 @@ export interface SpacingTokens {
   64: string;
 }
 
-/** Escala 4px base (1 = 4px) – referência M3 */
+/** Escala 4px base (1 = 4px) */
 export const spacingTokens: SpacingTokens = {
   0: '0',
   1: '4px',

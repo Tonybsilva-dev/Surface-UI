@@ -1,9 +1,6 @@
 /**
- * Design tokens de cor – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- * @see https://m3.material.io/styles/color/the-color-system/tokens
- *
- * Roles: primary, secondary, tertiary, error, neutral (surface/outline)
+ * Design tokens de cor
+ * Roles: primary, secondary, tertiary, error, neutral (surface/outline).
  * Cada role tem: container, on-variant, e variantes para superfícies.
  */
 
@@ -51,56 +48,56 @@ export interface ColorScheme {
 	surfaceTint?: string;
 }
 
-/** Esquema de cores claro – referência M3 */
+/** Esquema de cores claro (identidade Ant Design–like: azul primário, neutros limpos). onPrimary branco puro para contraste WCAG. */
 export const lightColorScheme: ColorScheme = {
-	primary: "rgb(103, 80, 164)",
-	onPrimary: "rgb(255, 255, 255)",
-	primaryContainer: "rgb(234, 221, 255)",
-	onPrimaryContainer: "rgb(33, 0, 94)",
-	inversePrimary: "rgb(208, 188, 255)",
+	primary: "rgb(22, 119, 255)",
+	onPrimary: "#ffffff",
+	primaryContainer: "rgb(230, 244, 255)",
+	onPrimaryContainer: "rgb(0, 50, 120)",
+	inversePrimary: "rgb(145, 213, 255)",
 
-	secondary: "rgb(98, 91, 113)",
+	secondary: "rgb(82, 82, 91)",
 	onSecondary: "rgb(255, 255, 255)",
-	secondaryContainer: "rgb(232, 222, 248)",
-	onSecondaryContainer: "rgb(31, 25, 43)",
+	secondaryContainer: "rgb(244, 244, 245)",
+	onSecondaryContainer: "rgb(39, 39, 42)",
 
 	tertiary: "rgb(125, 99, 55)",
 	onTertiary: "rgb(255, 255, 255)",
 	tertiaryContainer: "rgb(255, 220, 183)",
 	onTertiaryContainer: "rgb(40, 26, 0)",
 
-	error: "rgb(179, 38, 30)",
+	error: "rgb(255, 77, 79)",
 	onError: "rgb(255, 255, 255)",
-	errorContainer: "rgb(249, 222, 220)",
-	onErrorContainer: "rgb(65, 14, 11)",
+	errorContainer: "rgb(255, 241, 240)",
+	onErrorContainer: "rgb(130, 28, 28)",
 
-	surface: "rgb(254, 247, 255)",
-	onSurface: "rgb(28, 27, 31)",
-	surfaceVariant: "rgb(231, 224, 236)",
-	onSurfaceVariant: "rgb(73, 69, 79)",
-	outline: "rgb(121, 116, 126)",
-	outlineVariant: "rgb(202, 196, 208)",
+	surface: "rgb(255, 255, 255)",
+	onSurface: "rgb(38, 38, 38)",
+	surfaceVariant: "rgb(250, 250, 250)",
+	onSurfaceVariant: "rgb(82, 82, 91)",
+	outline: "rgb(217, 217, 217)",
+	outlineVariant: "rgb(245, 245, 245)",
 
-	inverseSurface: "rgb(49, 48, 51)",
-	inverseOnSurface: "rgb(244, 239, 244)",
+	inverseSurface: "rgb(38, 38, 38)",
+	inverseOnSurface: "rgb(255, 255, 255)",
 
 	shadow: "rgb(0, 0, 0)",
 	scrim: "rgb(0, 0, 0)",
-	surfaceTint: "rgb(103, 80, 164)",
+	surfaceTint: "rgb(22, 119, 255)",
 };
 
-/** Esquema de cores escuro – referência M3 */
+/** Esquema de cores escuro */
 export const darkColorScheme: ColorScheme = {
-	primary: "rgb(208, 188, 255)",
-	onPrimary: "rgb(55, 0, 179)",
-	primaryContainer: "rgb(79, 55, 139)",
-	onPrimaryContainer: "rgb(234, 221, 255)",
-	inversePrimary: "rgb(103, 80, 164)",
+	primary: "rgb(89, 167, 255)",
+	onPrimary: "rgb(0, 40, 100)",
+	primaryContainer: "rgb(0, 60, 140)",
+	onPrimaryContainer: "rgb(230, 244, 255)",
+	inversePrimary: "rgb(22, 119, 255)",
 
-	secondary: "rgb(204, 194, 220)",
-	onSecondary: "rgb(52, 45, 65)",
-	secondaryContainer: "rgb(74, 68, 88)",
-	onSecondaryContainer: "rgb(232, 222, 248)",
+	secondary: "rgb(191, 191, 198)",
+	onSecondary: "rgb(39, 39, 42)",
+	secondaryContainer: "rgb(63, 63, 70)",
+	onSecondaryContainer: "rgb(244, 244, 245)",
 
 	tertiary: "rgb(239, 189, 138)",
 	onTertiary: "rgb(66, 43, 0)",
@@ -124,5 +121,5 @@ export const darkColorScheme: ColorScheme = {
 
 	shadow: "rgb(0, 0, 0)",
 	scrim: "rgb(0, 0, 0)",
-	surfaceTint: "rgb(208, 188, 255)",
+	surfaceTint: "rgb(89, 167, 255)",
 };

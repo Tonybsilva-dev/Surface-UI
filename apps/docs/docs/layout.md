@@ -1,28 +1,14 @@
-# Layout – Material Design 3
+# Layout
 
 Fundações de **layout**: entendimento de estrutura (overview, spacing, partes do layout, densidade, hardware, bidirecionalidade) e aplicação com **window size classes** e **canonical layouts**. Use os exemplos práticos e visuais no Storybook em **Foundation → Layout**.
 
 Fontes oficiais:
 
-- [Understanding layout – Overview](https://m3.material.io/foundations/layout/understanding-layout/overview)
-- [Understanding layout – Spacing](https://m3.material.io/foundations/layout/understanding-layout/spacing)
-- [Understanding layout – Parts of layout](https://m3.material.io/foundations/layout/understanding-layout/parts-of-layout)
-- [Understanding layout – Density](https://m3.material.io/foundations/layout/understanding-layout/density)
-- [Understanding layout – Hardware considerations](https://m3.material.io/foundations/layout/understanding-layout/hardware-considerations)
-- [Understanding layout – Bidirectionality (RTL)](https://m3.material.io/foundations/layout/understanding-layout/bidirectionality-rtl)
-- [Applying layout – Pane layouts](https://m3.material.io/foundations/layout/applying-layout/pane-layouts)
-- [Applying layout – Window size classes](https://m3.material.io/foundations/layout/applying-layout/window-size-classes)
-- [Applying layout – Compact / Medium / Expanded / Large+](https://m3.material.io/foundations/layout/applying-layout/compact)
-- [Canonical layouts – Overview](https://m3.material.io/foundations/layout/canonical-layouts/overview)
-- [Canonical layouts – List-detail](https://m3.material.io/foundations/layout/canonical-layouts/list-detail)
-- [Canonical layouts – Supporting pane](https://m3.material.io/foundations/layout/canonical-layouts/supporting-pane)
-- [Canonical layouts – Feed](https://m3.material.io/foundations/layout/canonical-layouts/feed)
-
 ---
 
 ## Overview
 
-Um bom layout M3:
+Um bom layout:
 
 - Organiza conteúdo em **regiões claras** (navegação + body).
 - Usa **grid, gutters e margens consistentes** para criar ritmo visual.

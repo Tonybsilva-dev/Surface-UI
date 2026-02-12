@@ -1,12 +1,6 @@
-# Shape (Styles) – Material Design 3
+# Shape (Styles)
 
-O sistema de shape do M3 inclui **formas originais**, uma **escala de corner radius** e **morphing de formas**. Use os tokens (`shapeTokens`, `componentShapeTokens`) para consistência.
-
-Fontes oficiais:
-
-- [Shape – Overview & principles](https://m3.material.io/styles/shape/overview-principles)
-- [Shape – Corner radius scale](https://m3.material.io/styles/shape/corner-radius-scale)
-- [Shape – Shape morph](https://m3.material.io/styles/shape/shape-morph)
+O sistema de shape inclui **formas originais**, uma **escala de corner radius** e **morphing de formas**. Use os tokens (`shapeTokens`, `componentShapeTokens`) para consistência.
 
 No Storybook: **Styles → Shape** (conceitos à esquerda, exemplos visuais à direita).
 
@@ -22,7 +16,7 @@ No Storybook: **Styles → Shape** (conceitos à esquerda, exemplos visuais à d
 
 ## Corner radius scale
 
-Escala M3 (referência): None 0dp → Extra small 4dp → Small 8dp → Medium 12dp → Large 16dp → … → Full (totalmente arredondado).
+Escala de referência: None 0dp → Extra small 4dp → Small 8dp → Medium 12dp → Large 16dp → … → Full (totalmente arredondado).
 
 - **Customização no estilo:** alterar um estilo (ex.: medium) afeta todos os componentes mapeados a ele.
 - **Customização no componente:** remapear um componente (ex.: button de full para small) afeta só esse componente.

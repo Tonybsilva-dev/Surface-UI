@@ -28,7 +28,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Guidelines M3: overview, acessibilidade, estrutura, flow, elementos, escrita, adaptive design, building for all.",
+          "Guidelines: overview, acessibilidade, estrutura, flow, elementos, escrita, adaptive design, building for all.",
       },
     },
   },
@@ -40,7 +40,7 @@ export const Accessibility: StoryObj = {
   render: () => (
     <div style={{ fontFamily: "system-ui", fontSize: 14 }}>
       <StorySection title="Acessibilidade & Color contrast">
-        <StoryCard title="Razões de contraste mínimas (WCAG / M3)">
+        <StoryCard title="Razões de contraste mínimas (WCAG)">
           <div style={{ display: "flex", flexWrap: "wrap", gap: 24, marginBottom: 16 }}>
             <div style={{ textAlign: "center" }}>
               <div

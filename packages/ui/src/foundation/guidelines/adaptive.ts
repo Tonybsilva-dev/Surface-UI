@@ -1,10 +1,6 @@
 /**
- * Guidelines de adaptive design – Material Design 3
- * @see https://m3.material.io/foundations/adaptive-design/large-screens/overview
- * @see https://m3.material.io/foundations/layout/canonical-layouts/overview
- *
- * Apps adaptativos mudam layout conforme o tamanho da janela
- * (window size classes), em vez de apenas esticar componentes.
+ * Guidelines de adaptive design – large screens, canonical layouts.
+ * Apps adaptativos mudam layout conforme o tamanho da janela (window size classes).
  */
 
 /** Window size classes de largura (referência) */
@@ -30,7 +26,7 @@ export const windowHeightClasses = {
   expanded: 'expanded',
 } as const;
 
-/** Layouts canônicos M3 para telas adaptativas */
+/** Layouts canônicos para telas adaptativas */
 export const canonicalLayouts = {
   /** Lista + detalhe; em telas grandes, ambos panes lado a lado */
   listDetail: 'list-detail',

@@ -1,11 +1,8 @@
 /**
- * Usability – Material Design 3
- * Clareza, previsibilidade e aplicação expressiva do M3.
- * @see https://m3.material.io/foundations/usability/overview
- * @see https://m3.material.io/foundations/usability/applying-m-3-expressive
+ * Usability – clareza, previsibilidade e aplicação expressiva
  */
 
-/** Princípio geral de usabilidade no M3 */
+/** Princípio geral de usabilidade */
 export const usabilityPrinciple = {
   clarity:
     'Interfaces devem ser legíveis, previsíveis e fáceis de aprender – o usuário entende rapidamente o que pode fazer.',
@@ -23,7 +20,7 @@ export const usabilitySignals = {
     'Mensagens de erro explicam o que aconteceu, por que e como corrigir; sempre que possível, ofereça desfazer.',
 } as const;
 
-/** Applying M3 expressivo de forma usável (cor, forma, motion) */
+/** Aplicação expressiva de forma usável (cor, forma, motion) */
 export const applyingExpressiveUsability = {
   color:
     'Use cor para reforçar hierarquia e estados (primary, secondary, error), sem depender apenas dela para transmitir significado.',

@@ -1,16 +1,8 @@
 /**
- * Layout foundations – Material Design 3
- * Understanding + Applying layout: overview, spacing, parts, density,
- * hardware considerations e bidirecionalidade (RTL).
- * @see https://m3.material.io/foundations/layout/understanding-layout/overview
- * @see https://m3.material.io/foundations/layout/understanding-layout/spacing
- * @see https://m3.material.io/foundations/layout/understanding-layout/parts-of-layout
- * @see https://m3.material.io/foundations/layout/understanding-layout/density
- * @see https://m3.material.io/foundations/layout/understanding-layout/hardware-considerations
- * @see https://m3.material.io/foundations/layout/understanding-layout/bidirectionality-rtl
+ * Layout foundations – understanding + applying layout, spacing, parts, density, RTL
  */
 
-/** Visão geral: o que é um bom layout M3 */
+/** Visão geral: o que é um bom layout */
 export const layoutOverview = {
   goal:
     'Layouts organizam conteúdo em regiões claras (navegação + body), mantendo hierarquia, alinhamento e ritmo visual.',

@@ -15,7 +15,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Elevation M3: overview, como aplicar níveis 0–5 e tokens de elevação. Esquerda: guidelines. Direita: exemplos visuais.",
+          "Elevation: overview, como aplicar níveis 0–5 e tokens de elevação. Esquerda: guidelines. Direita: exemplos visuais.",
       },
     },
   },
@@ -31,7 +31,7 @@ const typo = {
 
 const levelOrder = ["level0", "level1", "level2", "level3", "level4", "level5"] as const;
 
-/** Mapa de níveis 0–5: baseline 0dp, barras à altura em dp (0dp a 12dp), como referência M3 */
+/** Mapa de níveis 0–5: baseline 0dp, barras à altura em dp (0dp a 12dp), como referência */
 function ElevationGraph() {
   const svgHeight = 160;
   const svgWidth = 380;
@@ -130,14 +130,6 @@ export const Overview: StoryObj = {
           left={
             <StoryCard title={elevationOverview.title}>
               <p style={{ margin: "0 0 12px" }}>{elevationOverview.description}</p>
-              <a
-                href={elevationOverview.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Elevation overview →
-              </a>
             </StoryCard>
           }
           right={
@@ -166,14 +158,6 @@ export const ApplyingElevation: StoryObj = {
                   </li>
                 ))}
               </ul>
-              <a
-                href={applyingElevationGuidelines.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Applying elevation →
-              </a>
             </StoryCard>
           }
           right={
@@ -251,14 +235,6 @@ export const Tokens: StoryObj = {
                   ))}
                 </tbody>
               </table>
-              <a
-                href={elevationTokensSummary.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Elevation tokens →
-              </a>
             </StoryCard>
           }
           right={

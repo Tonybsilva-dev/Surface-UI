@@ -1,17 +1,8 @@
 /**
- * Content Design – Material Design 3
- * Conteúdo efetivo: overview, alt text, global writing, notificações, style guide.
- * @see https://m3.material.io/foundations/content-design/overview
- * @see https://m3.material.io/foundations/content-design/alt-text
- * @see https://m3.material.io/foundations/content-design/global-writing/overview
- * @see https://m3.material.io/foundations/content-design/global-writing/word-choice
- * @see https://m3.material.io/foundations/content-design/notifications
- * @see https://m3.material.io/foundations/content-design/style-guide/ux-writing-best-practices
- * @see https://m3.material.io/foundations/content-design/style-guide/word-choice
- * @see https://m3.material.io/foundations/content-design/style-guide/grammar-and-punctuation
+ * Content Design – overview, alt text, global writing, notificações, style guide
  */
 
-/** Princípio central do Content Design M3 */
+/** Princípio central do Content Design */
 export const contentDesignPrinciple =
   'Conteúdo compreensível por qualquer pessoa, em qualquer lugar.';
 
@@ -33,7 +24,7 @@ export const globalWritingGuidelines = {
   ] as const,
 } as const;
 
-/** Tipos e boas práticas de notificações (M3) */
+/** Tipos e boas práticas de notificações */
 export const notificationGuidelines = {
   types: ['snackbar', 'banner', 'dialog', 'toast'] as const,
   practices: [

@@ -1,5 +1,5 @@
 /**
- * Glossary – Material Design 3
+ * Glossary – termos do design system
  * Termos e definições usados nas foundations do design system.
  * @see https://m3.material.io/foundations/glossary
  */
@@ -10,7 +10,7 @@ export interface GlossaryEntry {
   category: 'tokens' | 'layout' | 'interaction' | 'components' | 'general';
 }
 
-/** Entradas do glossário M3 (ordenadas por categoria e termo) */
+/** Entradas do glossário (ordenadas por categoria e termo) */
 export const glossaryEntries: GlossaryEntry[] = [
   // Tokens & surfaces
   {
@@ -25,7 +25,7 @@ export const glossaryEntries: GlossaryEntry[] = [
   },
   {
     term: 'Surface',
-    definition: 'Área de fundo onde o conteúdo e os componentes são exibidos. No M3, surfaces têm roles (surface, surfaceVariant) e podem receber state layers.',
+    definition: 'Área de fundo onde o conteúdo e os componentes são exibidos. Surfaces têm roles (surface, surfaceVariant) e podem receber state layers.',
     category: 'tokens',
   },
   {
@@ -35,7 +35,7 @@ export const glossaryEntries: GlossaryEntry[] = [
   },
   {
     term: 'Elevation',
-    definition: 'Sombra e separação visual entre superfícies. No M3 é expressa por níveis (0–5) com box-shadow; ajuda a comunicar hierarquia e sobreposição.',
+    definition: 'Sombra e separação visual entre superfícies. É expressa por níveis (0–5) com box-shadow; ajuda a comunicar hierarquia e sobreposição.',
     category: 'tokens',
   },
   // Layout

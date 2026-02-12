@@ -1,6 +1,6 @@
-# Glossary – Material Design 3
+# Glossary
 
-Termos e definições usados nas foundations do design system. A referência oficial está em [M3 Glossary](https://m3.material.io/foundations/glossary). No Storybook, use **Foundation → Glossary** para navegar por categoria (ex.: esquerda = definição, direita = contexto visual).
+Termos e definições usados nas foundations do design system. No Storybook, use **Foundation → Glossary** para navegar por categoria (ex.: esquerda = definição, direita = contexto visual).
 
 ---
 
@@ -10,9 +10,9 @@ Termos e definições usados nas foundations do design system. A referência ofi
 |-------|-----------|
 | **Design token** | Valor nomeado que define uma propriedade de design (cor, espaçamento, tipografia, elevação, etc.). Permite consistência e temas (ex.: claro/escuro). |
 | **State layer** | Overlay com opacidade aplicado sobre a superfície de um componente para indicar estado interativo (hover, focus, pressed, dragged). Não substitui o conteúdo. |
-| **Surface** | Área de fundo onde o conteúdo e os componentes são exibidos. No M3, surfaces têm roles (surface, surfaceVariant) e podem receber state layers. |
+| **Surface** | Área de fundo onde o conteúdo e os componentes são exibidos. Surfaces têm roles (surface, surfaceVariant) e podem receber state layers. |
 | **Container** | Variante de cor que “contém” conteúdo relacionado a um role (ex.: primaryContainer, errorContainer). O texto sobre o container usa o role “on” correspondente. |
-| **Elevation** | Sombra e separação visual entre superfícies. No M3 é expressa por níveis (0–5) com box-shadow; ajuda a comunicar hierarquia e sobreposição. |
+| **Elevation** | Sombra e separação visual entre superfícies. É expressa por níveis (0–5) com box-shadow; ajuda a comunicar hierarquia e sobreposição. |
 
 ---
 

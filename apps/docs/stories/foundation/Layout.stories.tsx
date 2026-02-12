@@ -21,7 +21,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Layout M3: overview, spacing, partes do layout, densidade, hardware/RTL e aplicação com window size classes e canonical layouts.",
+          "Layout: overview, spacing, partes do layout, densidade, hardware/RTL e aplicação com window size classes e canonical layouts.",
       },
     },
   },

@@ -15,7 +15,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Usabilidade no M3: clareza, previsibilidade e aplicação expressiva (cor, shape, motion) de forma acessível.",
+          "Usabilidade: clareza, previsibilidade e aplicação expressiva (cor, shape, motion) de forma acessível.",
       },
     },
   },
@@ -156,13 +156,13 @@ export const Signals: StoryObj = {
   ),
 };
 
-export const ExpressiveM3: StoryObj = {
+export const Expressive: StoryObj = {
   render: () => (
     <div style={{ fontFamily: typo.fontFamily, fontSize: typo.body }}>
-      <StorySection title="Applying M3 (expressive + usable)">
+      <StorySection title="Applying expressive (usable)">
         <TwoColumn
           left={
-            <StoryCard title="Aplicando M3 de forma usável">
+            <StoryCard title="Aplicando expressividade de forma usável">
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 <li>{applyingExpressiveUsability.color}</li>
                 <li>{applyingExpressiveUsability.shape}</li>

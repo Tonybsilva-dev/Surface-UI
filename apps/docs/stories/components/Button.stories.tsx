@@ -1,0 +1,151 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@surface/ui/button";
+import {
+  lightColorScheme,
+  typographyTokens,
+  componentShapeTokens,
+} from "@surface/ui/foundation";
+import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+
+const meta: Meta = {
+  title: "Components/Atoms/Button",
+  parameters: {
+    layout: "padded",
+    docs: {
+      description: {
+        component:
+          "Primeiro átomo: Button. Usa tokens de cor, tipografia, shape e estados para ações primárias, secundárias e ghost.",
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Button>;
+
+const typo = {
+  fontFamily: typographyTokens.fontFamily.default,
+  body: 14,
+  muted: "#666",
+};
+
+export const Overview: Story = {
+  render: () => (
+    <div style={{ fontFamily: typo.fontFamily, fontSize: typo.body }}>
+      <StorySection title="Button (overview)">
+        <TwoColumn
+          left={
+            <StoryCard title="Papel do botão">
+              <p style={{ margin: "0 0 12px" }}>
+                Botões disparam ações primárias e secundárias. Eles usam:
+              </p>
+              <ul style={{ margin: "0 0 12px", paddingLeft: 20 }}>
+                <li style={{ marginBottom: 4 }}>Cor: primary / onPrimary / surface / outline.</li>
+                <li style={{ marginBottom: 4 }}>Tipografia: `typographyTokens.label.large`.</li>
+                <li style={{ marginBottom: 4 }}>Shape: `componentShapeTokens.button` (raio 6px).</li>
+                <li style={{ marginBottom: 4 }}>Estados: disabled com `disabledOpacity`.</li>
+              </ul>
+              <p style={{ margin: 0, fontSize: 13, color: typo.muted }}>
+                Variantes: <code>primary</code>, <code>secondary</code>, <code>ghost</code>. Tamanhos:{" "}
+                <code>sm</code>, <code>md</code>, <code>lg</code>.
+              </p>
+            </StoryCard>
+          }
+          right={
+            <StoryCard title="Exemplos">
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  <Button>Primary</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="ghost">Ghost</Button>
+                </div>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  <Button size="sm">Small</Button>
+                  <Button size="md">Medium</Button>
+                  <Button size="lg">Large</Button>
+                </div>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  <Button disabled>Disabled</Button>
+                  <Button variant="secondary" disabled>
+                    Disabled secondary
+                  </Button>
+                </div>
+              </div>
+            </StoryCard>
+          }
+        />
+      </StorySection>
+    </div>
+  ),
+};
+
+export const VisualTokens: Story = {
+  render: () => (
+    <div style={{ fontFamily: typo.fontFamily, fontSize: typo.body }}>
+      <StorySection title="Tokens aplicados">
+        <TwoColumn
+          left={
+            <StoryCard title="Shape e tipografia">
+              <p style={{ margin: "0 0 12px" }}>
+                O botão usa o radius de <code>componentShapeTokens.button</code> e o estilo tipográfico de{" "}
+                <code>typographyTokens.label.large</code>.
+              </p>
+              <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13 }}>
+                <li>
+                  <code>border-radius</code>: {componentShapeTokens.button}
+                </li>
+                <li>
+                  <code>font-size</code>: {typographyTokens.label.large.fontSize}
+                </li>
+                <li>
+                  <code>line-height</code>: {typographyTokens.label.large.lineHeight}
+                </li>
+                <li>
+                  <code>font-weight</code>: {typographyTokens.label.large.fontWeight}
+                </li>
+              </ul>
+            </StoryCard>
+          }
+          right={
+            <StoryCard title="Cores em uso">
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <Swatch name="primary" value={lightColorScheme.primary} />
+                  <Swatch name="onPrimary" value={lightColorScheme.onPrimary} />
+                  <Swatch name="surface" value={lightColorScheme.surface} />
+                  <Swatch name="outline" value={lightColorScheme.outline} />
+                </div>
+                <div style={{ fontSize: 11, color: typo.muted }}>
+                  Primary button: fundo <code>primary</code>, texto <code>onPrimary</code>. Secondary: fundo{" "}
+                  <code>surface</code>, borda <code>outline</code>, texto <code>primary</code>.
+                </div>
+              </div>
+            </StoryCard>
+          }
+        />
+      </StorySection>
+    </div>
+  ),
+};
+
+function Swatch({ name, value }: { name: string; value: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <div
+        style={{
+          width: 32,
+          height: 24,
+          borderRadius: 6,
+          backgroundColor: value,
+          border: "1px solid rgba(0,0,0,0.06)",
+        }}
+      />
+      <div style={{ fontSize: 11 }}>
+        <div style={{ color: typo.muted }}>{name}</div>
+        <code>{value}</code>
+      </div>
+    </div>
+  );
+}
+

@@ -1,9 +1,5 @@
 /**
- * Design tokens – Material Design 3
- * @see https://m3.material.io/foundations/design-tokens/overview
- * @see https://m3.material.io/foundations/design-tokens/how-to-use-tokens
- *
- * Exporta todos os tokens para uso em temas e componentes.
+ * Design tokens – exporta todos os tokens para uso em temas e componentes.
  */
 
 // Color

@@ -1,15 +1,6 @@
-# Motion (Styles) – Material Design 3
+# Motion (Styles)
 
 Motion comunica **mudança de estado**, **direção** e **hierarquia**. Use **duração** e **easing** consistentes (tokens) e padrões de **transição** para uma experiência previsível e acessível.
-
-Fontes oficiais:
-
-- [Motion – How it works](https://m3.material.io/styles/motion/overview/how-it-works)
-- [Motion – Specs](https://m3.material.io/styles/motion/overview/specs)
-- [Easing and duration – Applying](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration)
-- [Easing and duration – Tokens & specs](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)
-- [Transitions – Transition patterns](https://m3.material.io/styles/motion/transitions/transition-patterns)
-- [Transitions – Applying transitions](https://m3.material.io/styles/motion/transitions/applying-transitions)
 
 No Storybook: **Styles → Motion** (conceitos à esquerda, exemplos visuais à direita).
 

@@ -16,7 +16,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Typography M3: overview, fonts, type scale, applying type e tratamentos editoriais. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
+          "Typography: overview, fonts, type scale, applying type e tratamentos editoriais. Esquerda: conceitos. Direita: exemplos visuais e tokens.",
       },
     },
   },
@@ -51,14 +51,6 @@ export const Overview: StoryObj = {
                   </li>
                 ))}
               </ul>
-              <a
-                href={typographyOverview.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Typography overview →
-              </a>
             </StoryCard>
           }
           right={
@@ -111,14 +103,6 @@ export const Fonts: StoryObj = {
               <p style={{ margin: "0 0 12px", fontSize: 13, color: typo.muted }}>
                 {typographyFonts.fallbackNote}
               </p>
-              <a
-                href={typographyFonts.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Fonts →
-              </a>
             </StoryCard>
           }
           right={
@@ -165,14 +149,6 @@ export const TypeScaleTokens: StoryObj = {
               <p style={{ margin: 0, fontSize: 13, color: typo.muted }}>
                 {typographyTypeScale.tokensNote}
               </p>
-              <a
-                href={typographyTypeScale.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Type scale tokens →
-              </a>
             </StoryCard>
           }
           right={
@@ -229,14 +205,6 @@ export const ApplyingType: StoryObj = {
                   </li>
                 ))}
               </ul>
-              <a
-                href={typographyApplyingType.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Applying type →
-              </a>
             </StoryCard>
           }
           right={
@@ -321,14 +289,6 @@ export const EditorialTreatments: StoryObj = {
                   </li>
                 ))}
               </ul>
-              <a
-                href={typographyEditorialTreatments.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}
-              >
-                M3 – Editorial treatments →
-              </a>
             </StoryCard>
           }
           right={

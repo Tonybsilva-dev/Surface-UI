@@ -20,7 +20,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Sistema de cores M3: overview, roles, color schemes (tabs) e advanced (tabs). Esquerda: conceitos. Direita: exemplos visuais.",
+          "Sistema de cores: overview, roles, color schemes (tabs) e advanced (tabs). Esquerda: conceitos. Direita: exemplos visuais.",
       },
     },
   },
@@ -107,9 +107,6 @@ export const Overview: StoryObj = {
           left={
             <StoryCard title={colorSystemOverview.title}>
               <p style={{ margin: "0 0 12px" }}>{colorSystemOverview.description}</p>
-              <a href={colorSystemOverview.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – Color system overview →
-              </a>
             </StoryCard>
           }
           right={
@@ -156,9 +153,6 @@ export const HowTheSystemWorks: StoryObj = {
                   <li key={point} style={{ marginBottom: 8 }}>{point}</li>
                 ))}
               </ul>
-              <a href={colorSystemHowItWorks.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – How the system works →
-              </a>
             </StoryCard>
           }
           right={
@@ -224,9 +218,6 @@ export const Roles: StoryObj = {
                   );
                 })}
               </dl>
-              <a href={colorRolesSummary.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – Color roles →
-              </a>
             </StoryCard>
           }
           right={
@@ -307,10 +298,7 @@ export const ColorSchemes: StoryObj = {
             left={
               <StoryCard title="Conteúdo">
                 <Tabs tabs={tabs} active={active} onSelect={setActive}>
-                  <p style={{ margin: "0 0 12px" }}>{content.description}</p>
-                  <a href={content.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                    M3 – {content.label} →
-                  </a>
+                  <p style={{ margin: 0 }}>{content.description}</p>
                 </Tabs>
               </StoryCard>
             }
@@ -340,7 +328,7 @@ export const ColorSchemes: StoryObj = {
                 )}
                 {active === "static" && (
                   <div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: typo.muted, marginBottom: 8 }}>Baseline M3 (light)</div>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: typo.muted, marginBottom: 8 }}>Baseline (light)</div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                       {(["primary", "primaryContainer", "secondary", "surfaceVariant", "error"] as const).map((key) => (
                         <div key={key}>
@@ -387,10 +375,7 @@ export const Advanced: StoryObj = {
             left={
               <StoryCard title="Conteúdo">
                 <Tabs tabs={tabs} active={active} onSelect={setActive}>
-                  <p style={{ margin: "0 0 12px" }}>{content.description}</p>
-                  <a href={content.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                    M3 – {content.label} →
-                  </a>
+                  <p style={{ margin: 0 }}>{content.description}</p>
                 </Tabs>
               </StoryCard>
             }
@@ -467,10 +452,7 @@ export const Resources: StoryObj = {
         <TwoColumn
           left={
             <StoryCard>
-              <p style={{ margin: "0 0 12px" }}>{colorResources.description}</p>
-              <a href={colorResources.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, color: "#6750a4", fontWeight: 500 }}>
-                M3 – Color resources →
-              </a>
+              <p style={{ margin: 0 }}>{colorResources.description}</p>
             </StoryCard>
           }
           right={

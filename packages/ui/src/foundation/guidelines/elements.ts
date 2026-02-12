@@ -1,12 +1,8 @@
 /**
- * Guidelines de elementos e componentes – Material Design 3
- * @see https://m3.material.io/foundations/designing/elements
- * @see https://m3.material.io/components
- *
- * Categorias de componentes para manter consistência.
+ * Guidelines de elementos e componentes – categorias para consistência
  */
 
-/** Categorias de componentes M3 */
+/** Categorias de componentes */
 export const componentCategories = {
   action: 'action',
   containment: 'containment',

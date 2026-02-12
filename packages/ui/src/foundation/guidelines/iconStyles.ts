@@ -1,11 +1,7 @@
 /**
- * Icons (Styles) – Material Design 3
+ * Icons (Styles)
  * Princípios de overview, designing e applying icons.
- * Este design system pode adotar ícones do Lucide ou Phosphor Icons,
- * aplicando os mesmos princípios M3 (consistência, escala, peso, uso semântico).
- * @see https://m3.material.io/styles/icons/overview
- * @see https://m3.material.io/styles/icons/designing-icons
- * @see https://m3.material.io/styles/icons/applying-icons
+ * Pode adotar Lucide, Phosphor ou outra biblioteca com consistência de escala e peso.
  */
 
 /** Visão geral: papel dos ícones na UI */
@@ -14,8 +10,7 @@ export const iconOverview = {
   description:
     "Ícones comunicam ações, estados e categorias de forma rápida e universal. Mantenha consistência visual (peso, tamanho, estilo) e use em conjunto com labels quando a clareza exigir.",
   libraryNote:
-    "Este design system pode utilizar Lucide Icons ou Phosphor Icons, aplicando os princípios de consistência e escala do M3. Ambas as bibliotecas oferecem stroke consistente, múltiplos pesos (Lucide: stroke width; Phosphor: regular, bold, fill) e boa cobertura de símbolos.",
-  link: "https://m3.material.io/styles/icons/overview",
+    "Este design system pode utilizar Lucide Icons ou Phosphor Icons, com princípios de consistência e escala. Ambas oferecem stroke consistente, múltiplos pesos e boa cobertura de símbolos.",
 } as const;
 
 /** Princípios de desenho (adaptados para Lucide/Phosphor) */
@@ -31,7 +26,6 @@ export const iconDesigningGuidelines = {
   ] as const,
   lucideRef: "https://lucide.dev/guide/design",
   phosphorRef: "https://phosphoricons.com/",
-  link: "https://m3.material.io/styles/icons/designing-icons",
 } as const;
 
 /** Aplicação de ícones na interface */
@@ -44,7 +38,6 @@ export const iconApplyingGuidelines = {
     "Feedback: ícones de estado (check, alert, info) em mensagens e notificações.",
     "Tamanho: ícones em linha com texto geralmente 1em ou 1.25em; em botões, respeitar touch target (ex.: 24px ícone em área 48×48).",
   ] as const,
-  link: "https://m3.material.io/styles/icons/applying-icons",
 } as const;
 
 /** Tamanhos recomendados (compatíveis com Lucide/Phosphor) */

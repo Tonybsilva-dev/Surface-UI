@@ -1,14 +1,6 @@
-# Typography (Styles) – Material Design 3
+# Typography (Styles)
 
-Tipografia torna o conteúdo **legível e bonita**. O M3 fornece uma **type scale** completa (Display, Headline, Title, Body, Label), famílias recomendadas e tokens para aplicar tipografia de forma consistente.
-
-Fontes oficiais:
-
-- [Typography – Overview](https://m3.material.io/styles/typography/overview)
-- [Typography – Fonts](https://m3.material.io/styles/typography/fonts)
-- [Typography – Type scale tokens](https://m3.material.io/styles/typography/type-scale-tokens)
-- [Typography – Applying type](https://m3.material.io/styles/typography/applying-type)
-- [Typography – Editorial treatments](https://m3.material.io/styles/typography/editorial-treatments)
+Tipografia torna o conteúdo **legível e bonita**. O sistema fornece uma **type scale** completa (Display, Headline, Title, Body, Label), famílias recomendadas e tokens para aplicar tipografia de forma consistente.
 
 No Storybook: **Styles → Typography** (conceitos à esquerda, exemplos visuais à direita).
 
@@ -18,7 +10,7 @@ No Storybook: **Styles → Typography** (conceitos à esquerda, exemplos visuais
 
 - Typography deve **organizar hierarquia** (o que é mais importante) e apoiar a leitura.
 - Use poucos estilos por tela e mantenha **consistência** entre telas e plataformas.
-- A type scale M3 usa cinco famílias de papel: Display, Headline, Title, Body e Label.
+- A type scale usa cinco papéis: Display, Headline, Title, Body e Label.
 
 Em código: `typographyOverview`.
 
@@ -26,13 +18,13 @@ Em código: `typographyOverview`.
 
 ## Fonts
 
-- **Roboto** é o typeface padrão da M3.
-- **Roboto Flex** (variable font) adiciona mais pesos, larguras e ajustes óticos.
-- **Roboto Serif** é serifada, voltada para leitura confortável em vários tamanhos.
-- **Roboto Mono** é monoespaçada, ótima para código e números alinhados.
-- **Noto Sans** é a família global fallback para scripts não cobertos.
+- **Fonte padrão** – typeface principal da type scale (ex.: Inter, Source Sans).
+- **Fonte variável** – múltiplos eixos (peso, largura) para flexibilidade.
+- **Serifada** – leitura confortável em artigos e editorial.
+- **Monoespaçada** – código e números alinhados.
+- **Fallback** – família global para scripts não suportados pela principal.
 
-Configure fallback em ordem (por exemplo: Roboto Flex → Roboto → Noto Sans) para manter a identidade visual mesmo quando a fonte principal não estiver disponível.
+Configure fallback em ordem (fonte principal → alternativa → genérica) para manter a identidade visual.
 
 Em código: `typographyFonts`.
 
@@ -60,7 +52,7 @@ Em código: `typographyTypeScale`.
 - Cards e diálogos: Title para o título, Body para o conteúdo.
 - Botões e chips: Label (geralmente medium ou large).
 - Texto de suporte: Body small, com contraste adequado.
-- Use fontes monoespaçadas (como Roboto Mono) para código e números alinhados.
+- Use fontes monoespaçadas para código e números alinhados.
 
 Em código: `typographyApplyingType`.
 

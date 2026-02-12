@@ -1,37 +1,12 @@
-# Color (Styles) – Material Design 3
+# Color (Styles)
 
-Sistema de cores M3: overview, como funciona, roles, **color schemes** (estático/dinâmico) e customizações **avançadas**. No Storybook: **Styles → Color** (com abas em Color Schemes e Advanced).
-
-Fontes oficiais:
-
-**Sistema**
-
-- [Color system – Overview](https://m3.material.io/styles/color/system/overview)
-- [Color system – How the system works](https://m3.material.io/styles/color/system/how-the-system-works)
-- [Color roles](https://m3.material.io/styles/color/roles)
-
-**Color schemes**
-
-- [Choosing a scheme](https://m3.material.io/styles/color/choosing-a-scheme)
-- [Static (baseline)](https://m3.material.io/styles/color/static/baseline)
-- [Dynamic – Choosing a source](https://m3.material.io/styles/color/dynamic/choosing-a-source)
-
-**Advanced**
-
-- [Advanced – Overview](https://m3.material.io/styles/color/advanced/overview)
-- [Apply colors](https://m3.material.io/styles/color/advanced/apply-colors)
-- [Define new colors](https://m3.material.io/styles/color/advanced/define-new-colors)
-- [Adjust existing colors](https://m3.material.io/styles/color/advanced/adjust-existing-colors)
-
-**Recursos**
-
-- [Color resources](https://m3.material.io/styles/color/resources)
+Sistema de cores: overview, como funciona, roles, **color schemes** (estático/dinâmico) e customizações **avançadas**. No Storybook: **Styles → Color** (com abas em Color Schemes e Advanced).
 
 ---
 
 ## Sistema de cores
 
-O M3 usa um sistema baseado em **roles** (primary, secondary, tertiary, error, surface/outline). Cada role tem variantes (container, on-variant) para criar esquemas consistentes e acessíveis em light e dark. As cores são derivadas de uma cor primária (e opcionalmente secondary/tertiary); o sistema gera tons que garantem contraste adequado entre superfícies e conteúdo.
+O sistema usa **roles** (primary, secondary, tertiary, error, surface/outline). Cada role tem variantes (container, on-variant) para criar esquemas consistentes e acessíveis em light e dark. As cores são derivadas de uma cor primária (e opcionalmente secondary/tertiary); o sistema gera tons que garantem contraste adequado entre superfícies e conteúdo.
 
 - **Roles** definem a função da cor (ação principal, superfície, erro), não o valor absoluto.
 - Cada role tem pares **container + on-container** para elementos que “contêm” conteúdo.
@@ -57,7 +32,7 @@ Os tokens em `@surface/ui/foundation` (`lightColorScheme`, `darkColorScheme`) im
 ## Color schemes (tabs)
 
 - **Choosing a scheme:** Escolha entre esquema **estático** (cores fixas da marca) ou **dinâmico** (cores extraídas de imagem/tema do sistema). Considere identidade e acessibilidade.
-- **Static (baseline):** Paletas predefinidas (baseline M3 ou custom). Ideal quando a marca exige cores específicas e consistência total.
+- **Static (baseline):** Paletas predefinidas ou custom. Ideal quando a marca exige cores específicas e consistência total.
 - **Dynamic (choosing a source):** Cores extraídas de uma fonte (imagem, wallpaper, tema do OS) para esquema personalizado.
 
 ---
@@ -73,4 +48,4 @@ Os tokens em `@surface/ui/foundation` (`lightColorScheme`, `darkColorScheme`) im
 
 ## Color resources
 
-Ferramentas e referências oficiais do M3 para gerar paletas, validar contraste e exportar tokens (Figma, código): [Color resources](https://m3.material.io/styles/color/resources).
+Ferramentas para gerar paletas, validar contraste e exportar tokens (Figma, código).

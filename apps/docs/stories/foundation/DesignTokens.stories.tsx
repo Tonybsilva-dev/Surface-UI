@@ -16,7 +16,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Tokens de tipografia, shape, spacing, state, motion e elevation (Material Design 3).",
+          "Tokens de tipografia, shape, spacing, state, motion e elevation.",
       },
     },
   },

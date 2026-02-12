@@ -13,7 +13,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Esquemas de cor do design system (Material Design 3). Use os tokens em temas e componentes.",
+          "Esquemas de cor do design system. Use os tokens em temas e componentes.",
       },
     },
   },

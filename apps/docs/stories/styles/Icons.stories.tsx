@@ -15,7 +15,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Princípios M3 de ícones, adaptados para Lucide ou Phosphor. Esquerda: conceitos. Direita: exemplos visuais (tamanhos, uso em botão e lista).",
+          "Princípios de ícones, adaptados para Lucide ou Phosphor. Esquerda: conceitos. Direita: exemplos visuais (tamanhos, uso em botão e lista).",
       },
     },
   },
@@ -58,9 +58,6 @@ export const Overview: StoryObj = {
             <StoryCard title={iconOverview.title}>
               <p style={{ margin: "0 0 12px" }}>{iconOverview.description}</p>
               <p style={{ margin: "0 0 12px", fontSize: 13, color: typo.muted }}>{iconOverview.libraryNote}</p>
-              <a href={iconOverview.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#6750a4" }}>
-                M3 – Icons overview →
-              </a>
             </StoryCard>
           }
           right={
@@ -100,9 +97,6 @@ export const Designing: StoryObj = {
                   <li key={point} style={{ marginBottom: 8 }}>{point}</li>
                 ))}
               </ul>
-              <a href={iconDesigningGuidelines.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – Designing icons →
-              </a>
               <p style={{ marginTop: 12, fontSize: 12, color: typo.muted }}>
                 Lucide: <a href={iconDesigningGuidelines.lucideRef} target="_blank" rel="noopener noreferrer" style={{ color: "#6750a4" }}>guia</a>
                 {" · "}
@@ -154,9 +148,6 @@ export const Applying: StoryObj = {
                   <li key={point} style={{ marginBottom: 8 }}>{point}</li>
                 ))}
               </ul>
-              <a href={iconApplyingGuidelines.link} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 12, fontSize: 13, color: "#6750a4" }}>
-                M3 – Applying icons →
-              </a>
             </StoryCard>
           }
           right={

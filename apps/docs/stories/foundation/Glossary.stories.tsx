@@ -16,7 +16,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Glossário M3: termos e definições das foundations. Esquerda: definições. Direita: referência visual quando aplicável.",
+          "Glossário: termos e definições das foundations. Esquerda: definições. Direita: referência visual quando aplicável.",
       },
     },
   },
@@ -40,11 +40,7 @@ export const Overview: StoryObj = {
             left={
               <StoryCard title="Sobre o glossário">
                 <p style={{ margin: "0 0 12px" }}>
-                  Termos e definições usados nas foundations do design system, alinhados ao{" "}
-                  <a href="https://m3.material.io/foundations/glossary" target="_blank" rel="noopener noreferrer">
-                    Glossary do Material Design 3
-                  </a>
-                  .
+                  Termos e definições usados nas foundations do design system.
                 </p>
                 <p style={{ margin: 0 }}>
                   Use as abas ao lado para ver as definições por categoria e exemplos visuais de referência.

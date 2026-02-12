@@ -1,12 +1,8 @@
 /**
- * Guidelines de estrutura e layout – Material Design 3
- * @see https://m3.material.io/foundations/designing/structure
- * @see https://m3.material.io/foundations/layout/understanding-layout/overview
- *
- * Regiões (navegação + body), panes, hierarquia.
+ * Guidelines de estrutura e layout – regiões, panes, hierarquia
  */
 
-/** Regiões principais do layout M3 */
+/** Regiões principais do layout */
 export const layoutRegions = {
   /** Navegação: drawer, rail ou bar na borda da janela */
   navigation: 'navigation',
