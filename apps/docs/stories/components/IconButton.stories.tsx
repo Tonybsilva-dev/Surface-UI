@@ -20,7 +20,7 @@ const meta: Meta<typeof IconButton> = {
     docs: {
       description: {
         component:
-          "Botão apenas com ícone. Mesmas variantes do Button (primary, secondary, ghost). Tamanhos: sm 32px, md 40px, lg 48px. Requer aria-label.",
+          "Botão apenas com ícone. Mesmas variantes do Button: default, primary, destructive, outline, secondary, ghost, link. Tamanhos: sm 32px, default/md 40px, lg 48px. Requer aria-label.",
       },
     },
   },
@@ -36,16 +36,24 @@ const meta: Meta<typeof IconButton> = {
       table: { type: { summary: "string" } },
     },
     variant: {
-      description: "Variante visual.",
+      description: "Variante visual (alinhada ao Button).",
       control: "select",
-      options: ["primary", "secondary", "ghost"] as IconButtonVariant[],
-      table: { type: { summary: "IconButtonVariant" }, defaultValue: { summary: "primary" } },
+      options: [
+        "default",
+        "primary",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link",
+      ] as IconButtonVariant[],
+      table: { type: { summary: "IconButtonVariant" }, defaultValue: { summary: "default" } },
     },
     size: {
-      description: "Tamanho da área clicável.",
+      description: "Tamanho da área clicável: sm 32px, default/md 40px, lg 48px.",
       control: "select",
-      options: ["sm", "md", "lg"] as IconButtonSize[],
-      table: { type: { summary: "IconButtonSize" }, defaultValue: { summary: "md" } },
+      options: ["default", "sm", "md", "lg"] as IconButtonSize[],
+      table: { type: { summary: "IconButtonSize" }, defaultValue: { summary: "default" } },
     },
     disabled: {
       description: "Desabilita o botão.",
@@ -67,8 +75,8 @@ const meta: Meta<typeof IconButton> = {
   args: {
     icon: null,
     "aria-label": "Abrir menu",
-    variant: "primary",
-    size: "md",
+    variant: "default",
+    size: "default",
     disabled: false,
     type: "button",
   },
@@ -80,12 +88,25 @@ type Story = StoryObj<typeof IconButton>;
 
 export const Default: Story = {
   render: (args) => (
-    <IconButton {...args} icon={<IconMock size={args.size === "sm" ? 18 : args.size === "lg" ? 24 : 22} />} />
+    <IconButton
+      {...args}
+      icon={
+        <IconMock
+          size={
+            args.size === "sm"
+              ? 18
+              : args.size === "lg"
+                ? 24
+                : 22
+          }
+        />
+      }
+    />
   ),
   args: {
     "aria-label": "Abrir menu",
-    variant: "primary",
-    size: "md",
+    variant: "default",
+    size: "default",
     disabled: false,
     type: "button",
   },
@@ -94,9 +115,13 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+      <IconButton icon={<IconMock />} aria-label="Default" variant="default" />
       <IconButton icon={<IconMock />} aria-label="Primary" variant="primary" />
+      <IconButton icon={<IconMock />} aria-label="Destructive" variant="destructive" />
+      <IconButton icon={<IconMock />} aria-label="Outline" variant="outline" />
       <IconButton icon={<IconMock />} aria-label="Secondary" variant="secondary" />
       <IconButton icon={<IconMock />} aria-label="Ghost" variant="ghost" />
+      <IconButton icon={<IconMock />} aria-label="Link" variant="link" />
     </div>
   ),
 };
@@ -105,6 +130,7 @@ export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
       <IconButton icon={<IconMock size={18} />} aria-label="Small" size="sm" />
+      <IconButton icon={<IconMock size={22} />} aria-label="Default" size="default" />
       <IconButton icon={<IconMock size={22} />} aria-label="Medium" size="md" />
       <IconButton icon={<IconMock size={24} />} aria-label="Large" size="lg" />
     </div>
@@ -126,8 +152,9 @@ export const Overview: Story = {
         right={
           <StoryCard title="Exemplos">
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <IconButton icon={<IconMock />} aria-label="Primary" variant="primary" />
-              <IconButton icon={<IconMock />} aria-label="Secondary" variant="secondary" />
+              <IconButton icon={<IconMock />} aria-label="Default" variant="default" />
+              <IconButton icon={<IconMock />} aria-label="Destructive" variant="destructive" />
+              <IconButton icon={<IconMock />} aria-label="Outline" variant="outline" />
               <IconButton icon={<IconMock />} aria-label="Disabled" disabled />
             </div>
           </StoryCard>

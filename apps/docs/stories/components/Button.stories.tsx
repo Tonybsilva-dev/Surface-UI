@@ -29,21 +29,30 @@ const meta: Meta<typeof Button> = {
       },
     },
     variant: {
-      description: "Variante visual: primary (filled), secondary (outlined), ghost (text).",
+      description:
+        "Variante visual: default/primary, destructive, outline, secondary, ghost, link.",
       control: "select",
-      options: ["primary", "secondary", "ghost"] as ButtonVariant[],
+      options: [
+        "default",
+        "primary",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link",
+      ] as ButtonVariant[],
       table: {
         type: { summary: "ButtonVariant" },
-        defaultValue: { summary: "primary" },
+        defaultValue: { summary: "default" },
       },
     },
     size: {
-      description: "Tamanho: sm, md (padrão), lg.",
+      description: "Tamanho: default (md), sm, lg, icon (quadrado).",
       control: "select",
-      options: ["sm", "md", "lg"] as ButtonSize[],
+      options: ["default", "sm", "md", "lg", "icon"] as ButtonSize[],
       table: {
         type: { summary: "ButtonSize" },
-        defaultValue: { summary: "md" },
+        defaultValue: { summary: "default" },
       },
     },
     fullWidth: {
@@ -87,11 +96,17 @@ const meta: Meta<typeof Button> = {
       table: { type: { summary: "ReactNode" } },
       control: false,
     },
+    asChild: {
+      description:
+        "Se true, renderiza o filho único com o estilo do botão (como Slot).",
+      control: "boolean",
+      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
+    },
   },
   args: {
     children: "Hello",
-    variant: "primary",
-    size: "md",
+    variant: "default",
+    size: "default",
     fullWidth: false,
     disabled: false,
     type: "button",
@@ -106,12 +121,21 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   args: {
     children: "Hello",
-    variant: "primary",
-    size: "md",
+    variant: "default",
+    size: "default",
     fullWidth: false,
     disabled: false,
     type: "button",
   },
+};
+
+/** Com asChild, o filho único (ex.: <a>) recebe o estilo do botão. */
+export const AsChild: Story = {
+  render: () => (
+    <Button asChild variant="outline">
+      <a href="#as-child">Link estilizado como botão</a>
+    </Button>
+  ),
 };
 
 const typo = {
@@ -137,8 +161,9 @@ export const Overview: Story = {
                 <li style={{ marginBottom: 4 }}>Estados: disabled com `disabledOpacity`.</li>
               </ul>
               <p style={{ margin: 0, fontSize: 13, color: typo.muted }}>
-                Variantes: <code>primary</code>, <code>secondary</code>, <code>ghost</code>. Tamanhos:{" "}
-                <code>sm</code>, <code>md</code>, <code>lg</code>.
+                Variantes: <code>default</code>, <code>destructive</code>, <code>outline</code>,{" "}
+                <code>secondary</code>, <code>ghost</code>, <code>link</code>. Tamanhos:{" "}
+                <code>default</code>, <code>sm</code>, <code>lg</code>, <code>icon</code>.
               </p>
             </StoryCard>
           }
@@ -146,19 +171,23 @@ export const Overview: Story = {
             <StoryCard title="Exemplos">
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <Button>Primary</Button>
+                  <Button>Default</Button>
+                  <Button variant="destructive">Destructive</Button>
+                  <Button variant="outline">Outline</Button>
                   <Button variant="secondary">Secondary</Button>
                   <Button variant="ghost">Ghost</Button>
+                  <Button variant="link">Link</Button>
                 </div>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   <Button size="sm">Small</Button>
-                  <Button size="md">Medium</Button>
+                  <Button size="default">Default</Button>
                   <Button size="lg">Large</Button>
+                  <Button size="icon" leadingIcon={<span aria-hidden>→</span>} />
                 </div>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   <Button disabled>Disabled</Button>
-                  <Button variant="secondary" disabled>
-                    Disabled secondary
+                  <Button variant="outline" disabled>
+                    Disabled outline
                   </Button>
                 </div>
               </div>
