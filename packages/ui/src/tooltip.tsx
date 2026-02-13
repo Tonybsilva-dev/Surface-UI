@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { useState, useRef, useLayoutEffect } from "react";
+import { createContext, useContext, useState, useRef, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import {
 	lightColorScheme,
@@ -13,8 +13,8 @@ export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
 export interface TooltipProps {
 	/** Conteúdo do tooltip (texto ou ReactNode). */
-	title: ReactNode;
-	/** Elemento que dispara o tooltip ao hover/focus. */
+	title?: ReactNode;
+	/** Elemento que dispara o tooltip ao hover/focus (modo simples). Em modo composição, use Tooltip.Trigger e Tooltip.Content. */
 	children: ReactNode;
 	/** Posição preferida do tooltip. */
 	placement?: TooltipPlacement;
@@ -25,13 +25,120 @@ export interface TooltipProps {
 
 const bodySmall = typographyTokens.body.small;
 
+interface TooltipContextValue {
+	visible: boolean;
+	setVisible: (v: boolean) => void;
+	coords: { top: number; left: number };
+	positioned: boolean;
+	placement: TooltipPlacement;
+	wrapperRef: React.RefObject<HTMLSpanElement | null>;
+	tooltipRef: React.RefObject<HTMLDivElement | null>;
+	triggerProps: {
+		onMouseEnter: () => void;
+		onMouseLeave: () => void;
+		onFocus: () => void;
+		onBlur: () => void;
+	};
+	tooltipStyles: (coords: { top: number; left: number }) => CSSProperties;
+}
+
+const TooltipContext = createContext<TooltipContextValue | null>(null);
+
+export interface TooltipTriggerProps {
+	children: ReactNode;
+	style?: CSSProperties;
+	className?: string;
+}
+
+export function TooltipTrigger(props: TooltipTriggerProps): JSX.Element {
+	const { children, style, className } = props;
+	const ctx = useContext(TooltipContext);
+	if (!ctx) return <>{children}</>;
+	const { wrapperRef, triggerProps } = ctx;
+	return (
+		<span
+			ref={wrapperRef as React.RefObject<HTMLSpanElement>}
+			className={className}
+			style={{ display: "inline-flex", ...style }}
+			{...triggerProps}
+		>
+			{children}
+		</span>
+	);
+}
+
+TooltipTrigger.displayName = "Tooltip.Trigger";
+
+export interface TooltipContentProps {
+	children: ReactNode;
+	style?: CSSProperties;
+}
+
+export function TooltipContent(props: TooltipContentProps): JSX.Element {
+	const { children, style } = props;
+	const ctx = useContext(TooltipContext);
+	if (!ctx) return <>{children}</>;
+	const { visible, coords, tooltipRef, tooltipStyles } = ctx;
+	const resolvedStyles: CSSProperties = {
+		...tooltipStyles(coords),
+		...style,
+	};
+	const tooltipNode = (
+		<div
+			ref={tooltipRef as React.RefObject<HTMLDivElement>}
+			role="tooltip"
+			aria-hidden={!visible}
+			style={resolvedStyles}
+		>
+			{children}
+		</div>
+	);
+	return (
+		<>
+			{visible &&
+				typeof document !== "undefined" &&
+				createPortal(tooltipNode, document.body)}
+		</>
+	);
+}
+
+TooltipContent.displayName = "Tooltip.Content";
+
+function getTooltipStyles(
+	coords: { top: number; left: number },
+	visible: boolean,
+	positioned: boolean,
+): CSSProperties {
+	return {
+		position: "fixed" as const,
+		top: coords.top,
+		left: coords.left,
+		visibility: visible && !positioned ? "hidden" : "visible",
+		opacity: visible && positioned ? 1 : 0,
+		zIndex: 9999,
+		padding: spacingTokens[2],
+		paddingBlock: spacingTokens[1],
+		maxWidth: 280,
+		fontFamily: bodySmall.fontFamily,
+		fontSize: bodySmall.fontSize,
+		lineHeight: bodySmall.lineHeight,
+		color: lightColorScheme.inverseOnSurface,
+		backgroundColor: lightColorScheme.inverseSurface,
+		borderRadius: componentShapeTokens.textField,
+		boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+		pointerEvents: "none",
+		transition: `opacity ${motionTokens.duration.short2} ${motionTokens.easing.standard}`,
+	};
+}
+
 export function Tooltip(props: TooltipProps): JSX.Element {
 	const { title, children, placement = "top", style, className } = props;
+
+	const wrapperRef = useRef<HTMLSpanElement>(null);
+	const tooltipRef = useRef<HTMLDivElement>(null);
 	const [visible, setVisible] = useState(false);
 	const [coords, setCoords] = useState({ top: 0, left: 0 });
 	const [positioned, setPositioned] = useState(false);
-	const wrapperRef = useRef<HTMLSpanElement>(null);
-	const tooltipRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
 		if (!visible) {
@@ -80,59 +187,69 @@ export function Tooltip(props: TooltipProps): JSX.Element {
 	}, [visible, placement]);
 
 	const triggerProps = {
-		onMouseEnter: () => setVisible(true),
-		onMouseLeave: () => setVisible(false),
-		onFocus: () => setVisible(true),
-		onBlur: () => setVisible(false),
+		onMouseEnter: (): void => setVisible(true),
+		onMouseLeave: (): void => setVisible(false),
+		onFocus: (): void => setVisible(true),
+		onBlur: (): void => setVisible(false),
 	};
 
-	const tooltipStyles: CSSProperties = {
-		position: "fixed",
-		top: coords.top,
-		left: coords.left,
-		visibility: visible && !positioned ? "hidden" : "visible",
-		opacity: visible && positioned ? 1 : 0,
-		zIndex: 9999,
-		padding: spacingTokens[2],
-		paddingBlock: spacingTokens[1],
-		maxWidth: 280,
-		fontFamily: bodySmall.fontFamily,
-		fontSize: bodySmall.fontSize,
-		lineHeight: bodySmall.lineHeight,
-		color: lightColorScheme.inverseOnSurface,
-		backgroundColor: lightColorScheme.inverseSurface,
-		borderRadius: componentShapeTokens.textField,
-		boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-		pointerEvents: "none",
-		transition: `opacity ${motionTokens.duration.short2} ${motionTokens.easing.standard}`,
-	};
+	const tooltipStylesFn = (c: { top: number; left: number }): CSSProperties =>
+		getTooltipStyles(c, visible, positioned);
 
-	const tooltipNode = (
-		<div
-			ref={tooltipRef}
-			role="tooltip"
-			aria-hidden={!visible}
-			style={tooltipStyles}
-		>
-			{title}
-		</div>
-	);
+	if (title !== undefined && title !== null) {
+		const resolvedStyles = getTooltipStyles({ top: coords.top, left: coords.left }, visible, positioned);
+		const tooltipNode = (
+			<div
+				ref={tooltipRef as React.RefObject<HTMLDivElement>}
+				role="tooltip"
+				aria-hidden={!visible}
+				style={resolvedStyles}
+			>
+				{title}
+			</div>
+		);
+		return (
+			<>
+				<span
+					ref={wrapperRef}
+					className={className}
+					style={{ display: "inline-flex", ...style }}
+					{...triggerProps}
+				>
+					{children}
+				</span>
+				{visible &&
+					typeof document !== "undefined" &&
+					createPortal(tooltipNode, document.body)}
+			</>
+		);
+	}
+
+	const contextValue: TooltipContextValue = {
+		visible,
+		setVisible,
+		coords,
+		positioned,
+		placement,
+		wrapperRef,
+		tooltipRef,
+		triggerProps,
+		tooltipStyles: tooltipStylesFn,
+	};
 
 	return (
-		<>
-			<span
-				ref={wrapperRef}
-				className={className}
-				style={{ display: "inline-flex", ...style }}
-				{...triggerProps}
-			>
-				{children}
-			</span>
-			{visible &&
-				typeof document !== "undefined" &&
-				createPortal(tooltipNode, document.body)}
-		</>
+		<TooltipContext.Provider value={contextValue}>
+			{children}
+		</TooltipContext.Provider>
 	);
 }
 
 Tooltip.displayName = "Tooltip";
+
+export type TooltipCompound = typeof Tooltip & {
+	Trigger: typeof TooltipTrigger;
+	Content: typeof TooltipContent;
+};
+
+(Tooltip as TooltipCompound).Trigger = TooltipTrigger;
+(Tooltip as TooltipCompound).Content = TooltipContent;

@@ -141,6 +141,29 @@ export const WithAddons: Story = {
   ),
 };
 
+export const Composition: Story = {
+  render: function CompositionRender() {
+    const [value, setValue] = useState("");
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 12, width: 320 }}>
+        <TextInput.Root size="md" status="default" allowClear style={{ width: "100%" }}>
+          <TextInput.Leading>https://</TextInput.Leading>
+          <TextInput.Input
+            placeholder="site.com"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </TextInput.Root>
+        <TextInput.Root size="md" allowClear style={{ width: "100%" }}>
+          <TextInput.Leading>R$</TextInput.Leading>
+          <TextInput.Input placeholder="0" />
+          <TextInput.Trailing>,00</TextInput.Trailing>
+        </TextInput.Root>
+      </div>
+    );
+  },
+};
+
 export const Disabled: Story = {
   args: {
     placeholder: "Desabilitado",

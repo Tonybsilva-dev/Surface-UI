@@ -58,6 +58,27 @@ export const Variants: Story = {
   ),
 };
 
+export const Composition: Story = {
+  render: () => (
+    <div style={{ maxWidth: 360 }}>
+      <Card variant="elevated">
+        <Card.Header>Título do card</Card.Header>
+        <Card.Content>
+          <p style={{ margin: 0, fontSize: 14, color: "#666" }}>
+            Conteúdo principal com Card.Header, Card.Content e Card.Footer.
+          </p>
+        </Card.Content>
+        <Card.Footer>
+          <button type="button" style={{ marginRight: 8 }}>
+            Acção 1
+          </button>
+          <button type="button">Acção 2</button>
+        </Card.Footer>
+      </Card>
+    </div>
+  ),
+};
+
 export const Overview: Story = {
   render: () => (
     <StorySection title="Card (overview)">
@@ -67,16 +88,19 @@ export const Overview: Story = {
             <p style={{ margin: "0 0 12px", fontSize: 14 }}>
               Containment: agrupa conteúdo. elevated (sombra), outlined (borda), filled
               (fundo). componentShapeTokens.card, elevationTokens, spacingTokens.
+              Use Card.Header, Card.Content e Card.Footer para composição.
             </p>
           </StoryCard>
         }
         right={
           <StoryCard title="Exemplo">
             <Card variant="elevated">
-              Título do card
-              <p style={{ margin: "8px 0 0", fontSize: 14, color: "#666" }}>
-                Descrição ou conteúdo secundário.
-              </p>
+              <Card.Header>Título</Card.Header>
+              <Card.Content>
+                <p style={{ margin: 0, fontSize: 14, color: "#666" }}>
+                  Descrição ou conteúdo secundário.
+                </p>
+              </Card.Content>
             </Card>
           </StoryCard>
         }

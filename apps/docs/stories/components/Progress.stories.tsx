@@ -110,6 +110,20 @@ export const Status: Story = {
   ),
 };
 
+export const Composition: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, width: 320 }}>
+      <Progress.Root percent={55} size="md" status="normal">
+        <Progress.Bar />
+        <Progress.Info />
+      </Progress.Root>
+      <Progress.Root percent={undefined} size="lg">
+        <Progress.Bar />
+      </Progress.Root>
+    </div>
+  ),
+};
+
 export const Overview: Story = {
   render: () => (
     <StorySection title="Progress (overview)">

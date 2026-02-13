@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip } from "@surface/ui/tooltip";
-import type { TooltipPlacement } from "@surface/ui/tooltip";
+import { Tooltip } from "../../../../packages/ui/src/tooltip";
+import type { TooltipPlacement } from "../../../../packages/ui/src/tooltip";
 import { Button } from "@surface/ui/button";
 import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
 
@@ -47,6 +47,19 @@ export const Default: Story = {
     <div style={{ padding: 48 }}>
       <Tooltip {...args}>
         <Button>Hover me</Button>
+      </Tooltip>
+    </div>
+  ),
+};
+
+export const Composition: Story = {
+  render: () => (
+    <div style={{ padding: 48 }}>
+      <Tooltip placement="top">
+        <Tooltip.Trigger>
+          <Button>Composição: Trigger + Content</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Conteúdo do tooltip por composição.</Tooltip.Content>
       </Tooltip>
     </div>
   ),

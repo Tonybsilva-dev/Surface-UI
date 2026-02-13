@@ -22,18 +22,39 @@ const config = {
 
   core: {},
 
-  async viteFinal(config, { configType }) {
-    // customize the Vite config here
+  async viteFinal(config) {
+    const uiPkg = resolve(__dirname, "../../../packages/ui");
+    const uiSrc = resolve(uiPkg, "src");
     return {
       ...config,
       define: { "process.env": {} },
       resolve: {
+        ...config.resolve,
         alias: [
           {
+            find: "@surface/ui/tooltip",
+            replacement: resolve(uiSrc, "tooltip.tsx"),
+          },
+          {
             find: "ui",
-            replacement: resolve(__dirname, "../../../packages/ui/"),
+            replacement: uiPkg,
+          },
+          {
+            find: "@surface/ui",
+            replacement: uiSrc,
           },
         ],
+      },
+      optimizeDeps: {
+        ...config.optimizeDeps,
+        exclude: ["@surface/ui"],
+      },
+      server: {
+        ...config.server,
+        fs: {
+          ...config.server?.fs,
+          allow: [uiPkg],
+        },
       },
     };
   },
