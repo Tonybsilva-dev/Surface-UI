@@ -1,4 +1,5 @@
 import type { CSSProperties, ButtonHTMLAttributes, ReactNode } from "react";
+import { useLayoutEffect } from "react";
 import {
 	lightColorScheme,
 	spacingTokens,
@@ -10,27 +11,36 @@ import {
 export type ButtonVariant = "primary" | "secondary" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
 
+const BUTTON_CSS_ID = "surface-button-styles";
+
+const hoverColors: Record<ButtonVariant, string> = {
+	primary: "rgb(38, 132, 255)",
+	secondary: lightColorScheme.surfaceVariant,
+	ghost: lightColorScheme.surfaceVariant,
+};
+
+const focusRing = `0 0 0 2px rgba(22, 119, 255, 0.2)`;
+
+function ensureButtonStyles(): void {
+	if (typeof document === "undefined" || document.getElementById(BUTTON_CSS_ID))
+		return;
+	const style = document.createElement("style");
+	style.id = BUTTON_CSS_ID;
+	style.textContent = `
+.surface-button{transition:background-color 150ms ease-out, border-color 150ms ease-out, box-shadow 150ms ease-out}
+.surface-button:hover:not(:disabled){background-color:var(--surface-btn-bg-hover)!important;border-color:var(--surface-btn-border-hover, transparent)!important}
+.surface-button:focus,.surface-button:focus-visible{outline:none;box-shadow:var(--surface-btn-focus-ring)!important}
+@media(prefers-reduced-motion:reduce){.surface-button{transition:none}}
+`;
+	document.head.appendChild(style);
+}
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
-	/**
-	 * Variante visual do botão.
-	 * - primary: ação principal (filled)
-	 * - secondary: ação secundária (outlined)
-	 * - ghost: ação neutra (text/ghost)
-	 */
 	variant?: ButtonVariant;
-	/**
-	 * Tamanho do botão.
-	 * - sm: compact
-	 * - md: padrão
-	 * - lg: maior área clicável
-	 */
 	size?: ButtonSize;
-	/** Ocupa 100% da largura disponível. */
 	fullWidth?: boolean;
-	/** Ícone antes do texto. */
 	leadingIcon?: React.ReactNode;
-	/** Ícone depois do texto. */
 	trailingIcon?: React.ReactNode;
 }
 
@@ -74,6 +84,7 @@ export function Button(props: ButtonProps): JSX.Element {
 		trailingIcon,
 		disabled,
 		style,
+		className,
 		...other
 	} = props;
 
@@ -104,6 +115,11 @@ export function Button(props: ButtonProps): JSX.Element {
 			break;
 	}
 
+	useLayoutEffect(() => {
+		ensureButtonStyles();
+	}, []);
+
+	const hoverBg = hoverColors[variant];
 	const baseStyles: CSSProperties = {
 		display: "inline-flex",
 		alignItems: "center",
@@ -124,22 +140,27 @@ export function Button(props: ButtonProps): JSX.Element {
 		opacity: disabled ? disabledOpacity : 1,
 		outline: "none",
 		width: fullWidth ? "100%" : undefined,
-		transition:
-			"background-color 150ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out",
+		["--surface-btn-bg-hover" as string]: hoverBg,
+		["--surface-btn-border-hover" as string]:
+			variant === "secondary" ? lightColorScheme.outline : "transparent",
+		["--surface-btn-focus-ring" as string]: focusRing,
 	};
 
 	const stateStyles: CSSProperties = {};
 
+	const combinedClassName = ["surface-button", className].filter(Boolean).join(" ");
+
 	return (
 		<button
-			type="button"
-			{...other}
+			className={combinedClassName}
 			disabled={disabled}
 			style={{
 				...baseStyles,
 				...stateStyles,
 				...style,
 			}}
+			type="button"
+			{...other}
 		>
 			{leadingIcon ? (
 				<span
