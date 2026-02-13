@@ -23,8 +23,9 @@ const config = {
   core: {},
 
   async viteFinal(config) {
-    const uiPkg = resolve(__dirname, "../../../packages/ui");
-    const uiSrc = resolve(uiPkg, "src");
+    // Volta para uma configuração simples de Vite:
+    // apenas garante que process.env existe e mantém o alias "ui"
+    // para o pacote local, sem mexer em optimizeDeps/server.
     return {
       ...config,
       define: { "process.env": {} },
@@ -32,29 +33,10 @@ const config = {
         ...config.resolve,
         alias: [
           {
-            find: "@surface/ui/tooltip",
-            replacement: resolve(uiSrc, "tooltip.tsx"),
-          },
-          {
             find: "ui",
-            replacement: uiPkg,
-          },
-          {
-            find: "@surface/ui",
-            replacement: uiSrc,
+            replacement: resolve(__dirname, "../../../packages/ui/"),
           },
         ],
-      },
-      optimizeDeps: {
-        ...config.optimizeDeps,
-        exclude: ["@surface/ui"],
-      },
-      server: {
-        ...config.server,
-        fs: {
-          ...config.server?.fs,
-          allow: [uiPkg],
-        },
       },
     };
   },
