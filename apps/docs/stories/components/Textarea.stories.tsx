@@ -12,7 +12,7 @@ const meta: Meta<typeof TextArea> = {
     docs: {
       description: {
         component:
-          "Campo de texto multilinha. Compound: TextArea.Root + TextArea.Input. Consistente com TextInput (status, size).",
+          "Campo de texto multilinha. Compound: TextArea.Root + TextArea.Input. allowClear para botão de limpar. Consistente com TextInput (status, size).",
       },
     },
   },
@@ -30,6 +30,11 @@ const meta: Meta<typeof TextArea> = {
     placeholder: { control: "text" },
     rows: { control: "number" },
     disabled: { control: "boolean" },
+    allowClear: {
+      description: "Mostra botão para limpar o conteúdo.",
+      control: "boolean",
+      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
+    },
   },
   args: {
     size: "md",
@@ -37,6 +42,7 @@ const meta: Meta<typeof TextArea> = {
     placeholder: "Escreva aqui...",
     rows: 4,
     disabled: false,
+    allowClear: false,
   },
 };
 
@@ -86,6 +92,15 @@ export const Disabled: Story = {
     disabled: true,
     placeholder: "Desabilitado",
     value: "Conteúdo",
+    style: { width: 320 },
+  },
+};
+
+export const AllowClear: Story = {
+  args: {
+    allowClear: true,
+    placeholder: "Digite e use o botão para limpar...",
+    rows: 3,
     style: { width: 320 },
   },
 };

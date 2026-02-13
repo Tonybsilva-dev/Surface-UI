@@ -8,6 +8,7 @@ import {
 	createContext,
 	forwardRef,
 	useContext,
+	useId,
 	useLayoutEffect,
 	useRef,
 	useState,
@@ -61,6 +62,8 @@ const sizeMap: Record<
 	},
 };
 
+const labelMedium = typographyTokens.label.medium;
+
 export interface TextInputProps
 	extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
 	/** Tamanho: sm (24px), md (32px), lg (40px). Como Input do Ant Design. */
@@ -73,6 +76,16 @@ export interface TextInputProps
 	addonAfter?: ReactNode;
 	/** Se true, mostra botão de limpar quando há valor (allowClear). */
 	allowClear?: boolean;
+	/**
+	 * Label acima do input (ex.: "Email"). Renderizado à esquerda na linha do label.
+	 * Quando definido, o input recebe id (ou o id passado) para htmlFor.
+	 */
+	label?: ReactNode;
+	/**
+	 * Conteúdo à direita na mesma linha do label (ex.: link "Ainda não é membro?").
+	 * Pode ser um link desativado ou qualquer ReactNode.
+	 */
+	labelTrailing?: ReactNode;
 	/** Estilos no wrapper. */
 	style?: CSSProperties;
 }
@@ -361,12 +374,21 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 			addonBefore,
 			addonAfter,
 			allowClear = false,
+			label,
+			labelTrailing,
 			className,
 			style,
 			value,
 			onChange,
+			id: idProp,
 			...other
 		} = props;
+
+		const generatedId = useId();
+		const hasLabelRow =
+			(label !== undefined && label !== null) ||
+			(labelTrailing !== undefined && labelTrailing !== null);
+		const inputId = hasLabelRow ? (idProp ?? generatedId) : idProp;
 
 		const inputRef = useRef<HTMLInputElement | null>(null);
 		const setRef = (el: HTMLInputElement | null): void => {
@@ -459,7 +481,33 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 			minHeight: fixedHeightPx,
 		};
 
-		return (
+		const labelRowStyles: CSSProperties = {
+			display: "flex",
+			justifyContent: "space-between",
+			alignItems: "center",
+			gap: spacingTokens[2],
+			marginBottom: spacingTokens[1],
+			fontFamily: labelMedium.fontFamily,
+			fontSize: labelMedium.fontSize,
+			lineHeight: labelMedium.lineHeight,
+			fontWeight: labelMedium.fontWeight,
+			color: lightColorScheme.onSurface,
+		};
+
+		const labelEl = hasLabelRow && label !== undefined && label !== null && (
+			<label
+				htmlFor={inputId}
+				style={{
+					flexShrink: 0,
+					cursor: disabled ? "default" : "text",
+					opacity: disabled ? disabledOpacity : 1,
+				}}
+			>
+				{label}
+			</label>
+		);
+
+		const inner = (
 			<span className={combinedClassName} style={finalWrapperStyle}>
 				{hasAddonBefore ? (
 					<span
@@ -472,6 +520,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 				<input
 					aria-invalid={status === "error" ? true : undefined}
 					disabled={disabled}
+					id={inputId}
 					onChange={handleChange}
 					ref={setRef}
 					style={inputStyles}
@@ -543,6 +592,23 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 				) : null}
 			</span>
 		);
+
+		if (hasLabelRow) {
+			return (
+				<div style={{ display: "flex", flexDirection: "column", width: "100%", minWidth: 0 }}>
+					<div style={labelRowStyles}>
+						{labelEl}
+						{labelTrailing !== undefined && labelTrailing !== null ? (
+							<span style={{ flexShrink: 0, opacity: disabled ? disabledOpacity : 1 }}>
+								{labelTrailing}
+							</span>
+						) : null}
+					</div>
+					{inner}
+				</div>
+			);
+		}
+		return inner;
 	},
 );
 

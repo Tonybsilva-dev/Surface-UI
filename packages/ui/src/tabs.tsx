@@ -7,15 +7,6 @@ import {
 	motionTokens,
 } from "./foundation";
 
-export interface TabProps {
-	/** Chave deste tab (valor comparado com Tabs value). */
-	value: string;
-	/** Rótulo do tab. */
-	children: ReactNode;
-	/** Desabilita o tab. */
-	disabled?: boolean;
-}
-
 type TabsContextValue = {
 	value: string;
 	onChange: (value: string) => void;
@@ -24,8 +15,69 @@ type TabsContextValue = {
 
 const TabsContext = createContext<TabsContextValue | null>(null);
 
-export function Tab(props: TabProps): JSX.Element {
-	const { value, children, disabled = false } = props;
+export interface TabsRootProps {
+	/** Valor do tab ativo (chave). */
+	value: string;
+	/** Callback quando o tab muda. */
+	onChange: (value: string) => void;
+	/** Conteúdo (Tabs.List + Tabs.Trigger e/ou Tabs.Content). */
+	children: ReactNode;
+	/** Desabilita todos os tabs. */
+	disabled?: boolean;
+	/** Estilos no container do Root. */
+	style?: CSSProperties;
+	className?: string;
+}
+
+export function TabsRoot(props: TabsRootProps): JSX.Element {
+	const { value, onChange, children, disabled = false, style, className } = props;
+	return (
+		<TabsContext.Provider value={{ value, onChange, disabled }}>
+			<div className={className} style={{ ...style }}>
+				{children}
+			</div>
+		</TabsContext.Provider>
+	);
+}
+
+TabsRoot.displayName = "Tabs.Root";
+
+export interface TabsListProps {
+	children: ReactNode;
+	style?: CSSProperties;
+	className?: string;
+}
+
+export function TabsList(props: TabsListProps): JSX.Element {
+	const { children, style, className } = props;
+	const listStyles: CSSProperties = {
+		display: "flex",
+		flexWrap: "wrap",
+		gap: 0,
+		borderBottom: `1px solid ${lightColorScheme.outlineVariant}`,
+	};
+	return (
+		<div className={className} role="tablist" style={{ ...listStyles, ...style }}>
+			{children}
+		</div>
+	);
+}
+
+TabsList.displayName = "Tabs.List";
+
+export interface TabsTriggerProps {
+	/** Chave deste tab (valor comparado com Tabs.Root value). */
+	value: string;
+	/** Rótulo do tab. */
+	children: ReactNode;
+	/** Desabilita este tab. */
+	disabled?: boolean;
+	style?: CSSProperties;
+	className?: string;
+}
+
+export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
+	const { value, children, disabled = false, style, className } = props;
 	const ctx = useContext(TabsContext);
 	const isActive = ctx?.value === value;
 	const isDisabled = disabled ?? ctx?.disabled ?? false;
@@ -61,7 +113,8 @@ export function Tab(props: TabProps): JSX.Element {
 			aria-selected={isActive}
 			aria-disabled={isDisabled}
 			disabled={isDisabled}
-			style={buttonStyles}
+			className={className}
+			style={{ ...buttonStyles, ...style }}
 			onClick={() => ctx?.onChange(value)}
 		>
 			{children}
@@ -69,43 +122,52 @@ export function Tab(props: TabProps): JSX.Element {
 	);
 }
 
-Tab.displayName = "Tab";
+TabsTrigger.displayName = "Tabs.Trigger";
 
-export interface TabsProps {
-	/** Valor do tab ativo (chave). */
+export interface TabsContentProps {
+	/** Chave do painel (mostrado quando Tabs.Root value === value). */
 	value: string;
-	/** Callback quando o tab muda. */
-	onChange: (value: string) => void;
-	/** Conteúdo (Tab children). */
 	children: ReactNode;
-	/** Desabilita todos os tabs. */
-	disabled?: boolean;
-	/** Estilos no container. */
 	style?: CSSProperties;
 	className?: string;
 }
 
-export function Tabs(props: TabsProps): JSX.Element {
-	const { value, onChange, children, disabled = false, style, className } = props;
+export function TabsContent(props: TabsContentProps): JSX.Element {
+	const { value, children, style, className } = props;
+	const ctx = useContext(TabsContext);
+	const isActive = ctx?.value === value;
 
-	const containerStyles: CSSProperties = {
-		display: "flex",
-		flexWrap: "wrap",
-		gap: 0,
-		borderBottom: `1px solid ${lightColorScheme.outlineVariant}`,
-	};
+	if (!isActive) return <></>;
 
 	return (
-		<TabsContext.Provider value={{ value, onChange, disabled }}>
-			<div
-				role="tablist"
-				className={className}
-				style={{ ...containerStyles, ...style }}
-			>
-				{children}
-			</div>
-		</TabsContext.Provider>
+		<div
+			role="tabpanel"
+			aria-hidden={!isActive}
+			className={className}
+			style={{ ...style }}
+		>
+			{children}
+		</div>
 	);
 }
 
-Tabs.displayName = "Tabs";
+TabsContent.displayName = "Tabs.Content";
+
+function TabsRootWithList(props: TabsRootProps): JSX.Element {
+	const { children, ...rootProps } = props;
+	return (
+		<TabsRoot {...rootProps}>
+			<TabsList>{children}</TabsList>
+		</TabsRoot>
+	);
+}
+
+export const Tabs = Object.assign(TabsRootWithList, {
+	Root: TabsRoot,
+	List: TabsList,
+	Trigger: TabsTrigger,
+	Content: TabsContent,
+});
+
+/** Alias para Tabs.Trigger. Use Tabs.Trigger para nova API. */
+export const Tab = TabsTrigger;

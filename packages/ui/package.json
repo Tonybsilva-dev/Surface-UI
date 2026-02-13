@@ -94,6 +94,21 @@
       "import": "./dist/card.mjs",
       "require": "./dist/card.js"
     },
+    "./dialog": {
+      "types": "./src/dialog.tsx",
+      "import": "./dist/dialog.mjs",
+      "require": "./dist/dialog.js"
+    },
+    "./dropdown-menu": {
+      "types": "./src/dropdown-menu.tsx",
+      "import": "./dist/dropdown-menu.mjs",
+      "require": "./dist/dropdown-menu.js"
+    },
+    "./toast": {
+      "types": "./src/toast.tsx",
+      "import": "./dist/toast.mjs",
+      "require": "./dist/toast.js"
+    },
     "./tabs": {
       "types": "./src/tabs.tsx",
       "import": "./dist/tabs.mjs",
@@ -138,6 +153,11 @@
       "types": "./src/input-otp.tsx",
       "import": "./dist/input-otp.mjs",
       "require": "./dist/input-otp.js"
+    },
+    "./chart": {
+      "types": "./src/chart.tsx",
+      "import": "./dist/chart.mjs",
+      "require": "./dist/chart.js"
     }
   },
   "scripts": {
@@ -157,6 +177,9 @@
   },
   "dependencies": {
     "react": "^18.2.0"
+  },
+  "peerDependencies": {
+    "recharts": "^2.0.0"
   },
   "publishConfig": {
     "access": "public"

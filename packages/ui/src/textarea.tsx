@@ -1,9 +1,17 @@
 import type {
+	ChangeEvent,
 	CSSProperties,
 	ReactNode,
 	TextareaHTMLAttributes,
 } from "react";
-import { createContext, forwardRef, useContext, useLayoutEffect } from "react";
+import {
+	createContext,
+	forwardRef,
+	useContext,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import {
 	lightColorScheme,
 	typographyTokens,
@@ -12,6 +20,7 @@ import {
 	disabledOpacity,
 	motionTokens,
 } from "./foundation";
+import { IconButton } from "./icon-button";
 
 export type TextAreaSize = "sm" | "md" | "lg";
 export type TextAreaStatus = "default" | "error" | "warning";
@@ -62,6 +71,7 @@ const bodyMedium = typographyTokens.body.medium;
 const focusRing = "0 0 0 2px rgba(22, 119, 255, 0.2)";
 
 interface TextAreaContextValue {
+	allowClear: boolean;
 	size: TextAreaSize;
 	status: TextAreaStatus;
 	disabled?: boolean;
@@ -75,6 +85,8 @@ export interface TextAreaRootProps {
 	size?: TextAreaSize;
 	status?: TextAreaStatus;
 	disabled?: boolean;
+	/** Se true, mostra botão de limpar quando há valor. */
+	allowClear?: boolean;
 	children: ReactNode;
 	style?: CSSProperties;
 	className?: string;
@@ -85,6 +97,7 @@ export function TextAreaRoot(props: TextAreaRootProps): JSX.Element {
 		size = "md",
 		status = "default",
 		disabled,
+		allowClear = false,
 		children,
 		className,
 		style,
@@ -110,6 +123,7 @@ export function TextAreaRoot(props: TextAreaRootProps): JSX.Element {
 		.filter(Boolean)
 		.join(" ");
 	const ctx: TextAreaContextValue = {
+		allowClear,
 		size,
 		status,
 		disabled,
@@ -134,14 +148,84 @@ export interface TextAreaInputProps
 	style?: CSSProperties;
 }
 
+function ClearIcon(): JSX.Element {
+	return (
+		<svg
+			aria-hidden
+			fill="none"
+			height="18"
+			viewBox="0 0 16 16"
+			width="18"
+			style={{ display: "block" }}
+		>
+			<title>Fechar</title>
+			<path
+				d="M12 4L4 12M4 4l8 8"
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeWidth="2"
+			/>
+		</svg>
+	);
+}
+
 export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>(
 	function TextAreaInput(props, ref) {
-		const { resize = "vertical", style: styleProp, ...other } = props;
+		const {
+			resize = "vertical",
+			style: styleProp,
+			value,
+			defaultValue,
+			onChange,
+			...other
+		} = props;
 		const ctx = useContext(TextAreaContext);
+		const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+		const setRef = (el: HTMLTextAreaElement | null): void => {
+			textareaRef.current = el;
+			if (typeof ref === "function") ref(el);
+			else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
+		};
+
+		const isControlled = value !== undefined;
+		const [uncontrolledValue, setUncontrolledValue] = useState(
+			(typeof defaultValue === "string" ? defaultValue : "") || "",
+		);
+
+		const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+			if (!isControlled) setUncontrolledValue(e.target.value);
+			onChange?.(e);
+		};
+
+		const hasContent =
+			ctx?.allowClear &&
+			(isControlled
+				? typeof value === "string" && value.length > 0
+				: uncontrolledValue.length > 0);
+
+		const onClear = (): void => {
+			const el = textareaRef.current;
+			if (!el) return;
+			if (isControlled) {
+				onChange?.({
+					target: { value: "" } as HTMLTextAreaElement,
+					currentTarget: el,
+				} as ChangeEvent<HTMLTextAreaElement>);
+			} else {
+				el.value = "";
+				setUncontrolledValue("");
+				onChange?.({
+					target: el,
+					currentTarget: el,
+				} as ChangeEvent<HTMLTextAreaElement>);
+			}
+		};
+
 		if (!ctx) {
-			return <textarea ref={ref} {...other} />;
+			return <textarea ref={ref} {...props} />;
 		}
-		const { dims, status, disabled } = ctx;
+
+		const { dims, status, disabled, allowClear } = ctx;
 		const inputStyles: CSSProperties = {
 			width: "100%",
 			minWidth: 0,
@@ -149,6 +233,7 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 			boxSizing: "border-box",
 			paddingInline: dims.paddingInline,
 			paddingBlock: dims.paddingBlock,
+			paddingRight: allowClear && hasContent ? "2.5rem" : dims.paddingInline,
 			border: "none",
 			outline: "none",
 			background: "transparent",
@@ -162,14 +247,46 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 			resize,
 			...styleProp,
 		};
+
 		return (
-			<textarea
-				ref={ref}
-				aria-invalid={status === "error" ? true : undefined}
-				disabled={disabled}
-				style={inputStyles}
-				{...other}
-			/>
+			<span
+				style={{
+					display: "inline-flex",
+					width: "100%",
+					minWidth: 0,
+					position: "relative",
+				}}
+			>
+				<textarea
+					ref={setRef}
+					aria-invalid={status === "error" ? true : undefined}
+					disabled={disabled}
+					value={isControlled ? value : undefined}
+					defaultValue={isControlled ? undefined : defaultValue}
+					onChange={handleChange}
+					style={inputStyles}
+					{...other}
+				/>
+				{hasContent ? (
+					<IconButton
+						aria-label="Limpar"
+						icon={<ClearIcon />}
+						onClick={onClear}
+						style={{
+							position: "absolute",
+							top: spacingTokens[1],
+							right: spacingTokens[1],
+							width: 32,
+							height: 32,
+							minWidth: 32,
+							minHeight: 32,
+							padding: 0,
+						}}
+						tabIndex={-1}
+						variant="ghost"
+					/>
+				) : null}
+			</span>
 		);
 	},
 );
@@ -180,6 +297,8 @@ export interface TextAreaProps
 	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
 	size?: TextAreaSize;
 	status?: TextAreaStatus;
+	/** Se true, mostra botão de limpar quando há valor. */
+	allowClear?: boolean;
 	style?: CSSProperties;
 }
 
@@ -189,12 +308,20 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 			size = "md",
 			status = "default",
 			disabled,
+			allowClear = false,
 			className,
 			style,
 			...other
 		} = props;
 		return (
-			<TextAreaRoot size={size} status={status} disabled={disabled} style={style} className={className}>
+			<TextAreaRoot
+				allowClear={allowClear}
+				disabled={disabled}
+				size={size}
+				status={status}
+				style={style}
+				className={className}
+			>
 				<TextAreaInput ref={ref} {...other} />
 			</TextAreaRoot>
 		);

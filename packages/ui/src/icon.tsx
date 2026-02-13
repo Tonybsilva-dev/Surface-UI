@@ -50,10 +50,9 @@ export function Icon(props: IconProps): JSX.Element {
 
 	return (
 		<span
-			style={{ ...containerStyles, ...style }}
-			role={ariaLabel ? "img" : undefined}
-			aria-label={ariaLabel}
 			aria-hidden={ariaLabel ? undefined : ariaHidden}
+			role={ariaLabel ? "img" : undefined}
+			style={{ ...containerStyles, ...style }}
 		>
 			{content}
 		</span>

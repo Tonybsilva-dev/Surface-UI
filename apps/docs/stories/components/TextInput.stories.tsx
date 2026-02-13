@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import { lightColorScheme } from "@surface/ui/foundation";
 import { TextInput } from "@surface/ui/text-input";
 import type { TextInputSize, TextInputStatus } from "@surface/ui/text-input";
 import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
@@ -124,6 +125,38 @@ export const Status: Story = {
       <TextInput status="warning" placeholder="Aviso" />
     </div>
   ),
+};
+
+export const WithLabelAndTrailing: Story = {
+  render: function WithLabelAndTrailingRender(args) {
+    const [value, setValue] = useState("m@example.com");
+    return (
+      <div style={{ width: 320 }}>
+        <TextInput
+          {...args}
+          label="Email"
+          labelTrailing={
+            <span
+              style={{
+                color: lightColorScheme.onSurfaceVariant,
+                cursor: "default",
+                fontSize: 14,
+                opacity: 0.8,
+              }}
+              aria-disabled="true"
+            >
+              Ainda não é membro?
+            </span>
+          }
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>
+    );
+  },
+  args: {
+    placeholder: "email@example.com",
+  },
 };
 
 export const WithAddons: Story = {
