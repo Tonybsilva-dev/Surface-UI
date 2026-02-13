@@ -30,12 +30,6 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
       '@storybook/addon-actions':
         specifier: ^8.2.6
         version: 8.2.6(storybook@8.2.6)
@@ -51,6 +45,12 @@ importers:
       '@storybook/react-vite':
         specifier: ^8.2.6
         version: 8.2.6(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.6)(typescript@5.5.4)(vite@5.2.11)
+      '@surface/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@surface/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.2.11)
@@ -96,10 +96,10 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1
     devDependencies:
-      '@repo/eslint-config':
+      '@surface/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/typescript-config':
+      '@surface/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/react':
