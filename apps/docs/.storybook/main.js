@@ -1,6 +1,6 @@
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
-import { createRequire } from "module";
+"use strict";
+
+const { resolve } = require("path");
 
 // #region agent log
 const _log = (msg, data) => {
@@ -10,41 +10,27 @@ const _log = (msg, data) => {
 };
 // #endregion
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
-
-function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, "package.json")));
-}
+const uiPath = resolve(__dirname, "../../../packages/ui/");
 
 let config;
 try {
   // #region agent log
-  _log("config-load-start", { __dirname, cwd: process.cwd() });
-  // #endregion
-  const uiPath = resolve(__dirname, "../../../packages/ui/");
-  // #region agent log
-  _log("alias-ui-path", { uiPath });
+  _log("config-load-start", { __dirname, cwd: process.cwd(), uiPath });
   // #endregion
   config = {
     stories: ["../stories/**/*.stories.tsx"],
-    addons: [
-      getAbsolutePath("@storybook/addon-links"),
-      getAbsolutePath("@storybook/addon-essentials"),
-    ],
+    addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
     framework: {
-      name: getAbsolutePath("@storybook/react-vite"),
+      name: "@storybook/react-vite",
       options: {},
     },
-
     core: {},
-
-    async viteFinal(config) {
+    async viteFinal(viteConfig) {
       return {
-        ...config,
+        ...viteConfig,
         define: { "process.env": {} },
         resolve: {
-          ...config.resolve,
+          ...viteConfig.resolve,
           alias: [
             {
               find: "ui",
@@ -54,7 +40,6 @@ try {
         },
       };
     },
-
     docs: {
       autodocs: true,
     },
@@ -70,4 +55,4 @@ try {
   throw err;
 }
 
-export default config;
+module.exports = config;
