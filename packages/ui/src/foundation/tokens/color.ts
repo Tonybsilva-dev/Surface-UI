@@ -35,6 +35,7 @@ export interface ColorScheme {
 	onSurface: string;
 	surfaceVariant: string;
 	onSurfaceVariant: string;
+	surfaceContainerHighest?: string;
 	outline: string;
 	outlineVariant: string;
 
@@ -75,6 +76,7 @@ export const lightColorScheme: ColorScheme = {
 	onSurface: "rgb(38, 38, 38)",
 	surfaceVariant: "rgb(250, 250, 250)",
 	onSurfaceVariant: "rgb(82, 82, 91)",
+	surfaceContainerHighest: "rgb(240, 240, 240)",
 	outline: "rgb(217, 217, 217)",
 	outlineVariant: "rgb(245, 245, 245)",
 
@@ -113,6 +115,7 @@ export const darkColorScheme: ColorScheme = {
 	onSurface: "rgb(230, 225, 229)",
 	surfaceVariant: "rgb(73, 69, 79)",
 	onSurfaceVariant: "rgb(202, 196, 208)",
+	surfaceContainerHighest: "rgb(55, 52, 62)",
 	outline: "rgb(147, 143, 153)",
 	outlineVariant: "rgb(73, 69, 79)",
 

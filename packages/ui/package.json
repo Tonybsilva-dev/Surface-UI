@@ -98,6 +98,46 @@
       "types": "./src/tabs.tsx",
       "import": "./dist/tabs.mjs",
       "require": "./dist/tabs.js"
+    },
+    "./label": {
+      "types": "./src/label.tsx",
+      "import": "./dist/label.mjs",
+      "require": "./dist/label.js"
+    },
+    "./icon": {
+      "types": "./src/icon.tsx",
+      "import": "./dist/icon.mjs",
+      "require": "./dist/icon.js"
+    },
+    "./textarea": {
+      "types": "./src/textarea.tsx",
+      "import": "./dist/textarea.mjs",
+      "require": "./dist/textarea.js"
+    },
+    "./slider": {
+      "types": "./src/slider.tsx",
+      "import": "./dist/slider.mjs",
+      "require": "./dist/slider.js"
+    },
+    "./image": {
+      "types": "./src/image.tsx",
+      "import": "./dist/image.mjs",
+      "require": "./dist/image.js"
+    },
+    "./select": {
+      "types": "./src/select.tsx",
+      "import": "./dist/select.mjs",
+      "require": "./dist/select.js"
+    },
+    "./input-button": {
+      "types": "./src/input-button.tsx",
+      "import": "./dist/input-button.mjs",
+      "require": "./dist/input-button.js"
+    },
+    "./input-otp": {
+      "types": "./src/input-otp.tsx",
+      "import": "./dist/input-otp.mjs",
+      "require": "./dist/input-otp.js"
     }
   },
   "scripts": {
