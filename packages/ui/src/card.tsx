@@ -1,144 +1,173 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
-import {
-	lightColorScheme,
-	spacingTokens,
-	componentShapeTokens,
-	elevationTokens,
-	typographyTokens,
-} from "./foundation";
+/**
+ * Card – componente por composição.
+ * O consumidor monta a UI com Card (root) + Card.Header, Card.Title, Card.Description,
+ * Card.Content, Card.Footer e Card.Action conforme necessário.
+ */
+import type { HTMLAttributes, ReactNode } from "react";
+import { forwardRef } from "react";
+import { cn } from "./lib/utils";
 
 export type CardVariant = "elevated" | "outlined" | "filled";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-	/** Variante visual: elevated (sombra), outlined (borda), filled (fundo). */
+	/** Variante visual: elevated (sombra + borda), outlined (borda), filled (fundo). */
 	variant?: CardVariant;
 	/** Conteúdo do card. */
 	children: ReactNode;
-	/** Estilos no container. */
-	style?: CSSProperties;
 }
 
-const variantStyles: Record<CardVariant, CSSProperties> = {
-	elevated: {
-		boxShadow: elevationTokens.level1.boxShadow,
-		border: "none",
-	},
-	outlined: {
-		boxShadow: "none",
-		border: `1px solid ${lightColorScheme.outline}`,
-	},
-	filled: {
-		boxShadow: "none",
-		border: "none",
-		backgroundColor: lightColorScheme.surfaceVariant,
-	},
+const variantClasses: Record<CardVariant, string> = {
+	elevated: "border border-border shadow",
+	outlined: "border border-border shadow-none",
+	filled: "bg-muted border-0 shadow-none",
 };
 
 export interface CardComponent {
 	(props: CardProps): JSX.Element;
 	Header: typeof CardHeader;
+	Title: typeof CardTitle;
+	Description: typeof CardDescription;
 	Content: typeof CardContent;
 	Footer: typeof CardFooter;
+	Action: typeof CardAction;
 }
 
-function CardRoot(props: CardProps): JSX.Element {
-	const { variant = "elevated", children, className, style, ...other } = props;
-
-	const baseStyles: CSSProperties = {
-		display: "block",
-		borderRadius: componentShapeTokens.card,
-		backgroundColor: lightColorScheme.surface,
-		padding: spacingTokens[5],
-		boxSizing: "border-box",
-	};
-
+const CardRoot = forwardRef<HTMLDivElement, CardProps>(function CardRoot(
+	{ variant = "elevated", children, className, ...other },
+	ref,
+) {
 	return (
 		<div
-			className={className}
-			style={{
-				...baseStyles,
-				...variantStyles[variant],
-				...style,
-			}}
+			className={cn(
+				"bg-card text-card-foreground",
+				variantClasses[variant],
+				className,
+			)}
+			ref={ref}
 			{...other}
 		>
 			{children}
 		</div>
 	);
-}
+});
 
 CardRoot.displayName = "Card";
 
 export const Card = CardRoot as unknown as CardComponent;
 
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
-	children: ReactNode;
-	style?: CSSProperties;
+	children?: ReactNode;
 }
 
-export function CardHeader(props: CardHeaderProps): JSX.Element {
-	const { children, style, ...other } = props;
-	const font = typographyTokens.title.medium;
-	return (
-		<div
-			{...other}
-			style={{
-				fontFamily: font.fontFamily,
-				fontSize: font.fontSize,
-				fontWeight: font.fontWeight,
-				lineHeight: font.lineHeight,
-				color: lightColorScheme.onSurface,
-				marginBottom: spacingTokens[2],
-				...style,
-			}}
-		>
-			{children}
-		</div>
-	);
-}
+export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
+	function CardHeader({ children, className, ...other }, ref) {
+		return (
+			<div
+				className={cn("flex flex-col space-y-1.5 p-6", className)}
+				ref={ref}
+				{...other}
+			>
+				{children}
+			</div>
+		);
+	},
+);
 
 CardHeader.displayName = "Card.Header";
 
-export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
-	children: ReactNode;
-	style?: CSSProperties;
+export interface CardTitleProps extends HTMLAttributes<HTMLDivElement> {
+	children?: ReactNode;
 }
 
-export function CardContent(props: CardContentProps): JSX.Element {
-	const { children, style, ...other } = props;
-	return (
-		<div {...other} style={{ marginBottom: spacingTokens[2], ...style }}>
-			{children}
-		</div>
-	);
+export const CardTitle = forwardRef<HTMLDivElement, CardTitleProps>(
+	function CardTitle({ className, ...other }, ref) {
+		return (
+			<div
+				className={cn("font-semibold leading-none tracking-tight", className)}
+				ref={ref}
+				{...other}
+			/>
+		);
+	},
+);
+
+CardTitle.displayName = "Card.Title";
+
+export interface CardDescriptionProps extends HTMLAttributes<HTMLDivElement> {
+	children?: ReactNode;
 }
+
+export const CardDescription = forwardRef<HTMLDivElement, CardDescriptionProps>(
+	function CardDescription({ className, ...other }, ref) {
+		return (
+			<div
+				className={cn("text-sm text-muted-foreground", className)}
+				ref={ref}
+				{...other}
+			/>
+		);
+	},
+);
+
+CardDescription.displayName = "Card.Description";
+
+export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
+	children?: ReactNode;
+}
+
+export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
+	function CardContent({ children, className, ...other }, ref) {
+		return (
+			<div className={cn("p-6 pt-0", className)} ref={ref} {...other}>
+				{children}
+			</div>
+		);
+	},
+);
 
 CardContent.displayName = "Card.Content";
 
 export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
-	children: ReactNode;
-	style?: CSSProperties;
+	children?: ReactNode;
 }
 
-export function CardFooter(props: CardFooterProps): JSX.Element {
-	const { children, style, ...other } = props;
-	return (
-		<div
-			{...other}
-			style={{
-				paddingTop: spacingTokens[3],
-				borderTop: `1px solid ${lightColorScheme.outlineVariant}`,
-				marginTop: spacingTokens[2],
-				...style,
-			}}
-		>
-			{children}
-		</div>
-	);
-}
+export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
+	function CardFooter({ children, className, ...other }, ref) {
+		return (
+			<div
+				className={cn("flex items-center p-6 pt-0", className)}
+				ref={ref}
+				{...other}
+			>
+				{children}
+			</div>
+		);
+	},
+);
 
 CardFooter.displayName = "Card.Footer";
 
+export interface CardActionProps extends HTMLAttributes<HTMLDivElement> {
+	children?: ReactNode;
+}
+
+export const CardAction = forwardRef<HTMLDivElement, CardActionProps>(
+	function CardAction({ className, ...other }, ref) {
+		return (
+			<div
+				className={cn("ml-auto flex items-center", className)}
+				ref={ref}
+				{...other}
+			/>
+		);
+	},
+);
+
+CardAction.displayName = "Card.Action";
+
 Card.Header = CardHeader;
+Card.Title = CardTitle;
+Card.Description = CardDescription;
 Card.Content = CardContent;
 Card.Footer = CardFooter;
+Card.Action = CardAction;

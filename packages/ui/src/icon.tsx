@@ -1,60 +1,44 @@
-import type { CSSProperties, ReactNode } from "react";
-import { lightColorScheme } from "./foundation";
+import type { ReactNode } from "react";
+import { cn } from "./lib/utils";
 
 export type IconSize = "sm" | "md" | "large";
 
 export interface IconProps {
-	/** Ícone (SVG ou elemento). Consumidor passa ReactNode (ex.: Lucide, Phosphor). */
 	children?: ReactNode;
-	/** Tamanho: sm (16px), md (20px), large (24px). Conforme iconSizeRecommendations. */
 	size?: IconSize;
-	/** Cor do ícone (string CSS ou token). Default: onSurface. */
 	color?: string;
-	/** Decorative por defeito (aria-hidden). Se informativo, use ariaLabel. */
 	ariaHidden?: boolean;
-	/** Quando o ícone comunica informação, use para leitores de tela (role="img" + aria-label). */
 	ariaLabel?: string;
-	/** Estilos inline no container. */
-	style?: CSSProperties;
+	className?: string;
 }
 
-const sizeMap: Record<IconSize, number> = {
-	sm: 16,
-	md: 20,
-	large: 24,
+const sizeClasses: Record<IconSize, string> = {
+	sm: "size-4",
+	md: "size-5",
+	large: "size-6",
 };
 
 export function Icon(props: IconProps): JSX.Element {
 	const {
 		children,
 		size = "md",
-		color = lightColorScheme.onSurface,
 		ariaHidden = true,
 		ariaLabel,
-		style,
+		className,
 	} = props;
-
-	const side = sizeMap[size];
-
-	const containerStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		width: side,
-		height: side,
-		color,
-		flexShrink: 0,
-	};
-
-	const content = children;
 
 	return (
 		<span
 			aria-hidden={ariaLabel ? undefined : ariaHidden}
 			role={ariaLabel ? "img" : undefined}
-			style={{ ...containerStyles, ...style }}
+			aria-label={ariaLabel}
+			className={cn(
+				"inline-flex shrink-0 items-center justify-center text-foreground [&_svg]:size-inherit",
+				sizeClasses[size],
+				className,
+			)}
 		>
-			{content}
+			{children}
 		</span>
 	);
 }

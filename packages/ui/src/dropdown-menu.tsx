@@ -8,14 +8,7 @@ import {
 	useEffect,
 } from "react";
 import { createPortal } from "react-dom";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	shapeTokens,
-	disabledOpacity,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 interface DropdownMenuContextValue {
 	open: boolean;
@@ -46,7 +39,7 @@ export function DropdownMenuRoot(props: DropdownMenuRootProps): JSX.Element {
 
 	return (
 		<DropdownMenuContext.Provider value={ctx}>
-			<div style={{ position: "relative", display: "inline-block" }}>
+			<div className="relative inline-block">
 				{children}
 			</div>
 		</DropdownMenuContext.Provider>
@@ -67,27 +60,15 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps): JSX.Elemen
 	if (!ctx) return <>{children}</>;
 	const { open, setOpen, triggerRef } = ctx;
 
-	const triggerStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		padding: `${spacingTokens[2]} ${spacingTokens[3]}`,
-		fontFamily: typographyTokens.label.large.fontFamily,
-		fontSize: typographyTokens.label.large.fontSize,
-		color: lightColorScheme.onSurface,
-		backgroundColor: lightColorScheme.surface,
-		border: `1px solid ${lightColorScheme.outline}`,
-		borderRadius: componentShapeTokens.button,
-		cursor: "pointer",
-		minHeight: 40,
-	};
-
 	return (
 		<button
 			ref={triggerRef as React.Ref<HTMLButtonElement>}
 			type="button"
-			className={className}
-			style={{ ...triggerStyles, ...style }}
+			className={cn(
+				"inline-flex min-h-10 items-center justify-center rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground cursor-pointer",
+				className,
+			)}
+			style={style}
 			onClick={() => setOpen(!open)}
 			aria-expanded={open}
 			aria-haspopup="menu"
@@ -149,27 +130,20 @@ export function DropdownMenuContent(
 	if (!ctx) return null;
 	const { open } = ctx;
 
-	const contentStyles: CSSProperties = {
-		position: "fixed",
-		top: position.top,
-		left: position.left,
-		minWidth: position.minWidth,
-		maxHeight: 280,
-		overflowY: "auto",
-		zIndex: 9999,
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${lightColorScheme.outline}`,
-		backgroundColor: lightColorScheme.surface,
-		boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-		padding: spacingTokens[1],
-	};
-
 	const node = (
 		<div
 			data-surface-dropdown-menu-content
 			role="menu"
-			className={className}
-			style={{ ...contentStyles, ...style }}
+			className={cn(
+				"fixed z-[9999] max-h-[280px] overflow-y-auto rounded-md border border-border bg-card p-1 shadow-[var(--shadow-2)]",
+				className,
+			)}
+			style={{
+				top: position.top,
+				left: position.left,
+				minWidth: position.minWidth,
+				...style,
+			}}
 		>
 			{children}
 		</div>
@@ -204,34 +178,17 @@ export function DropdownMenuItem(props: DropdownMenuItemProps): JSX.Element {
 	const ctx = useContext(DropdownMenuContext);
 	if (!ctx) return <div {...(props as unknown as Record<string, unknown>)} />;
 
-	const color =
-		variant === "destructive"
-			? lightColorScheme.error
-			: lightColorScheme.onSurface;
-
-	const itemStyles: CSSProperties = {
-		display: "flex",
-		alignItems: "center",
-		gap: spacingTokens[2],
-		width: "100%",
-		padding: `${spacingTokens[2]} ${spacingTokens[3]}`,
-		borderRadius: shapeTokens.extraSmall,
-		fontFamily: typographyTokens.body.medium.fontFamily,
-		fontSize: typographyTokens.body.medium.fontSize,
-		color,
-		backgroundColor: "transparent",
-		border: "none",
-		cursor: disabled ? "not-allowed" : "pointer",
-		opacity: disabled ? disabledOpacity : 1,
-		textAlign: "left",
-	};
-
 	return (
 		<button
 			type="button"
 			role="menuitem"
-			className={className}
-			style={{ ...itemStyles, ...style }}
+			className={cn(
+				"flex w-full cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-3 py-2 text-left text-sm font-normal text-foreground",
+				variant === "destructive" && "text-destructive",
+				disabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
+				className,
+			)}
+			style={style}
 			disabled={disabled}
 			onClick={() => {
 				if (!disabled) {
@@ -255,19 +212,11 @@ export interface DropdownMenuLabelProps {
 
 export function DropdownMenuLabel(props: DropdownMenuLabelProps): JSX.Element {
 	const { children, style, className } = props;
-	const font = typographyTokens.label.medium;
 	return (
 		<div
 			role="presentation"
-			className={className}
-			style={{
-				padding: `${spacingTokens[2]} ${spacingTokens[3]}`,
-				fontFamily: font.fontFamily,
-				fontSize: font.fontSize,
-				fontWeight: font.fontWeight,
-				color: lightColorScheme.onSurfaceVariant,
-				...style,
-			}}
+			className={cn("px-3 py-2 text-sm font-medium text-muted-foreground", className)}
+			style={style}
 		>
 			{children}
 		</div>
@@ -287,14 +236,8 @@ export function DropdownMenuSeparator(
 	const { style, className } = props;
 	return (
 		<hr
-			className={className}
-			style={{
-				height: 1,
-				margin: `${spacingTokens[1]} 0`,
-				border: "none",
-				backgroundColor: lightColorScheme.outlineVariant,
-				...style,
-			}}
+			className={cn("my-1 h-px border-0 bg-border", className)}
+			style={style}
 			aria-hidden
 		/>
 	);

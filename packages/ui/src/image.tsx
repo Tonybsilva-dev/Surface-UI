@@ -1,19 +1,21 @@
-import type { CSSProperties, ImgHTMLAttributes, ReactNode } from "react";
+import type { ImgHTMLAttributes, ReactNode } from "react";
 import { useState } from "react";
-import { lightColorScheme, shapeTokens } from "./foundation";
+import { cn } from "./lib/utils";
 
 export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "alt"> {
-	/** Texto alternativo (obrigatório para a11y). Use "" se a imagem for decorativa. */
 	alt: string;
-	/** Conteúdo ou URL exibido quando a imagem falha ao carregar. */
 	fallback?: ReactNode | string;
-	/** object-fit: cover, contain, etc. */
 	objectFit?: "cover" | "contain" | "fill" | "none";
-	/** Border radius (token ou valor CSS). */
 	radius?: string | number;
-	/** Estilos no wrapper. */
-	style?: CSSProperties;
+	className?: string;
 }
+
+const objectFitClasses = {
+	cover: "object-cover",
+	contain: "object-contain",
+	fill: "object-fill",
+	none: "object-none",
+};
 
 export function Image(props: ImageProps): JSX.Element {
 	const {
@@ -21,8 +23,8 @@ export function Image(props: ImageProps): JSX.Element {
 		alt,
 		fallback,
 		objectFit = "cover",
-		radius = shapeTokens.medium,
-		style,
+		radius = "0.5rem",
+		className,
 		onLoad,
 		onError,
 		...other
@@ -42,40 +44,25 @@ export function Image(props: ImageProps): JSX.Element {
 		onError?.(e);
 	};
 
-	const wrapperStyles: CSSProperties = {
-		display: "inline-block",
-		overflow: "hidden",
-		borderRadius: typeof radius === "number" ? `${radius}px` : radius,
-		backgroundColor: lightColorScheme.surfaceContainerHighest,
-		...style,
-	};
+	const wrapperClass = cn(
+		"inline-block overflow-hidden bg-muted",
+		className,
+	);
+	const radiusStyle =
+		typeof radius === "number" ? { borderRadius: `${radius}px` } : { borderRadius: radius };
 
 	if (error && fallback !== undefined) {
 		return (
-			<span style={wrapperStyles}>
+			<span className={wrapperClass} style={radiusStyle}>
 				{typeof fallback === "string" ? (
 					<img
 						src={fallback}
 						alt=""
 						aria-hidden
-						style={{
-							display: "block",
-							width: "100%",
-							height: "100%",
-							objectFit,
-						}}
+						className={cn("block w-full h-full", objectFitClasses[objectFit])}
 					/>
 				) : (
-					<span
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							minHeight: 80,
-							color: lightColorScheme.onSurfaceVariant,
-							fontSize: 14,
-						}}
-					>
+					<span className="flex items-center justify-center min-h-20 text-muted-foreground text-sm">
 						{fallback}
 					</span>
 				)}
@@ -84,16 +71,10 @@ export function Image(props: ImageProps): JSX.Element {
 	}
 
 	return (
-		<span style={wrapperStyles}>
+		<span className={wrapperClass} style={radiusStyle}>
 			{!loaded && src ? (
 				<span
-					style={{
-						display: "block",
-						width: "100%",
-						height: "100%",
-						minHeight: 80,
-						backgroundColor: lightColorScheme.surfaceContainerHighest,
-					}}
+					className="block w-full h-full min-h-20 bg-muted"
 					aria-hidden
 				/>
 			) : null}
@@ -102,14 +83,11 @@ export function Image(props: ImageProps): JSX.Element {
 				alt={alt}
 				onLoad={handleLoad}
 				onError={handleError}
-				style={{
-					display: "block",
-					width: "100%",
-					height: "100%",
-					objectFit,
-					opacity: loaded && !error ? 1 : 0,
-					transition: "opacity 0.2s ease-out",
-				}}
+				className={cn(
+					"block w-full h-full transition-opacity duration-200",
+					objectFitClasses[objectFit],
+					loaded && !error ? "opacity-100" : "opacity-0",
+				)}
 				{...other}
 			/>
 		</span>

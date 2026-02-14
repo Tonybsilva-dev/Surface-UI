@@ -1,25 +1,19 @@
-import type { CSSProperties, HTMLAttributes } from "react";
-import { lightColorScheme, typographyTokens } from "./foundation";
+import type { HTMLAttributes } from "react";
+import { cn } from "./lib/utils";
 
 export type AvatarSize = "sm" | "md" | "lg";
 
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
-	/** URL da imagem. Se não definido, exibe iniciais. */
 	src?: string;
-	/** Texto alternativo da imagem (acessibilidade). */
 	alt?: string;
-	/** Iniciais exibidas quando não há src (ex.: "AB"). */
 	initials?: string;
-	/** Tamanho: sm (32px), md (40px), lg (48px). */
 	size?: AvatarSize;
-	/** Estilos inline. */
-	style?: CSSProperties;
 }
 
-const sizeMap: Record<AvatarSize, number> = {
-	sm: 32,
-	md: 40,
-	lg: 48,
+const sizeClasses: Record<AvatarSize, string> = {
+	sm: "h-8 w-8 min-h-8 min-w-8 text-xs",
+	md: "h-10 w-10 min-h-10 min-w-10 text-sm",
+	lg: "h-12 w-12 min-h-12 min-w-12 text-base",
 };
 
 function getInitials(name: string): string {
@@ -36,56 +30,27 @@ export function Avatar(props: AvatarProps): JSX.Element {
 		alt = "",
 		initials: initialsProp,
 		size = "md",
-		style,
+		className,
 		...other
 	} = props;
 
-	const side = sizeMap[size];
 	const initials = initialsProp != null ? getInitials(initialsProp) : null;
-
-	const baseStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		width: side,
-		height: side,
-		minWidth: side,
-		minHeight: side,
-		borderRadius: "50%",
-		overflow: "hidden",
-		backgroundColor: lightColorScheme.surfaceVariant,
-		color: lightColorScheme.onSurfaceVariant,
-		fontFamily: typographyTokens.fontFamily.default,
-		fontSize: side * 0.4,
-		fontWeight: typographyTokens.title.medium.fontWeight,
-		lineHeight: 1,
-	};
-
-	const stateStyles: CSSProperties = {};
 
 	return (
 		<span
 			{...other}
-			style={{
-				...baseStyles,
-				...stateStyles,
-				...style,
-			}}
+			className={cn(
+				"inline-flex items-center justify-center shrink-0 rounded-full overflow-hidden bg-muted text-muted-foreground font-medium leading-none",
+				sizeClasses[size],
+				className,
+			)}
 		>
 			{src != null ? (
-				<img
-					src={src}
-					alt={alt}
-					style={{
-						width: "100%",
-						height: "100%",
-						objectFit: "cover",
-					}}
-				/>
+				<img src={src} alt={alt} className="size-full object-cover" />
 			) : initials != null ? (
-				<span style={{ userSelect: "none" }}>{initials}</span>
+				<span className="select-none">{initials}</span>
 			) : (
-				<span aria-hidden style={{ fontSize: side * 0.35 }}>?</span>
+				<span aria-hidden className="text-[0.35em]">?</span>
 			)}
 		</span>
 	);

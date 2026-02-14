@@ -1,13 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	elevationTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "default";
 
@@ -27,27 +21,12 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-const toastColors: Record<ToastType, { bg: string; border: string }> = {
-	default: {
-		bg: lightColorScheme.surface,
-		border: lightColorScheme.outline,
-	},
-	success: {
-		bg: lightColorScheme.surface,
-		border: "rgb(82, 196, 26)",
-	},
-	error: {
-		bg: lightColorScheme.surface,
-		border: lightColorScheme.error,
-	},
-	warning: {
-		bg: lightColorScheme.surface,
-		border: "rgb(250, 173, 20)",
-	},
-	info: {
-		bg: lightColorScheme.surface,
-		border: lightColorScheme.primary,
-	},
+const toastBorderClasses: Record<ToastType, string> = {
+	default: "border-border",
+	success: "border-[#52c41a]",
+	error: "border-destructive",
+	warning: "border-[#faad14]",
+	info: "border-primary",
 };
 
 const DEFAULT_DURATION = 5000;
@@ -59,7 +38,6 @@ function ToastItemView({
 	item: ToastItem;
 	onDismiss: (id: string) => void;
 }): JSX.Element {
-	const colors = toastColors[item.type];
 	const duration = item.duration ?? DEFAULT_DURATION;
 
 	useEffect(() => {
@@ -68,42 +46,19 @@ function ToastItemView({
 		return () => clearTimeout(t);
 	}, [item.id, duration, onDismiss]);
 
-	const wrapperStyles: CSSProperties = {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "space-between",
-		gap: spacingTokens[3],
-		padding: `${spacingTokens[3]} ${spacingTokens[4]}`,
-		minWidth: 280,
-		maxWidth: 420,
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${colors.border}`,
-		backgroundColor: colors.bg,
-		boxShadow: elevationTokens.level2.boxShadow,
-		fontFamily: typographyTokens.body.medium.fontFamily,
-		fontSize: typographyTokens.body.medium.fontSize,
-		color: lightColorScheme.onSurface,
-	};
-
 	return (
-		<div style={wrapperStyles}>
-			<span style={{ flex: 1, minWidth: 0 }}>{item.message}</span>
+		<div
+			className={cn(
+				"flex items-center justify-between gap-3 min-w-[280px] max-w-[420px] rounded-md border bg-card px-4 py-3 text-sm text-foreground shadow-[var(--shadow-2)]",
+				toastBorderClasses[item.type],
+			)}
+		>
+			<span className="min-w-0 flex-1">{item.message}</span>
 			<button
 				type="button"
 				aria-label="Fechar"
 				onClick={() => onDismiss(item.id)}
-				style={{
-					flexShrink: 0,
-					width: 24,
-					height: 24,
-					padding: 0,
-					border: "none",
-					background: "transparent",
-					color: lightColorScheme.onSurfaceVariant,
-					cursor: "pointer",
-					fontSize: 18,
-					lineHeight: 1,
-				}}
+				className="shrink-0 size-6 border-0 bg-transparent p-0 text-lg leading-none text-muted-foreground cursor-pointer"
 			>
 				×
 			</button>
@@ -111,25 +66,15 @@ function ToastItemView({
 	);
 }
 
-function getPositionStyles(
-	position: "bottom-right" | "top-right" | "bottom-left" | "top-left",
-): CSSProperties {
-	const base: CSSProperties = {
-		position: "fixed",
-		zIndex: 10000,
-		display: "flex",
-		flexDirection: "column",
-		gap: spacingTokens[2],
-		pointerEvents: "none",
-	};
-	if (position === "top-right")
-		return { ...base, top: spacingTokens[4], right: spacingTokens[4] };
-	if (position === "bottom-left")
-		return { ...base, bottom: spacingTokens[4], left: spacingTokens[4] };
-	if (position === "top-left")
-		return { ...base, top: spacingTokens[4], left: spacingTokens[4] };
-	return { ...base, bottom: spacingTokens[4], right: spacingTokens[4] };
-}
+const positionClasses: Record<
+	"bottom-right" | "top-right" | "bottom-left" | "top-left",
+	string
+> = {
+	"bottom-right": "bottom-4 right-4",
+	"top-right": "top-4 right-4",
+	"bottom-left": "bottom-4 left-4",
+	"top-left": "top-4 left-4",
+};
 
 export interface ToastProviderProps {
 	children: ReactNode;
@@ -162,16 +107,16 @@ export function ToastProvider(props: ToastProviderProps): JSX.Element {
 
 	const ctx: ToastContextValue = { toasts, addToast, removeToast };
 
-	const containerStyles = getPositionStyles(position);
-
 	return (
 		<ToastContext.Provider value={ctx}>
 			{children}
 			{typeof document !== "undefined" && document.body && toasts.length > 0
 				? createPortal(
-						<div style={containerStyles}>
+						<div
+							className={`fixed z-[10000] flex flex-col gap-2 pointer-events-none ${positionClasses[position]}`}
+						>
 							{toasts.map((item) => (
-								<div key={item.id} style={{ pointerEvents: "auto" }}>
+								<div key={item.id} className="pointer-events-auto">
 									<ToastItemView item={item} onDismiss={removeToast} />
 								</div>
 							))}

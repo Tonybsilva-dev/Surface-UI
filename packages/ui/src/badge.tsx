@@ -1,57 +1,58 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	componentShapeTokens,
-} from "./foundation";
+import type { HTMLAttributes, ReactNode } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "./lib/utils";
 
-export type BadgeVariant = "default" | "primary" | "success" | "warning" | "error";
-export type BadgeSize = "sm" | "md";
+/**
+ * Estilo visual alinhado ao protótipo (cva, rounded-md border, variantes default/secondary/destructive/outline).
+ * Mantém toda a API: count, badgeContent, dot, overflowCount, showZero, size, wrapper com children.
+ */
+const badgeVariants = cva(
+	"inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+	{
+		variants: {
+			variant: {
+				default:
+					"border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+				primary:
+					"border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+				secondary:
+					"border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+				destructive:
+					"border-transparent bg-destructive text-primary-foreground shadow hover:bg-destructive/80",
+				outline:
+					"border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+				success:
+					"border-transparent bg-[#52c41a] text-white shadow hover:opacity-90",
+				warning:
+					"border-transparent bg-[#faad14] text-white shadow hover:opacity-90",
+				error:
+					"border-transparent bg-destructive text-primary-foreground shadow hover:bg-destructive/80",
+			},
+			size: {
+				sm: "min-h-4 px-1.5",
+				md: "min-h-5 px-1.5",
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+			size: "md",
+		},
+	},
+);
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-	/**
-	 * Número a exibir. Se undefined e content também for undefined, nada é exibido (ou dot).
-	 */
-	count?: number;
-	/**
-	 * Conteúdo customizado (ex.: texto). Se definido, count é ignorado, exceto em modo dot.
-	 */
+export type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
+export type BadgeSize = VariantProps<typeof badgeVariants>["size"];
+
+export interface BadgeProps
+	extends HTMLAttributes<HTMLSpanElement>,
+		VariantProps<typeof badgeVariants> {
 	badgeContent?: ReactNode;
-	/** Variante de cor. */
-	variant?: BadgeVariant;
-	/** Tamanho do badge. */
-	size?: BadgeSize;
-	/** Exibir apenas um ponto (sem número/texto). */
+	count?: number;
 	dot?: boolean;
-	/** Valor máximo antes de exibir overflowCount+ (ex.: 99+). */
 	overflowCount?: number;
-	/** Se true, mostra "0" quando count === 0. Se false, oculta o badge quando 0. */
 	showZero?: boolean;
-	/** Elemento que o badge posiciona sobre (canto superior direito). */
 	children?: ReactNode;
-	/** Estilos inline no wrapper. */
-	style?: CSSProperties;
 }
-
-function getVariantColors(variant: BadgeVariant): { bg: string; color: string } {
-	switch (variant) {
-		case "primary":
-			return { bg: lightColorScheme.primary, color: lightColorScheme.onPrimary };
-		case "success":
-			return { bg: "#52c41a", color: "#fff" };
-		case "warning":
-			return { bg: "#faad14", color: "#fff" };
-		case "error":
-			return { bg: lightColorScheme.error, color: lightColorScheme.onError };
-		default:
-			return { bg: lightColorScheme.outline, color: lightColorScheme.onSurface };
-	}
-}
-
-const sizeStyles: Record<BadgeSize, { minHeight: number; padding: string; fontSize: string }> = {
-	sm: { minHeight: 16, padding: "0 5px", fontSize: typographyTokens.label.small.fontSize },
-	md: { minHeight: 20, padding: "0 6px", fontSize: typographyTokens.label.medium.fontSize },
-};
 
 export function Badge(props: BadgeProps): JSX.Element {
 	const {
@@ -63,18 +64,20 @@ export function Badge(props: BadgeProps): JSX.Element {
 		overflowCount = 99,
 		showZero = false,
 		children,
+		className,
 		style,
 		...other
 	} = props;
 
-	const { bg, color } = getVariantColors(variant);
-	const sizes = sizeStyles[size];
-
 	const visible =
-		dot || showZero || (count !== undefined && count > 0) || badgeContent !== undefined;
+		dot ||
+		showZero ||
+		(count !== undefined && count > 0) ||
+		badgeContent !== undefined;
 
-	const displayValue =
-		dot ? null : badgeContent !== undefined
+	const displayValue = dot
+		? null
+		: badgeContent !== undefined
 			? badgeContent
 			: count !== undefined
 				? count > overflowCount
@@ -84,47 +87,29 @@ export function Badge(props: BadgeProps): JSX.Element {
 
 	const hasWrapper = children !== undefined;
 
-	const badgeStyles: CSSProperties = {
-		...(hasWrapper
-			? { position: "absolute" as const, top: 0, right: 0, transform: "translate(50%, -50%)" }
-			: {}),
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		minHeight: dot ? 8 : sizes.minHeight,
-		minWidth: dot ? 8 : undefined,
-		padding: dot ? 0 : sizes.padding,
-		fontFamily: typographyTokens.fontFamily.default,
-		fontSize: sizes.fontSize,
-		fontWeight: typographyTokens.label.medium.fontWeight,
-		lineHeight: 1,
-		color,
-		backgroundColor: bg,
-		borderRadius: componentShapeTokens.chip,
-		boxSizing: "border-box",
-		border: "2px solid transparent", // evita corte com fundo claro
-	};
+	const badgeClassName = cn(
+		badgeVariants({ variant, size }),
+		dot && "min-h-2 min-w-2 p-0",
+		dot && variant === "outline" && "bg-muted",
+		hasWrapper && "absolute top-0 right-0 translate-x-1/2 -translate-y-1/2",
+	);
 
-	const wrapperStyles: CSSProperties = {
-		position: "relative",
-		display: "inline-block",
-		...style,
-	};
+	const wrapperClassName = cn("relative inline-block", className);
 
 	if (!visible && !children) {
-		return <span style={wrapperStyles} {...other} />;
+		return <span className={wrapperClassName} style={style} {...other} />;
 	}
 
 	return (
-		<span style={wrapperStyles} {...other}>
+		<span className={wrapperClassName} style={style} {...other}>
 			{children}
 			{visible ? (
-				<span style={badgeStyles}>
-					{displayValue}
-				</span>
+				<span className={badgeClassName}>{displayValue}</span>
 			) : null}
 		</span>
 	);
 }
 
 Badge.displayName = "Badge";
+
+export { badgeVariants };

@@ -8,13 +8,7 @@ import {
 	useRef,
 } from "react";
 import { createPortal } from "react-dom";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	elevationTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 interface DialogContextValue {
 	open: boolean;
@@ -88,31 +82,6 @@ export function DialogTrigger(props: DialogTriggerProps): JSX.Element {
 
 DialogTrigger.displayName = "Dialog.Trigger";
 
-const overlayStyles: CSSProperties = {
-	position: "fixed",
-	inset: 0,
-	zIndex: 9998,
-	backgroundColor: "rgba(0, 0, 0, 0.5)",
-};
-
-const contentStyles: CSSProperties = {
-	position: "fixed",
-	left: "50%",
-	top: "50%",
-	zIndex: 9999,
-	transform: "translate(-50%, -50%)",
-	width: "100%",
-	maxWidth: 512,
-	backgroundColor: lightColorScheme.surface,
-	boxShadow: elevationTokens.level4.boxShadow,
-	borderRadius: componentShapeTokens.dialog ?? componentShapeTokens.card,
-	border: `1px solid ${lightColorScheme.outlineVariant}`,
-	display: "flex",
-	flexDirection: "column",
-	maxHeight: "calc(100vh - 32px)",
-	overflow: "hidden",
-};
-
 export interface DialogContentProps {
 	children: ReactNode;
 	style?: CSSProperties;
@@ -156,13 +125,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
 			<button
 				type="button"
 				aria-label="Fechar"
-				style={{
-					...overlayStyles,
-					border: "none",
-					padding: 0,
-					cursor: "default",
-					display: "block",
-				}}
+				className="fixed inset-0 z-[9998] block border-0 p-0 cursor-default bg-black/50"
 				onClick={overlayClick}
 				onKeyDown={overlayKeyDown}
 			/>
@@ -173,34 +136,17 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
 				aria-labelledby={titleId}
 				aria-describedby={descriptionId}
 				id={contentId}
-				className={className}
-				style={{ ...contentStyles, ...style }}
+				className={cn(
+					"fixed left-1/2 top-1/2 z-[9999] w-full max-w-[512px] -translate-x-1/2 -translate-y-1/2 flex flex-col max-h-[calc(100vh-32px)] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-4)]",
+					className,
+				)}
+				style={style}
 				onClick={(e) => e.stopPropagation()}
 				onKeyDown={(e) => e.stopPropagation()}
 			>
 				{children}
 				{!hideCloseButton ? (
-					<DialogClose
-						style={{
-							position: "absolute",
-							right: spacingTokens[5],
-							top: spacingTokens[4],
-							width: 32,
-							height: 32,
-							minWidth: 32,
-							minHeight: 32,
-							padding: 0,
-							display: "inline-flex",
-							alignItems: "center",
-							justifyContent: "center",
-							border: "none",
-							borderRadius: componentShapeTokens.button,
-							backgroundColor: "transparent",
-							color: lightColorScheme.onSurfaceVariant,
-							cursor: "pointer",
-							fontSize: 18,
-						}}
-					/>
+					<DialogClose className="absolute right-5 top-4 inline-flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-md border-0 bg-transparent p-0 text-lg text-muted-foreground cursor-pointer" />
 				) : null}
 			</div>
 		</>
@@ -245,23 +191,13 @@ export interface DialogHeaderProps {
 
 export function DialogHeader(props: DialogHeaderProps): JSX.Element {
 	const { children, style, className } = props;
-	const font = typographyTokens.title.medium;
 	return (
 		<div
-			className={className}
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				gap: spacingTokens[1],
-				padding: spacingTokens[5],
-				borderBottom: `1px solid ${lightColorScheme.outlineVariant}`,
-				fontFamily: font.fontFamily,
-				fontSize: font.fontSize,
-				fontWeight: font.fontWeight,
-				lineHeight: font.lineHeight,
-				color: lightColorScheme.onSurface,
-				...style,
-			}}
+			className={cn(
+				"flex flex-col gap-1 border-b border-border p-5 text-lg font-medium leading-snug text-foreground",
+				className,
+			)}
+			style={style}
 		>
 			{children}
 		</div>
@@ -280,14 +216,8 @@ export function DialogBody(props: DialogBodyProps): JSX.Element {
 	const { children, style, className } = props;
 	return (
 		<div
-			className={className}
-			style={{
-				padding: spacingTokens[5],
-				overflowY: "auto",
-				flex: 1,
-				minHeight: 0,
-				...style,
-			}}
+			className={cn("min-h-0 flex-1 overflow-y-auto p-5", className)}
+			style={style}
 		>
 			{children}
 		</div>
@@ -306,16 +236,11 @@ export function DialogFooter(props: DialogFooterProps): JSX.Element {
 	const { children, style, className } = props;
 	return (
 		<div
-			className={className}
-			style={{
-				display: "flex",
-				flexWrap: "wrap",
-				gap: spacingTokens[2],
-				justifyContent: "flex-end",
-				padding: spacingTokens[2],
-				borderTop: `1px solid ${lightColorScheme.outlineVariant}`,
-				...style,
-			}}
+			className={cn(
+				"flex flex-wrap justify-end gap-2 border-t border-border p-2",
+				className,
+			)}
+			style={style}
 		>
 			{children}
 		</div>
@@ -333,20 +258,11 @@ export interface DialogTitleProps {
 export function DialogTitle(props: DialogTitleProps): JSX.Element {
 	const { children, style, className } = props;
 	const ctx = useContext(DialogContext);
-	const font = typographyTokens.title.medium;
 	return (
 		<h2
 			id={ctx?.titleId}
-			className={className}
-			style={{
-				margin: 0,
-				fontFamily: font.fontFamily,
-				fontSize: font.fontSize,
-				fontWeight: font.fontWeight,
-				lineHeight: font.lineHeight,
-				color: lightColorScheme.onSurface,
-				...style,
-			}}
+			className={cn("m-0 text-lg font-medium leading-snug text-foreground", className)}
+			style={style}
 		>
 			{children}
 		</h2>
@@ -364,20 +280,11 @@ export interface DialogDescriptionProps {
 export function DialogDescription(props: DialogDescriptionProps): JSX.Element {
 	const { children, style, className } = props;
 	const ctx = useContext(DialogContext);
-	const font = typographyTokens.body.medium;
 	return (
 		<p
 			id={ctx?.descriptionId}
-			className={className}
-			style={{
-				margin: 0,
-				marginTop: spacingTokens[1],
-				fontFamily: font.fontFamily,
-				fontSize: font.fontSize,
-				lineHeight: font.lineHeight,
-				color: lightColorScheme.onSurfaceVariant,
-				...style,
-			}}
+			className={cn("m-0 mt-1 text-base leading-normal text-muted-foreground", className)}
+			style={style}
 		>
 			{children}
 		</p>

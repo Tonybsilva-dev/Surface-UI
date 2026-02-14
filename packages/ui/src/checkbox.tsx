@@ -1,39 +1,26 @@
-import type { InputHTMLAttributes, CSSProperties, ReactNode } from "react";
+import type { InputHTMLAttributes, ReactNode } from "react";
 import { forwardRef, useEffect, useRef } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	shapeTokens,
-	disabledOpacity,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 export type CheckboxSize = "sm" | "md";
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-	/** Conteúdo do rótulo (opcional). */
 	children?: ReactNode;
-	/**
-	 * Tamanho do quadro: sm (18px), md (20px).
-	 * Alinhado às guidelines de selection controls.
-	 */
 	size?: CheckboxSize;
-	/** Estado indeterminado (ex.: “selecionar todos”). */
 	indeterminate?: boolean;
-	/** Estilos inline no wrapper (label). */
-	style?: CSSProperties;
 }
 
-const sizeMap: Record<CheckboxSize, number> = {
-	sm: 18,
-	md: 20,
+const sizeClasses: Record<CheckboxSize, string> = {
+	sm: "h-[18px] w-[18px]",
+	md: "h-5 w-5",
 };
 
-const labelFont = typographyTokens.body.medium;
+const visuallyHidden =
+	"absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 [clip:rect(0,0,0,0)]";
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
 	props,
-	ref
+	ref,
 ) {
 	const {
 		children,
@@ -41,8 +28,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 		indeterminate = false,
 		disabled,
 		checked,
-		style,
 		className,
+		style,
 		...other
 	} = props;
 
@@ -56,71 +43,39 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 		if (inputRef.current) inputRef.current.indeterminate = indeterminate;
 	}, [indeterminate]);
 
-	const boxSize = sizeMap[size];
 	const isChecked = checked === true || indeterminate;
 
-	const wrapperStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		gap: spacingTokens[2],
-		cursor: disabled ? "not-allowed" : "pointer",
-		opacity: disabled ? disabledOpacity : 1,
-	};
-
-	const boxStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		flexShrink: 0,
-		width: boxSize,
-		height: boxSize,
-		borderRadius: shapeTokens.extraSmall,
-		border: `2px solid ${isChecked ? lightColorScheme.primary : lightColorScheme.outline}`,
-		backgroundColor: isChecked ? lightColorScheme.primary : "transparent",
-		transition:
-			"background-color 150ms ease-out, border-color 150ms ease-out",
-	};
-
-	const labelTextStyles: CSSProperties = {
-		fontFamily: labelFont.fontFamily,
-		fontSize: labelFont.fontSize,
-		lineHeight: labelFont.lineHeight,
-		fontWeight: labelFont.fontWeight,
-		color: lightColorScheme.onSurface,
-	};
-
 	return (
-		<label style={{ ...wrapperStyles, ...style }} className={className}>
+		<label
+			className={cn(
+				"inline-flex items-center gap-2 cursor-pointer",
+				disabled && "pointer-events-none opacity-[var(--disabled-opacity)]",
+				className,
+			)}
+			style={style}
+		>
 			<input
 				type="checkbox"
 				ref={setRef}
 				{...other}
 				disabled={disabled}
 				checked={checked}
-				style={{
-					position: "absolute",
-					width: 1,
-					height: 1,
-					padding: 0,
-					margin: -1,
-					overflow: "hidden",
-					clip: "rect(0, 0, 0, 0)",
-					whiteSpace: "nowrap",
-					border: 0,
-				}}
+				className={visuallyHidden}
 				aria-checked={indeterminate ? "mixed" : checked}
 			/>
-			<span aria-hidden style={boxStyles}>
+			<span
+				aria-hidden
+				className={cn(
+					"inline-flex shrink-0 items-center justify-center rounded border-2 transition-colors duration-150",
+					sizeClasses[size],
+					isChecked
+						? "border-primary bg-primary text-primary-foreground"
+						: "border-input bg-background",
+				)}
+			>
 				{isChecked ? (
 					indeterminate ? (
-						<span
-							style={{
-								width: 10,
-								height: 2,
-								backgroundColor: lightColorScheme.onPrimary,
-								borderRadius: 1,
-							}}
-						/>
+						<span className="h-0.5 w-2.5 rounded-full bg-current" />
 					) : (
 						<svg
 							width={12}
@@ -128,12 +83,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 							viewBox="0 0 12 10"
 							fill="none"
 							aria-hidden
-							style={{ flexShrink: 0 }}
+							className="shrink-0 stroke-current"
 						>
 							<title>Marcado</title>
 							<path
 								d="M1 5.5L4.5 9L11 1"
-								stroke={lightColorScheme.onPrimary}
 								strokeWidth={2}
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -143,7 +97,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 				) : null}
 			</span>
 			{children != null ? (
-				<span style={labelTextStyles}>{children}</span>
+				<span className="text-sm font-normal leading-normal text-foreground">
+					{children}
+				</span>
 			) : null}
 		</label>
 	);

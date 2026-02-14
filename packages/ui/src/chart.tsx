@@ -1,13 +1,7 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { createContext, useContext, useId } from "react";
 import { ResponsiveContainer, Tooltip, Legend, type LegendProps } from "recharts";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	shapeTokens,
-	elevationTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 export type ChartConfig = Record<
 	string,
@@ -33,8 +27,6 @@ function useChart(): ChartContextValue {
 	return ctx;
 }
 
-const bodySmall = typographyTokens.body.small;
-
 export interface ChartContainerProps {
 	/** Configuração de séries (cores, labels). Chave = dataKey. */
 	config: ChartConfig;
@@ -55,23 +47,18 @@ export function ChartContainer(props: ChartContainerProps): JSX.Element {
 		<ChartContext.Provider value={{ config }}>
 			<div
 				data-surface-chart={chartId}
-				className={className}
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					width: "100%",
-					minHeight: 200,
-					fontSize: bodySmall.fontSize,
-					fontFamily: bodySmall.fontFamily,
-					color: lightColorScheme.onSurface,
-					...style,
-				}}
+				className={cn(
+					"relative h-full min-h-[200px] w-full text-xs text-foreground",
+					className,
+				)}
+				style={style}
 			>
 				<ChartStyle chartId={chartId} config={config} />
-				<ResponsiveContainer width="100%" height="100%" minHeight={200}>
-					{children}
-				</ResponsiveContainer>
+				<div className="absolute inset-0">
+					<ResponsiveContainer width="100%" height="100%" minHeight={200}>
+						{children}
+					</ResponsiveContainer>
+				</div>
 			</div>
 		</ChartContext.Provider>
 	);
@@ -164,37 +151,27 @@ export function ChartTooltipContent(
 
 	if (!active || !payload?.length) return null;
 
-	const tooltipStyles: CSSProperties = {
-		display: "grid",
-		gap: spacingTokens[1],
-		minWidth: 128,
-		padding: `${spacingTokens[1]} ${spacingTokens[2]}`,
-		borderRadius: shapeTokens.medium,
-		border: `1px solid ${lightColorScheme.outlineVariant}`,
-		backgroundColor: lightColorScheme.surface,
-		boxShadow: elevationTokens.level2.boxShadow,
-		fontFamily: bodySmall.fontFamily,
-		fontSize: bodySmall.fontSize,
-		lineHeight: bodySmall.lineHeight,
-		color: lightColorScheme.onSurface,
-		...style,
-	};
-
 	const labelContent =
 		!hideLabel && payload.length > 0 && (label != null || labelFormatter) ? (
 			labelFormatter && payload[0] ? (
-				<div style={{ fontWeight: 600 }}>{labelFormatter(label, payload)}</div>
+				<div className="font-semibold">{labelFormatter(label, payload)}</div>
 			) : (
-				<div style={{ fontWeight: 600 }}>{String(label ?? "")}</div>
+				<div className="font-semibold">{String(label ?? "")}</div>
 			)
 		) : null;
 
 	const nestLabel = payload.length === 1 && indicator !== "dot";
 
 	return (
-		<div className={className} style={tooltipStyles}>
+		<div
+			className={cn(
+				"grid min-w-32 gap-1 rounded-lg border border-border bg-background p-1 px-2 text-xs shadow-[var(--shadow-2)]",
+				className,
+			)}
+			style={style}
+		>
 			{!nestLabel ? labelContent : null}
-			<div style={{ display: "grid", gap: spacingTokens[1] }}>
+			<div className="grid gap-1">
 				{payload
 					.filter((item) => (item as { type?: string }).type !== "none")
 					.map((item, index) => {
@@ -208,17 +185,17 @@ export function ChartTooltipContent(
 							(item as { color?: string }).color ??
 							(item as { payload?: { fill?: string } }).payload?.fill ??
 							itemConfig?.color;
+						const fillColor = color ?? "var(--border)";
 						const itemLabel = itemConfig?.label ?? (item as { name?: string }).name;
 						const value = (item as { value?: unknown }).value;
 
 						return (
 							<div
 								key={(item as { dataKey?: string }).dataKey ?? index}
-								style={{
-									display: "flex",
-									alignItems: indicator === "dot" ? "center" : "stretch",
-									gap: spacingTokens[2],
-								}}
+								className={cn(
+									"flex gap-2",
+									indicator === "dot" ? "items-center" : "items-stretch",
+								)}
 							>
 								{formatter &&
 								value !== undefined &&
@@ -234,50 +211,33 @@ export function ChartTooltipContent(
 									<>
 										{!hideIndicator && (
 											<div
+												className="shrink-0 rounded-sm"
 												style={{
 													width: indicator === "dot" ? 10 : indicator === "line" ? 4 : 0,
 													height: indicator === "dot" ? 10 : "auto",
 													minHeight: indicator === "dashed" ? 2 : undefined,
-													borderRadius: 2,
-													backgroundColor: color ?? lightColorScheme.outline,
+													backgroundColor: fillColor,
 													border:
 														indicator === "dashed"
-															? `1.5px dashed ${color ?? lightColorScheme.outline}`
+															? `1.5px dashed ${fillColor}`
 															: "none",
-													flexShrink: 0,
 												}}
 											/>
 										)}
 										<div
-											style={{
-												display: "flex",
-												flex: 1,
-												justifyContent: "space-between",
-												alignItems: nestLabel ? "flex-end" : "center",
-												gap: spacingTokens[2],
-											}}
+											className={cn(
+												"flex flex-1 justify-between gap-2",
+												nestLabel ? "items-end" : "items-center",
+											)}
 										>
-											<div style={{ minWidth: 0 }}>
+											<div className="min-w-0">
 												{nestLabel ? labelContent : null}
-												<span
-													style={{
-														color: lightColorScheme.onSurfaceVariant,
-														overflow: "hidden",
-														textOverflow: "ellipsis",
-														whiteSpace: "nowrap",
-													}}
-												>
+												<span className="truncate text-muted-foreground">
 													{itemLabel}
 												</span>
 											</div>
 											{value !== undefined && (
-												<span
-													style={{
-														fontWeight: 500,
-														fontVariantNumeric: "tabular-nums",
-														flexShrink: 0,
-													}}
-												>
+												<span className="shrink-0 font-medium tabular-nums">
 													{typeof value === "number"
 														? value.toLocaleString()
 														: String(value)}
@@ -322,16 +282,12 @@ export function ChartLegendContent(props: ChartLegendContentProps): JSX.Element 
 
 	return (
 		<div
-			className={className}
-			style={{
-				display: "flex",
-				alignItems: "center",
-				justifyContent: "center",
-				gap: spacingTokens[2],
-				paddingTop: verticalAlign === "top" ? 0 : spacingTokens[2],
-				paddingBottom: verticalAlign === "bottom" ? 0 : spacingTokens[2],
-				...style,
-			}}
+			className={cn(
+				"flex flex-wrap items-center justify-center gap-2",
+				verticalAlign === "top" ? "pt-0 pb-2" : "pt-2 pb-0",
+				className,
+			)}
+			style={style}
 		>
 			{payload
 				.filter((item) => (item as { type?: string }).type !== "none")
@@ -344,22 +300,15 @@ export function ChartLegendContent(props: ChartLegendContentProps): JSX.Element 
 					return (
 						<div
 							key={(item as { value?: string }).value ?? key}
-							style={{
-								display: "flex",
-								alignItems: "center",
-								gap: spacingTokens[1],
-							}}
+							className="flex items-center gap-1"
 						>
 							{itemConfig?.icon && !hideIcon ? (
 								<itemConfig.icon />
 							) : (
 								<div
+									className="h-2 w-2 shrink-0 rounded-sm"
 									style={{
-										width: 8,
-										height: 8,
-										borderRadius: 2,
-										backgroundColor: color ?? lightColorScheme.outline,
-										flexShrink: 0,
+										backgroundColor: color ?? "var(--border)",
 									}}
 								/>
 							)}

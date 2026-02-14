@@ -1,6 +1,7 @@
 // biome-ignore lint/nursery/noUnusedImports: needed for JSX in decorator
 import React from "react";
 import type { Preview } from "@storybook/react";
+import "@surface/ui/foundation/theme.css";
 
 /**
  * Decorator global: envolve todas as stories num único wrapper.

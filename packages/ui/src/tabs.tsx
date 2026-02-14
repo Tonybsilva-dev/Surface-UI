@@ -1,11 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { createContext, useContext } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	motionTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 type TabsContextValue = {
 	value: string;
@@ -16,15 +11,10 @@ type TabsContextValue = {
 const TabsContext = createContext<TabsContextValue | null>(null);
 
 export interface TabsRootProps {
-	/** Valor do tab ativo (chave). */
 	value: string;
-	/** Callback quando o tab muda. */
 	onChange: (value: string) => void;
-	/** Conteúdo (Tabs.List + Tabs.Trigger e/ou Tabs.Content). */
 	children: ReactNode;
-	/** Desabilita todos os tabs. */
 	disabled?: boolean;
-	/** Estilos no container do Root. */
 	style?: CSSProperties;
 	className?: string;
 }
@@ -33,7 +23,7 @@ export function TabsRoot(props: TabsRootProps): JSX.Element {
 	const { value, onChange, children, disabled = false, style, className } = props;
 	return (
 		<TabsContext.Provider value={{ value, onChange, disabled }}>
-			<div className={className} style={{ ...style }}>
+			<div className={className} style={style}>
 				{children}
 			</div>
 		</TabsContext.Provider>
@@ -50,14 +40,12 @@ export interface TabsListProps {
 
 export function TabsList(props: TabsListProps): JSX.Element {
 	const { children, style, className } = props;
-	const listStyles: CSSProperties = {
-		display: "flex",
-		flexWrap: "wrap",
-		gap: 0,
-		borderBottom: `1px solid ${lightColorScheme.outlineVariant}`,
-	};
 	return (
-		<div className={className} role="tablist" style={{ ...listStyles, ...style }}>
+		<div
+			className={cn("flex flex-wrap gap-0 border-b border-border", className)}
+			role="tablist"
+			style={style}
+		>
 			{children}
 		</div>
 	);
@@ -66,11 +54,8 @@ export function TabsList(props: TabsListProps): JSX.Element {
 TabsList.displayName = "Tabs.List";
 
 export interface TabsTriggerProps {
-	/** Chave deste tab (valor comparado com Tabs.Root value). */
 	value: string;
-	/** Rótulo do tab. */
 	children: ReactNode;
-	/** Desabilita este tab. */
 	disabled?: boolean;
 	style?: CSSProperties;
 	className?: string;
@@ -82,30 +67,6 @@ export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
 	const isActive = ctx?.value === value;
 	const isDisabled = disabled ?? ctx?.disabled ?? false;
 
-	const labelFont = typographyTokens.label.large;
-
-	const buttonStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		paddingBlock: spacingTokens[2],
-		paddingInline: spacingTokens[4],
-		fontFamily: labelFont.fontFamily,
-		fontSize: labelFont.fontSize,
-		fontWeight: labelFont.fontWeight,
-		lineHeight: labelFont.lineHeight,
-		color: isActive ? lightColorScheme.primary : lightColorScheme.onSurfaceVariant,
-		backgroundColor: "transparent",
-		border: "none",
-		borderRadius: 0,
-		borderBottom: isActive
-			? `2px solid ${lightColorScheme.primary}`
-			: "2px solid transparent",
-		cursor: isDisabled ? "not-allowed" : "pointer",
-		opacity: isDisabled ? 0.38 : 1,
-		transition: `color ${motionTokens.duration.short2}, border-color ${motionTokens.duration.short2}`,
-	};
-
 	return (
 		<button
 			type="button"
@@ -113,8 +74,13 @@ export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
 			aria-selected={isActive}
 			aria-disabled={isDisabled}
 			disabled={isDisabled}
-			className={className}
-			style={{ ...buttonStyles, ...style }}
+			className={cn(
+				"inline-flex items-center justify-center py-2 px-4 text-sm font-medium leading-none bg-transparent border-0 rounded-none border-b-2 transition-colors duration-100",
+				isActive ? "text-primary border-primary" : "text-muted-foreground border-transparent",
+				isDisabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
+				className,
+			)}
+			style={style}
 			onClick={() => ctx?.onChange(value)}
 		>
 			{children}
@@ -125,7 +91,6 @@ export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
 TabsTrigger.displayName = "Tabs.Trigger";
 
 export interface TabsContentProps {
-	/** Chave do painel (mostrado quando Tabs.Root value === value). */
 	value: string;
 	children: ReactNode;
 	style?: CSSProperties;
@@ -140,12 +105,7 @@ export function TabsContent(props: TabsContentProps): JSX.Element {
 	if (!isActive) return <></>;
 
 	return (
-		<div
-			role="tabpanel"
-			aria-hidden={!isActive}
-			className={className}
-			style={{ ...style }}
-		>
+		<div role="tabpanel" aria-hidden={!isActive} className={className} style={style}>
 			{children}
 		</div>
 	);
@@ -169,5 +129,4 @@ export const Tabs = Object.assign(TabsRootWithList, {
 	Content: TabsContent,
 });
 
-/** Alias para Tabs.Trigger. Use Tabs.Trigger para nova API. */
 export const Tab = TabsTrigger;

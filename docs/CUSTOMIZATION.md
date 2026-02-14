@@ -4,6 +4,31 @@ O design system mantém a **estrutura de princípios** (roles, escalas, estados,
 
 ---
 
+## Tema CSS (skin shadcn)
+
+Existe um ficheiro de tema que expõe as **foundations** com a **nomenclatura shadcn** (`--background`, `--foreground`, `--primary`, `--radius`, etc.), para usar com Tailwind no app (`bg-background`, `text-foreground`, `border-border`, etc.) sem alterar os componentes.
+
+| O que | Onde | Uso |
+|-------|------|-----|
+| **Tema light/dark** | `packages/ui/src/foundation/theme.css` | Valores de `lightColorScheme` / `darkColorScheme` e `shapeTokens`; variáveis em `:root` e `.dark`. |
+| **Tailwind v4** | Mesmo ficheiro, bloco `@theme inline` | Expõe `--color-background`, `--color-foreground`, etc., para uso com utilitários Tailwind. |
+
+**Como usar:** no teu app (Next.js, Vite, etc.), importa o tema uma vez, por exemplo no layout ou no ficheiro CSS principal:
+
+```css
+@import "@surface/ui/src/foundation/theme.css";
+```
+
+ou, se o pacote expuser o build:
+
+```css
+@import "@surface/ui/foundation/theme.css";
+```
+
+Os **componentes** `@surface/ui` continuam a usar os tokens em JS (inline styles); este tema serve apenas para o app usar Tailwind com a mesma paleta e radius das foundations. Para manter o tema em sync com os tokens, altere sempre `color.ts` e `shape.ts`; o `theme.css` deve refletir esses valores (por cópia manual ou script de geração).
+
+---
+
 ## Recomendação: impacto máximo com mínimo de mudança (estilo Ant Design)
 
 Para um visual próximo ao **Ant Design** (limpo, azul primário, sombras suaves) com o menor impacto na estrutura, altere só estes pontos:

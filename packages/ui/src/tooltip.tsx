@@ -1,13 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { createContext, useContext, useState, useRef, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	motionTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
@@ -23,7 +17,8 @@ export interface TooltipProps {
 	className?: string;
 }
 
-const bodySmall = typographyTokens.body.small;
+const TOOLTIP_CLASSES =
+	"fixed z-[9999] max-w-[280px] py-1 px-2 text-xs leading-normal text-primary-foreground bg-primary rounded-md shadow-[var(--shadow-2)] pointer-events-none transition-opacity duration-150 ease-out";
 
 interface TooltipContextValue {
 	visible: boolean;
@@ -58,8 +53,8 @@ export function TooltipTrigger(props: TooltipTriggerProps): JSX.Element {
 	return (
 		<span
 			ref={wrapperRef as React.RefObject<HTMLSpanElement>}
-			className={className}
-			style={{ display: "inline-flex", ...style }}
+			className={cn("inline-flex", className)}
+			style={style}
 			{...triggerProps}
 		>
 			{children}
@@ -72,23 +67,22 @@ TooltipTrigger.displayName = "Tooltip.Trigger";
 export interface TooltipContentProps {
 	children: ReactNode;
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function TooltipContent(props: TooltipContentProps): JSX.Element {
-	const { children, style } = props;
+	const { children, style, className } = props;
 	const ctx = useContext(TooltipContext);
 	if (!ctx) return <>{children}</>;
 	const { visible, coords, tooltipRef, tooltipStyles } = ctx;
-	const resolvedStyles: CSSProperties = {
-		...tooltipStyles(coords),
-		...style,
-	};
+	const positionStyle = tooltipStyles(coords);
 	const tooltipNode = (
 		<div
 			ref={tooltipRef as React.RefObject<HTMLDivElement>}
 			role="tooltip"
 			aria-hidden={!visible}
-			style={resolvedStyles}
+			className={cn(TOOLTIP_CLASSES, className)}
+			style={{ ...positionStyle, ...style }}
 		>
 			{children}
 		</div>
@@ -104,30 +98,16 @@ export function TooltipContent(props: TooltipContentProps): JSX.Element {
 
 TooltipContent.displayName = "Tooltip.Content";
 
-function getTooltipStyles(
+function getTooltipPositionStyles(
 	coords: { top: number; left: number },
 	visible: boolean,
 	positioned: boolean,
 ): CSSProperties {
 	return {
-		position: "fixed" as const,
 		top: coords.top,
 		left: coords.left,
 		visibility: visible && !positioned ? "hidden" : "visible",
 		opacity: visible && positioned ? 1 : 0,
-		zIndex: 9999,
-		padding: spacingTokens[2],
-		paddingBlock: spacingTokens[1],
-		maxWidth: 280,
-		fontFamily: bodySmall.fontFamily,
-		fontSize: bodySmall.fontSize,
-		lineHeight: bodySmall.lineHeight,
-		color: lightColorScheme.inverseOnSurface,
-		backgroundColor: lightColorScheme.inverseSurface,
-		borderRadius: componentShapeTokens.textField,
-		boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-		pointerEvents: "none",
-		transition: `opacity ${motionTokens.duration.short2} ${motionTokens.easing.standard}`,
 	};
 }
 
@@ -194,16 +174,21 @@ export function Tooltip(props: TooltipProps): JSX.Element {
 	};
 
 	const tooltipStylesFn = (c: { top: number; left: number }): CSSProperties =>
-		getTooltipStyles(c, visible, positioned);
+		getTooltipPositionStyles(c, visible, positioned);
 
 	if (title !== undefined && title !== null) {
-		const resolvedStyles = getTooltipStyles({ top: coords.top, left: coords.left }, visible, positioned);
+		const positionStyles = getTooltipPositionStyles(
+			{ top: coords.top, left: coords.left },
+			visible,
+			positioned,
+		);
 		const tooltipNode = (
 			<div
 				ref={tooltipRef as React.RefObject<HTMLDivElement>}
 				role="tooltip"
 				aria-hidden={!visible}
-				style={resolvedStyles}
+				className={TOOLTIP_CLASSES}
+				style={positionStyles}
 			>
 				{title}
 			</div>
@@ -212,8 +197,8 @@ export function Tooltip(props: TooltipProps): JSX.Element {
 			<>
 				<span
 					ref={wrapperRef}
-					className={className}
-					style={{ display: "inline-flex", ...style }}
+					className={cn("inline-flex", className)}
+					style={style}
 					{...triggerProps}
 				>
 					{children}

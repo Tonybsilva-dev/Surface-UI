@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, ReactNode } from "react";
 import {
 	createContext,
 	useContext,
@@ -8,14 +8,7 @@ import {
 	useEffect,
 } from "react";
 import { createPortal } from "react-dom";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	shapeTokens,
-	disabledOpacity,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 export type SelectSize = "sm" | "default";
 
@@ -73,14 +66,12 @@ export function SelectRoot(props: SelectRootProps): JSX.Element {
 
 	return (
 		<SelectContext.Provider value={ctx}>
-			<div style={{ position: "relative", display: "inline-block" }}>{children}</div>
+			<div className="relative inline-block">{children}</div>
 		</SelectContext.Provider>
 	);
 }
 
 SelectRoot.displayName = "Select.Root";
-
-const triggerHeight = { sm: 32, default: 40 } as const;
 
 export interface SelectTriggerProps {
 	children: ReactNode;
@@ -92,27 +83,7 @@ export function SelectTrigger(props: SelectTriggerProps): JSX.Element {
 	const { children, style, className } = props;
 	const ctx = useContext(SelectContext);
 	if (!ctx) return <>{children}</>;
-	const { open, setOpen, disabled, triggerRef, size } = ctx;
-	const height = triggerHeight[size];
-
-	const triggerStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "space-between",
-		gap: spacingTokens[2],
-		height,
-		paddingInline: spacingTokens[3],
-		paddingBlock: spacingTokens[2],
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${lightColorScheme.outline}`,
-		backgroundColor: lightColorScheme.surface,
-		fontFamily: typographyTokens.body.medium.fontFamily,
-		fontSize: typographyTokens.body.medium.fontSize,
-		color: lightColorScheme.onSurface,
-		cursor: disabled ? "not-allowed" : "pointer",
-		opacity: disabled ? disabledOpacity : 1,
-		minWidth: 120,
-	};
+	const { open, disabled, triggerRef, size } = ctx;
 
 	return (
 		<button
@@ -122,13 +93,19 @@ export function SelectTrigger(props: SelectTriggerProps): JSX.Element {
 			aria-expanded={open}
 			aria-haspopup="listbox"
 			disabled={disabled}
-			className={className}
-			style={{ ...triggerStyles, ...style }}
+			className={cn(
+				"inline-flex min-w-[120px] items-center justify-between gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground",
+				size === "sm" ? "h-8" : "h-10",
+				disabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
+				className,
+			)}
+			style={style}
 			onClick={() => ctx.setOpen(!open)}
 		>
 			{children}
-			<span aria-hidden style={{ marginLeft: 4 }}>
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+			<span aria-hidden className="ml-1">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+					<title>Expandir</title>
 					<path d="M6 9l6 6 6-6" />
 				</svg>
 			</span>
@@ -150,7 +127,7 @@ export function SelectValue(props: SelectValueProps): JSX.Element {
 	const { value } = ctx;
 	const display = children ?? value ?? placeholder;
 	return (
-		<span style={{ flex: 1, textAlign: "left", overflow: "hidden", textOverflow: "ellipsis" }}>
+		<span className="min-w-0 flex-1 overflow-hidden text-left text-ellipsis">
 			{display}
 		</span>
 	);
@@ -162,28 +139,28 @@ export interface SelectContentProps {
 	children: ReactNode;
 	position?: "popper" | "inline";
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function SelectContent(props: SelectContentProps): JSX.Element | null {
-	const { children, style } = props;
+	const { children, style, className } = props;
 	const ctx = useContext(SelectContext);
-	if (!ctx) return <>{children}</>;
-	const { open, setOpen, triggerRef } = ctx;
-
 	const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
 
 	useLayoutEffect(() => {
-		if (!open || !triggerRef.current) return;
-		const rect = triggerRef.current.getBoundingClientRect();
+		if (!ctx?.open || !ctx.triggerRef.current) return;
+		const rect = ctx.triggerRef.current.getBoundingClientRect();
 		setPosition({
 			top: rect.bottom + 4,
 			left: rect.left,
 			width: Math.max(rect.width, 120),
 		});
-	}, [open, triggerRef]);
+	}, [ctx?.open, ctx?.triggerRef]);
 
 	useEffect(() => {
-		if (!open) return;
+		if (!ctx?.open) return;
+		const setOpen = ctx.setOpen;
+		const triggerRef = ctx.triggerRef;
 		const onKeyDown = (e: KeyboardEvent): void => {
 			if (e.key === "Escape") setOpen(false);
 		};
@@ -195,33 +172,28 @@ export function SelectContent(props: SelectContentProps): JSX.Element | null {
 			}
 		};
 		document.addEventListener("keydown", onKeyDown);
-		setTimeout(() => document.addEventListener("click", onClickOutside), 0);
+		const t = setTimeout(() => document.addEventListener("click", onClickOutside), 0);
 		return () => {
 			document.removeEventListener("keydown", onKeyDown);
 			document.removeEventListener("click", onClickOutside);
+			clearTimeout(t);
 		};
-	}, [open, setOpen, triggerRef]);
+	}, [ctx?.open, ctx?.setOpen, ctx?.triggerRef]);
 
-	const contentStyles: CSSProperties = {
-		position: "fixed",
-		top: position.top,
-		left: position.left,
-		width: position.width,
-		maxHeight: 280,
-		overflowY: "auto",
-		zIndex: 9999,
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${lightColorScheme.outline}`,
-		backgroundColor: lightColorScheme.surface,
-		boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-		padding: spacingTokens[1],
-	};
+	if (!ctx) return <>{children}</>;
+	const { open } = ctx;
 
 	const node = (
 		<div
 			data-surface-select-content
 			role="listbox"
-			style={{ ...contentStyles, ...style }}
+			className={cn("fixed z-[9999] max-h-[280px] overflow-y-auto rounded-md border border-border bg-card p-1 shadow-[var(--shadow-2)]", className)}
+			style={{
+				top: position.top,
+				left: position.left,
+				width: position.width,
+				...style,
+			}}
 		>
 			{children}
 		</div>
@@ -229,7 +201,7 @@ export function SelectContent(props: SelectContentProps): JSX.Element | null {
 
 	const body = typeof document !== "undefined" ? document.body : null;
 	if (!open || !body) return null;
-	return createPortal(node, body!);
+	return createPortal(node, body);
 }
 
 SelectContent.displayName = "Select.Content";
@@ -238,39 +210,41 @@ export interface SelectItemProps {
 	value: string;
 	children: ReactNode;
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function SelectItem(props: SelectItemProps): JSX.Element {
-	const { value, children, style } = props;
+	const { value, children, style, className } = props;
 	const ctx = useContext(SelectContext);
 	if (!ctx) return <div {...(props as unknown as Record<string, unknown>)} />;
 	const { value: selectedValue, onValueChange } = ctx;
 	const isSelected = selectedValue === value;
 
-	const itemStyles: CSSProperties = {
-		display: "flex",
-		alignItems: "center",
-		gap: spacingTokens[2],
-		padding: `${spacingTokens[2]} ${spacingTokens[3]}`,
-		borderRadius: shapeTokens.extraSmall,
-		fontFamily: typographyTokens.body.medium.fontFamily,
-		fontSize: typographyTokens.body.medium.fontSize,
-		color: lightColorScheme.onSurface,
-		cursor: "pointer",
-		backgroundColor: isSelected ? lightColorScheme.surfaceContainerHighest : "transparent",
+	const handleKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>): void => {
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			onValueChange(value);
+		}
 	};
-
 	return (
 		<div
 			role="option"
 			aria-selected={isSelected}
-			style={{ ...itemStyles, ...style }}
+			tabIndex={0}
+			className={cn(
+				"flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 text-sm text-foreground",
+				isSelected && "bg-muted",
+				className,
+			)}
+			style={style}
 			onClick={() => onValueChange(value)}
+			onKeyDown={handleKeyDown}
 		>
 			{children}
 			{isSelected ? (
-				<span aria-hidden style={{ marginLeft: "auto" }}>
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+				<span aria-hidden className="ml-auto">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+						<title>Selecionado</title>
 						<path d="M5 12l5 5L20 7" />
 					</svg>
 				</span>
@@ -284,37 +258,29 @@ SelectItem.displayName = "Select.Item";
 export interface SelectLabelProps {
 	children: ReactNode;
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function SelectLabel(props: SelectLabelProps): JSX.Element {
-	const { children, style } = props;
-	const labelStyles: CSSProperties = {
-		padding: `${spacingTokens[1]} ${spacingTokens[3]}`,
-		fontFamily: typographyTokens.label.small.fontFamily,
-		fontSize: typographyTokens.label.small.fontSize,
-		color: lightColorScheme.onSurfaceVariant,
-	};
-	return <div style={{ ...labelStyles, ...style }}>{children}</div>;
+	const { children, style, className } = props;
+	return (
+		<div className={cn("px-3 py-1 text-xs font-medium text-muted-foreground", className)} style={style}>
+			{children}
+		</div>
+	);
 }
 
 SelectLabel.displayName = "Select.Label";
 
 export interface SelectSeparatorProps {
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function SelectSeparator(props: SelectSeparatorProps): JSX.Element {
-	const { style } = props;
+	const { style, className } = props;
 	return (
-		<div
-			role="separator"
-			style={{
-				height: 1,
-				margin: `${spacingTokens[1]} 0`,
-				backgroundColor: lightColorScheme.outlineVariant,
-				...style,
-			}}
-		/>
+		<hr className={cn("my-1 h-px border-0 bg-border", className)} style={style} />
 	);
 }
 

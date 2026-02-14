@@ -30,11 +30,10 @@ const meta: Meta<typeof Button> = {
     },
     variant: {
       description:
-        "Variante visual: default/primary, destructive, outline, secondary, ghost, link.",
+        "Variante visual: default, destructive, outline, secondary, ghost, link.",
       control: "select",
       options: [
         "default",
-        "primary",
         "destructive",
         "outline",
         "secondary",
@@ -47,20 +46,12 @@ const meta: Meta<typeof Button> = {
       },
     },
     size: {
-      description: "Tamanho: default (md), sm, lg, icon (quadrado).",
+      description: "Tamanho: default, sm, lg, icon (quadrado).",
       control: "select",
-      options: ["default", "sm", "md", "lg", "icon"] as ButtonSize[],
+      options: ["default", "sm", "lg", "icon"] as ButtonSize[],
       table: {
         type: { summary: "ButtonSize" },
         defaultValue: { summary: "default" },
-      },
-    },
-    fullWidth: {
-      description: "Se true, o botão ocupa 100% da largura disponível.",
-      control: "boolean",
-      table: {
-        type: { summary: "boolean" },
-        defaultValue: { summary: "false" },
       },
     },
     disabled: {
@@ -79,11 +70,12 @@ const meta: Meta<typeof Button> = {
         type: { summary: "string" },
       },
     },
-    style: {
-      description: "Estilos inline (sobrescrevem os do componente).",
-      control: "object",
+    fullWidth: {
+      description: "Se true, o botão ocupa 100% da largura disponível.",
+      control: "boolean",
       table: {
-        type: { summary: "CSSProperties" },
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
       },
     },
     leadingIcon: {
@@ -95,6 +87,13 @@ const meta: Meta<typeof Button> = {
       description: "Ícone ou elemento exibido depois do texto.",
       table: { type: { summary: "ReactNode" } },
       control: false,
+    },
+    style: {
+      description: "Estilos inline (sobrescrevem os do componente).",
+      control: "object",
+      table: {
+        type: { summary: "CSSProperties" },
+      },
     },
     asChild: {
       description:

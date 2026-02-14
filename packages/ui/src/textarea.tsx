@@ -8,75 +8,27 @@ import {
 	createContext,
 	forwardRef,
 	useContext,
-	useLayoutEffect,
 	useRef,
 	useState,
 } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	disabledOpacity,
-	motionTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 import { IconButton } from "./icon-button";
 
 export type TextAreaSize = "sm" | "md" | "lg";
 export type TextAreaStatus = "default" | "error" | "warning";
 
-const TEXTAREA_CSS_ID = "surface-textarea-styles";
-
-function ensureTextAreaStyles(): void {
-	if (typeof document === "undefined" || document.getElementById(TEXTAREA_CSS_ID))
-		return;
-	const style = document.createElement("style");
-	style.id = TEXTAREA_CSS_ID;
-	style.textContent = `
-.surface-textarea-wrap{transition:border-color ${motionTokens.duration.short2}, box-shadow ${motionTokens.duration.short2}}
-.surface-textarea-wrap:focus-within{outline:none;box-shadow:var(--surface-textarea-focus-ring)!important}
-@media(prefers-reduced-motion:reduce){.surface-textarea-wrap{transition:none}}
-`;
-	document.head.appendChild(style);
-}
-
-const sizeMap: Record<
-	TextAreaSize,
-	{ minHeight: number; paddingInline: string; paddingBlock: string }
-> = {
-	sm: {
-		minHeight: 80,
-		paddingInline: spacingTokens[2],
-		paddingBlock: spacingTokens[1],
-	},
-	md: {
-		minHeight: 100,
-		paddingInline: spacingTokens[3],
-		paddingBlock: spacingTokens[2],
-	},
-	lg: {
-		minHeight: 120,
-		paddingInline: spacingTokens[3],
-		paddingBlock: spacingTokens[2],
-	},
+const sizeMap: Record<TextAreaSize, { minHeight: number; paddingClass: string }> = {
+	sm: { minHeight: 80, paddingClass: "px-2 py-1" },
+	md: { minHeight: 100, paddingClass: "px-3 py-2" },
+	lg: { minHeight: 120, paddingClass: "px-3 py-2" },
 };
-
-const borderColorByStatus: Record<TextAreaStatus, string> = {
-	default: lightColorScheme.outline,
-	error: lightColorScheme.error,
-	warning: "rgb(250, 173, 20)",
-};
-
-const bodyMedium = typographyTokens.body.medium;
-const focusRing = "0 0 0 2px rgba(22, 119, 255, 0.2)";
 
 interface TextAreaContextValue {
 	allowClear: boolean;
 	size: TextAreaSize;
 	status: TextAreaStatus;
 	disabled?: boolean;
-	borderColor: string;
-	dims: { minHeight: number; paddingInline: string; paddingBlock: string };
+	dims: { minHeight: number; paddingClass: string };
 }
 
 const TextAreaContext = createContext<TextAreaContextValue | null>(null);
@@ -102,37 +54,33 @@ export function TextAreaRoot(props: TextAreaRootProps): JSX.Element {
 		className,
 		style,
 	} = props;
-	useLayoutEffect(() => {
-		ensureTextAreaStyles();
-	}, []);
 	const dims = sizeMap[size];
-	const borderColor = borderColorByStatus[status];
-	const wrapperStyles: CSSProperties = {
-		display: "inline-flex",
-		width: "100%",
-		minWidth: 0,
-		minHeight: dims.minHeight,
-		boxSizing: "border-box",
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${borderColor}`,
-		backgroundColor: lightColorScheme.surface,
-		["--surface-textarea-focus-ring" as string]: focusRing,
-		transition: `border-color ${motionTokens.duration.short2} ease-out, box-shadow ${motionTokens.duration.short2} ease-out`,
-	};
-	const combinedClassName = ["surface-textarea-wrap", className]
-		.filter(Boolean)
-		.join(" ");
 	const ctx: TextAreaContextValue = {
 		allowClear,
 		size,
 		status,
 		disabled,
-		borderColor,
 		dims,
 	};
+	const borderByStatus =
+		status === "error"
+			? "border-destructive"
+			: status === "warning"
+				? "border-amber-500"
+				: "border-border";
 	return (
 		<TextAreaContext.Provider value={ctx}>
-			<span className={combinedClassName} style={{ ...wrapperStyles, ...style }}>
+			<span
+				className={cn(
+					"inline-flex w-full min-w-0 rounded-md border bg-background transition-[border-color,box-shadow] duration-150 ease-out focus-within:outline-none focus-within:ring-2 focus-within:ring-ring",
+					dims.minHeight === 80 && "min-h-[80px]",
+					dims.minHeight === 100 && "min-h-[100px]",
+					dims.minHeight === 120 && "min-h-[120px]",
+					borderByStatus,
+					className,
+				)}
+				style={style}
+			>
 				{children}
 			</span>
 		</TextAreaContext.Provider>
@@ -146,17 +94,18 @@ export interface TextAreaInputProps
 	/** resize: none | vertical | both. */
 	resize?: "none" | "vertical" | "both";
 	style?: CSSProperties;
+	className?: string;
 }
 
 function ClearIcon(): JSX.Element {
 	return (
 		<svg
 			aria-hidden
+			className="block"
 			fill="none"
 			height="18"
 			viewBox="0 0 16 16"
 			width="18"
-			style={{ display: "block" }}
 		>
 			<title>Fechar</title>
 			<path
@@ -174,6 +123,7 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 		const {
 			resize = "vertical",
 			style: styleProp,
+			className: inputClassName,
 			value,
 			defaultValue,
 			onChange,
@@ -226,37 +176,10 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 		}
 
 		const { dims, status, disabled, allowClear } = ctx;
-		const inputStyles: CSSProperties = {
-			width: "100%",
-			minWidth: 0,
-			minHeight: dims.minHeight - 2,
-			boxSizing: "border-box",
-			paddingInline: dims.paddingInline,
-			paddingBlock: dims.paddingBlock,
-			paddingRight: allowClear && hasContent ? "2.5rem" : dims.paddingInline,
-			border: "none",
-			outline: "none",
-			background: "transparent",
-			fontFamily: bodyMedium.fontFamily,
-			fontSize: bodyMedium.fontSize,
-			lineHeight: bodyMedium.lineHeight,
-			fontWeight: bodyMedium.fontWeight,
-			color: lightColorScheme.onSurface,
-			opacity: disabled ? disabledOpacity : 1,
-			cursor: disabled ? "not-allowed" : "text",
-			resize,
-			...styleProp,
-		};
+		const minHeightPx = dims.minHeight - 2;
 
 		return (
-			<span
-				style={{
-					display: "inline-flex",
-					width: "100%",
-					minWidth: 0,
-					position: "relative",
-				}}
-			>
+			<span className="relative inline-flex w-full min-w-0">
 				<textarea
 					ref={setRef}
 					aria-invalid={status === "error" ? true : undefined}
@@ -264,7 +187,17 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 					value={isControlled ? value : undefined}
 					defaultValue={isControlled ? undefined : defaultValue}
 					onChange={handleChange}
-					style={inputStyles}
+					className={cn(
+						"w-full min-w-0 border-0 bg-transparent text-sm text-foreground outline-none disabled:cursor-not-allowed disabled:opacity-[var(--disabled-opacity)]",
+						dims.paddingClass,
+						allowClear && hasContent && "pr-10",
+						inputClassName,
+					)}
+					style={{
+						minHeight: minHeightPx,
+						resize,
+						...styleProp,
+					}}
 					{...other}
 				/>
 				{hasContent ? (
@@ -272,16 +205,7 @@ export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaInputProps>
 						aria-label="Limpar"
 						icon={<ClearIcon />}
 						onClick={onClear}
-						style={{
-							position: "absolute",
-							top: spacingTokens[1],
-							right: spacingTokens[1],
-							width: 32,
-							height: 32,
-							minWidth: 32,
-							minHeight: 32,
-							padding: 0,
-						}}
+						className="absolute top-1 right-1 h-8 w-8 min-h-8 min-w-8 p-0"
 						tabIndex={-1}
 						variant="ghost"
 					/>

@@ -29,7 +29,16 @@ const meta: Meta<typeof Badge> = {
     variant: {
       description: "Variante de cor.",
       control: "select",
-      options: ["default", "primary", "success", "warning", "error"] as BadgeVariant[],
+      options: [
+        "default",
+        "primary",
+        "secondary",
+        "destructive",
+        "outline",
+        "success",
+        "warning",
+        "error",
+      ] as BadgeVariant[],
       table: { type: { summary: "BadgeVariant" }, defaultValue: { summary: "default" } },
     },
     size: {

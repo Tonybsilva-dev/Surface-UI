@@ -1,54 +1,21 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
-import { createContext, useContext, useLayoutEffect } from "react";
-import {
-	lightColorScheme,
-	componentShapeTokens,
-	motionTokens,
-	typographyTokens,
-} from "./foundation";
-
-const PROGRESS_CSS_ID = "surface-progress-styles";
-
-function ensureProgressStyles(): void {
-	if (typeof document === "undefined" || document.getElementById(PROGRESS_CSS_ID))
-		return;
-	const style = document.createElement("style");
-	style.id = PROGRESS_CSS_ID;
-	style.textContent = `@keyframes surface-progress-indeterminate{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}`;
-	document.head.appendChild(style);
-}
+import type { HTMLAttributes, ReactNode } from "react";
+import { createContext, useContext } from "react";
+import { cn } from "./lib/utils";
 
 export type ProgressSize = "sm" | "md" | "lg";
 export type ProgressStatus = "normal" | "success" | "exception";
 
-export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
-	/** Percentual concluído (0–100). Omitir ou undefined = indeterminado (barra animada). */
-	percent?: number;
-	/** Tamanho da barra: sm (4px), md (6px), lg (8px). */
-	size?: ProgressSize;
-	/** Cor/estado: normal (primary), success (verde), exception (vermelho). */
-	status?: ProgressStatus;
-	/** Se true, mostra texto com o percentual ao lado. */
-	showInfo?: boolean;
-	/** Conteúdo customizado no lugar do percentual (ex.: "3/10"). */
-	format?: (percent: number) => ReactNode;
-	/** Estilos no wrapper. */
-	style?: CSSProperties;
-}
-
-const sizeMap: Record<ProgressSize, number> = {
-	sm: 4,
-	md: 6,
-	lg: 8,
+const sizeMap: Record<ProgressSize, string> = {
+	sm: "h-1",
+	md: "h-1.5",
+	lg: "h-2",
 };
 
-const statusColor: Record<ProgressStatus, string> = {
-	normal: lightColorScheme.primary,
-	success: "rgb(82, 196, 26)",
-	exception: lightColorScheme.error,
+const statusBarClasses: Record<ProgressStatus, string> = {
+	normal: "bg-primary",
+	success: "bg-[#52c41a]",
+	exception: "bg-destructive",
 };
-
-const labelFont = typographyTokens.body.small;
 
 interface ProgressContextValue {
 	size: ProgressSize;
@@ -56,8 +23,6 @@ interface ProgressContextValue {
 	percent: number;
 	clampedPercent: number;
 	isIndeterminate: boolean;
-	strokeHeight: number;
-	strokeColor: string;
 	format?: (percent: number) => ReactNode;
 }
 
@@ -69,7 +34,6 @@ export interface ProgressRootProps extends HTMLAttributes<HTMLDivElement> {
 	status?: ProgressStatus;
 	format?: (percent: number) => ReactNode;
 	children: ReactNode;
-	style?: CSSProperties;
 }
 
 export function ProgressRoot(props: ProgressRootProps): JSX.Element {
@@ -80,21 +44,14 @@ export function ProgressRoot(props: ProgressRootProps): JSX.Element {
 		format,
 		children,
 		className,
-		style,
 		...other
 	} = props;
 
-	useLayoutEffect(() => {
-		ensureProgressStyles();
-	}, []);
-
-	const strokeHeight = sizeMap[size];
 	const isIndeterminate = percentProp === undefined || percentProp < 0;
 	const clampedPercent = isIndeterminate
 		? 0
 		: Math.min(100, Math.max(0, percentProp));
 	const percent = percentProp ?? 0;
-	const strokeColor = statusColor[status];
 
 	const ctx: ProgressContextValue = {
 		size,
@@ -102,28 +59,17 @@ export function ProgressRoot(props: ProgressRootProps): JSX.Element {
 		percent,
 		clampedPercent,
 		isIndeterminate,
-		strokeHeight,
-		strokeColor,
 		format,
-	};
-
-	const wrapperStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		gap: 8,
-		width: "100%",
-		minWidth: 0,
 	};
 
 	return (
 		<ProgressContext.Provider value={ctx}>
 			<div
-				className={className}
+				className={cn("inline-flex items-center gap-2 w-full min-w-0", className)}
 				role="progressbar"
 				aria-valuenow={isIndeterminate ? undefined : clampedPercent}
 				aria-valuemin={0}
 				aria-valuemax={100}
-				style={{ ...wrapperStyles, ...style }}
 				{...other}
 			>
 				{children}
@@ -135,42 +81,40 @@ export function ProgressRoot(props: ProgressRootProps): JSX.Element {
 ProgressRoot.displayName = "Progress.Root";
 
 export function ProgressBar(props: HTMLAttributes<HTMLDivElement>): JSX.Element {
-	const { style, ...other } = props;
+	const { className, ...other } = props;
 	const ctx = useContext(ProgressContext);
 	if (!ctx) return <div {...other} />;
 
-	const { strokeHeight, strokeColor, clampedPercent, isIndeterminate } = ctx;
-
-	const trackStyles: CSSProperties = {
-		position: "relative",
-		width: "100%",
-		height: strokeHeight,
-		borderRadius: componentShapeTokens.button,
-		backgroundColor: lightColorScheme.surfaceVariant,
-		overflow: "hidden",
-		flex: 1,
-		minWidth: 0,
-	};
-
-	const barStyles: CSSProperties = {
-		height: strokeHeight,
-		borderRadius: componentShapeTokens.button,
-		backgroundColor: strokeColor,
-		transition: `width ${motionTokens.duration.medium2} ${motionTokens.easing.standard}`,
-	};
+	const { size, status, clampedPercent, isIndeterminate } = ctx;
 
 	return (
-		<div style={{ ...trackStyles, ...style }} {...other}>
+		<div
+			className={cn(
+				"relative w-full flex-1 min-w-0 overflow-hidden rounded-md bg-muted",
+				sizeMap[size],
+				className,
+			)}
+			{...other}
+		>
 			{isIndeterminate ? (
 				<div
+					className={cn(
+						"h-full rounded-md transition-none",
+						statusBarClasses[status],
+					)}
 					style={{
-						...barStyles,
 						width: "30%",
-						animation: `surface-progress-indeterminate 1.5s ${motionTokens.easing.standard} infinite`,
+						animation: "progress-indeterminate 1.5s ease-in-out infinite",
 					}}
 				/>
 			) : (
-				<div style={{ ...barStyles, width: `${clampedPercent}%` }} />
+				<div
+					className={cn(
+						"h-full rounded-md transition-[width] duration-300 ease-out",
+						statusBarClasses[status],
+					)}
+					style={{ width: `${clampedPercent}%` }}
+				/>
 			)}
 		</div>
 	);
@@ -179,35 +123,37 @@ export function ProgressBar(props: HTMLAttributes<HTMLDivElement>): JSX.Element 
 ProgressBar.displayName = "Progress.Bar";
 
 export interface ProgressInfoProps {
-	style?: CSSProperties;
+	className?: string;
 }
 
 export function ProgressInfo(props: ProgressInfoProps): JSX.Element {
-	const { style } = props;
+	const { className } = props;
 	const ctx = useContext(ProgressContext);
-	if (!ctx) return <span style={style} />;
+	if (!ctx) return <span className={className} />;
 
 	const { percent, clampedPercent, format } = ctx;
 
-	const infoStyles: CSSProperties = {
-		flexShrink: 0,
-		fontFamily: labelFont.fontFamily,
-		fontSize: labelFont.fontSize,
-		lineHeight: labelFont.lineHeight,
-		color: lightColorScheme.onSurfaceVariant,
-		minWidth: 40,
-		textAlign: "right",
-		...style,
-	};
-
 	return (
-		<span style={infoStyles}>
+		<span
+			className={cn(
+				"shrink-0 text-sm text-muted-foreground min-w-10 text-right",
+				className,
+			)}
+		>
 			{format ? format(percent) : `${clampedPercent}%`}
 		</span>
 	);
 }
 
 ProgressInfo.displayName = "Progress.Info";
+
+export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
+	percent?: number;
+	size?: ProgressSize;
+	status?: ProgressStatus;
+	showInfo?: boolean;
+	format?: (percent: number) => ReactNode;
+}
 
 export function Progress(props: ProgressProps): JSX.Element {
 	const {
@@ -217,81 +163,50 @@ export function Progress(props: ProgressProps): JSX.Element {
 		showInfo = false,
 		format,
 		className,
-		style,
 		...other
 	} = props;
 
-	useLayoutEffect(() => {
-		ensureProgressStyles();
-	}, []);
-
-	const strokeHeight = sizeMap[size];
 	const isIndeterminate = percentProp === undefined || percentProp < 0;
 	const clampedPercent = isIndeterminate
 		? 0
 		: Math.min(100, Math.max(0, percentProp));
 	const percent = percentProp ?? 0;
-	const strokeColor = statusColor[status];
-
-	const trackStyles: CSSProperties = {
-		position: "relative",
-		width: "100%",
-		height: strokeHeight,
-		borderRadius: componentShapeTokens.button,
-		backgroundColor: lightColorScheme.surfaceVariant,
-		overflow: "hidden",
-	};
-
-	const barStyles: CSSProperties = {
-		height: strokeHeight,
-		borderRadius: componentShapeTokens.button,
-		backgroundColor: strokeColor,
-		transition: `width ${motionTokens.duration.medium2} ${motionTokens.easing.standard}`,
-	};
-
-	const wrapperStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		gap: 8,
-		width: "100%",
-		minWidth: 0,
-	};
-
-	const infoStyles: CSSProperties = {
-		flexShrink: 0,
-		fontFamily: labelFont.fontFamily,
-		fontSize: labelFont.fontSize,
-		lineHeight: labelFont.lineHeight,
-		color: lightColorScheme.onSurfaceVariant,
-		minWidth: 40,
-		textAlign: "right",
-	};
 
 	return (
 		<div
-			className={className}
+			className={cn("inline-flex items-center gap-2 w-full min-w-0", className)}
 			role="progressbar"
 			aria-valuenow={isIndeterminate ? undefined : clampedPercent}
 			aria-valuemin={0}
 			aria-valuemax={100}
-			style={{ ...wrapperStyles, ...style }}
 			{...other}
 		>
-			<div style={{ flex: 1, minWidth: 0, ...trackStyles }}>
+			<div
+				className={cn(
+					"relative flex-1 min-w-0 overflow-hidden rounded-md bg-muted",
+					sizeMap[size],
+				)}
+			>
 				{isIndeterminate ? (
 					<div
+						className={cn("h-full rounded-md", statusBarClasses[status])}
 						style={{
-							...barStyles,
 							width: "30%",
-							animation: `surface-progress-indeterminate 1.5s ${motionTokens.easing.standard} infinite`,
+							animation: "progress-indeterminate 1.5s ease-in-out infinite",
 						}}
 					/>
 				) : (
-					<div style={{ ...barStyles, width: `${clampedPercent}%` }} />
+					<div
+						className={cn(
+							"h-full rounded-md transition-[width] duration-300 ease-out",
+							statusBarClasses[status],
+						)}
+						style={{ width: `${clampedPercent}%` }}
+					/>
 				)}
 			</div>
 			{showInfo ? (
-				<span style={infoStyles}>
+				<span className="shrink-0 text-sm text-muted-foreground min-w-10 text-right">
 					{format ? format(percent) : `${clampedPercent}%`}
 				</span>
 			) : null}

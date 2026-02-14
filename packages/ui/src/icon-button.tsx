@@ -1,11 +1,5 @@
-import type { CSSProperties, ButtonHTMLAttributes, ReactNode } from "react";
-import { useLayoutEffect } from "react";
-import {
-	lightColorScheme,
-	componentShapeTokens,
-	disabledOpacity,
-	motionTokens,
-} from "./foundation";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "./lib/utils";
 
 export type IconButtonVariant =
 	| "default"
@@ -19,173 +13,58 @@ export type IconButtonVariant =
 export type IconButtonSize = "default" | "sm" | "md" | "lg";
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	/** Ícone exibido (SVG ou elemento). Área de toque é o botão inteiro. */
 	icon: ReactNode;
-	/**
-	 * Label acessível (obrigatório). Não é visível; usado por leitores de tela.
-	 */
 	"aria-label": string;
-	/** Variante visual (alinhada ao Button). */
 	variant?: IconButtonVariant;
-	/** Tamanho: sm 32px, default/md 40px, lg 48px. */
 	size?: IconButtonSize;
-	/** Estilos inline. */
-	style?: CSSProperties;
 }
 
-interface VariantStyles {
-	background: string;
-	borderColor: string;
-	color: string;
-	hoverBackground: string;
-	hoverBorder?: string;
-}
-
-const variantStyles: Record<IconButtonVariant, VariantStyles> = {
-	default: {
-		background: lightColorScheme.primary,
-		color: lightColorScheme.onPrimary,
-		borderColor: "transparent",
-		hoverBackground: "rgb(38, 132, 255)",
-	},
-	primary: {
-		background: lightColorScheme.primary,
-		color: lightColorScheme.onPrimary,
-		borderColor: "transparent",
-		hoverBackground: "rgb(38, 132, 255)",
-	},
-	destructive: {
-		background: lightColorScheme.error,
-		color: lightColorScheme.onError,
-		borderColor: "transparent",
-		hoverBackground: "rgb(230, 62, 64)",
-	},
-	outline: {
-		background: lightColorScheme.surface,
-		color: lightColorScheme.onSurface,
-		borderColor: lightColorScheme.outline,
-		hoverBackground: lightColorScheme.surfaceVariant,
-		hoverBorder: lightColorScheme.outline,
-	},
-	secondary: {
-		background: lightColorScheme.secondaryContainer,
-		color: lightColorScheme.onSecondaryContainer,
-		borderColor: "transparent",
-		hoverBackground: "rgb(232, 232, 233)",
-	},
-	ghost: {
-		background: "transparent",
-		color: lightColorScheme.onSurface,
-		borderColor: "transparent",
-		hoverBackground: lightColorScheme.surfaceVariant,
-	},
-	link: {
-		background: "transparent",
-		color: lightColorScheme.primary,
-		borderColor: "transparent",
-		hoverBackground: "transparent",
-	},
+const variantClasses: Record<IconButtonVariant, string> = {
+	default:
+		"bg-primary text-primary-foreground hover:bg-primary/90 border-transparent",
+	primary:
+		"bg-primary text-primary-foreground hover:bg-primary/90 border-transparent",
+	destructive:
+		"bg-destructive text-primary-foreground hover:bg-destructive/90 border-transparent",
+	outline:
+		"border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+	secondary:
+		"bg-secondary text-secondary-foreground hover:bg-secondary/80 border-transparent",
+	ghost: "hover:bg-accent hover:text-accent-foreground border-transparent",
+	link: "text-primary underline-offset-4 hover:underline border-transparent",
 };
 
-const ICON_BUTTON_CSS_ID = "surface-icon-button-styles";
-const focusRing = "0 0 0 2px rgba(22, 119, 255, 0.2)";
-
-function ensureIconButtonStyles(): void {
-	if (
-		typeof document === "undefined" ||
-		document.getElementById(ICON_BUTTON_CSS_ID)
-	)
-		return;
-	const style = document.createElement("style");
-	style.id = ICON_BUTTON_CSS_ID;
-	style.textContent = `
-.surface-icon-button{transition:background-color ${motionTokens.duration.short2} ${motionTokens.easing.standard}, border-color ${motionTokens.duration.short2} ${motionTokens.easing.standard}, box-shadow ${motionTokens.duration.short2} ${motionTokens.easing.standard}, color ${motionTokens.duration.short2} ${motionTokens.easing.standard}}
-.surface-icon-button:hover:not(:disabled){background-color:var(--surface-ib-bg-hover)!important;border-color:var(--surface-ib-border-hover, transparent)!important;color:var(--surface-ib-color-hover, inherit)!important}
-.surface-icon-button:focus,.surface-icon-button:focus-visible{outline:none;box-shadow:var(--surface-ib-focus-ring)!important}
-@media(prefers-reduced-motion:reduce){.surface-icon-button{transition:none}}
-`;
-	document.head.appendChild(style);
-}
-
-const sizeMap: Record<IconButtonSize, number> = {
-	sm: 32,
-	default: 40,
-	md: 40,
-	lg: 48,
+const sizeClasses: Record<IconButtonSize, string> = {
+	sm: "h-8 w-8 min-h-8 min-w-8 [&_svg]:size-[18px]",
+	default: "h-10 w-10 min-h-10 min-w-10 [&_svg]:size-5",
+	md: "h-10 w-10 min-h-10 min-w-10 [&_svg]:size-5",
+	lg: "h-12 w-12 min-h-12 min-w-12 [&_svg]:size-6",
 };
 
-const iconSizeMap: Record<IconButtonSize, number> = {
-	sm: 18,
-	default: 22,
-	md: 22,
-	lg: 24,
-};
+const baseClasses =
+	"inline-flex items-center justify-center shrink-0 rounded-md border font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[var(--disabled-opacity)] p-0";
 
 export function IconButton(props: IconButtonProps): JSX.Element {
 	const {
 		icon,
 		variant = "default",
 		size = "default",
-		disabled,
-		style,
 		className,
 		...other
 	} = props;
 
-	useLayoutEffect(() => {
-		ensureIconButtonStyles();
-	}, []);
-
-	const side = sizeMap[size];
-	const iconSize = iconSizeMap[size];
-	const vs = variantStyles[variant];
-
-	const baseStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		width: side,
-		height: side,
-		minWidth: side,
-		minHeight: side,
-		padding: 0,
-		borderRadius: componentShapeTokens.button,
-		border: `1px solid ${vs.borderColor}`,
-		backgroundColor: vs.background,
-		color: vs.color,
-		cursor: disabled ? "not-allowed" : "pointer",
-		opacity: disabled ? disabledOpacity : 1,
-		pointerEvents: disabled ? "none" : undefined,
-		outline: "none",
-		["--surface-ib-bg-hover" as string]: vs.hoverBackground,
-		["--surface-ib-border-hover" as string]: vs.hoverBorder ?? "transparent",
-		["--surface-ib-color-hover" as string]: vs.color,
-		["--surface-ib-focus-ring" as string]: focusRing,
-	};
-
-	const combinedClassName = ["surface-icon-button", className]
-		.filter(Boolean)
-		.join(" ");
-
 	return (
 		<button
 			type="button"
-			className={combinedClassName}
-			disabled={disabled}
-			style={{ ...baseStyles, ...style }}
+			className={cn(
+				baseClasses,
+				variantClasses[variant],
+				sizeClasses[size],
+				className,
+			)}
 			{...other}
 		>
-			<span
-				aria-hidden
-				style={{
-					display: "inline-flex",
-					alignItems: "center",
-					justifyContent: "center",
-					width: iconSize,
-					height: iconSize,
-					color: "currentColor",
-				}}
-			>
+			<span aria-hidden className="inline-flex items-center justify-center text-current">
 				{icon}
 			</span>
 		</button>

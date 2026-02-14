@@ -10,32 +10,8 @@ import {
 	useCallback,
 	useRef,
 	useState,
-	useLayoutEffect,
 } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	disabledOpacity,
-	motionTokens,
-} from "./foundation";
-
-const INPUT_OTP_CSS_ID = "surface-input-otp-styles";
-const focusRing = "0 0 0 2px rgba(22, 119, 255, 0.2)";
-
-function ensureInputOTPStyles(): void {
-	if (typeof document === "undefined" || document.getElementById(INPUT_OTP_CSS_ID))
-		return;
-	const style = document.createElement("style");
-	style.id = INPUT_OTP_CSS_ID;
-	style.textContent = `
-.surface-input-otp-wrap{transition:border-color ${motionTokens.duration.short2}, box-shadow ${motionTokens.duration.short2}}
-.surface-input-otp-wrap:focus-within{outline:none;box-shadow:var(--surface-input-otp-focus-ring)!important}
-@media(prefers-reduced-motion:reduce){.surface-input-otp-wrap{transition:none}}
-`;
-	document.head.appendChild(style);
-}
+import { cn } from "./lib/utils";
 
 interface InputOTPContextValue {
 	value: string;
@@ -87,10 +63,6 @@ export function InputOTPRoot(props: InputOTPRootProps): JSX.Element {
 		[maxLength, isControlled, onValueChange],
 	);
 
-	useLayoutEffect(() => {
-		ensureInputOTPStyles();
-	}, []);
-
 	const ctx: InputOTPContextValue = {
 		value,
 		setValue,
@@ -99,25 +71,15 @@ export function InputOTPRoot(props: InputOTPRootProps): JSX.Element {
 		slotRefs,
 	};
 
-	const wrapStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		gap: 0,
-		borderRadius: componentShapeTokens.textField,
-		border: `1px solid ${lightColorScheme.outline}`,
-		backgroundColor: lightColorScheme.surface,
-		padding: spacingTokens[1],
-		["--surface-input-otp-focus-ring" as string]: focusRing,
-		transition: `border-color ${motionTokens.duration.short2}, box-shadow ${motionTokens.duration.short2}`,
-		opacity: disabled ? disabledOpacity : undefined,
-		pointerEvents: disabled ? "none" : undefined,
-	};
-
 	return (
 		<InputOTPContext.Provider value={ctx}>
 			<div
-				className={["surface-input-otp-wrap", className].filter(Boolean).join(" ")}
-				style={{ ...wrapStyles, ...style }}
+				className={cn(
+					"inline-flex items-center gap-0 rounded-md border border-border bg-background p-1 transition-[border-color,box-shadow] duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-ring",
+					disabled && "pointer-events-none opacity-[var(--disabled-opacity)]",
+					className,
+				)}
+				style={style}
 			>
 				{children}
 			</div>
@@ -136,25 +98,13 @@ export interface InputOTPGroupProps {
 export function InputOTPGroup(props: InputOTPGroupProps): JSX.Element {
 	const { children, style, className } = props;
 	return (
-		<div
-			className={className}
-			style={{
-				display: "flex",
-				alignItems: "center",
-				gap: spacingTokens[1],
-				...style,
-			}}
-		>
+		<div className={cn("flex items-center gap-1", className)} style={style}>
 			{children}
 		</div>
 	);
 }
 
 InputOTPGroup.displayName = "InputOTP.Group";
-
-const bodyMedium = typographyTokens.body.medium;
-const slotWidth = "2.5rem";
-const slotHeight = 40;
 
 export interface InputOTPSlotProps {
 	index: number;
@@ -165,7 +115,7 @@ export interface InputOTPSlotProps {
 export function InputOTPSlot(props: InputOTPSlotProps): JSX.Element | null {
 	const { index, style, className } = props;
 	const ctx = useContext(InputOTPContext);
-	if (!ctx) return <input readOnly aria-hidden style={{ width: slotWidth }} />;
+	if (!ctx) return <input readOnly aria-hidden className="w-10" />;
 	const { value, setValue, maxLength, disabled, slotRefs } = ctx;
 	if (index < 0 || index >= maxLength) return null;
 
@@ -202,20 +152,6 @@ export function InputOTPSlot(props: InputOTPSlotProps): JSX.Element | null {
 		}
 	};
 
-	const slotStyles: CSSProperties = {
-		width: slotWidth,
-		height: slotHeight,
-		boxSizing: "border-box",
-		padding: 0,
-		border: "none",
-		backgroundColor: "transparent",
-		fontFamily: bodyMedium.fontFamily,
-		fontSize: bodyMedium.fontSize,
-		textAlign: "center",
-		color: lightColorScheme.onSurface,
-		outline: "none",
-	};
-
 	return (
 		<input
 			ref={inputRef}
@@ -226,8 +162,11 @@ export function InputOTPSlot(props: InputOTPSlotProps): JSX.Element | null {
 			aria-label={`Dígito ${index + 1} de ${maxLength}`}
 			value={char}
 			disabled={disabled}
-			className={className}
-			style={{ ...slotStyles, ...style }}
+			className={cn(
+				"h-10 w-10 border-0 bg-transparent p-0 text-center text-sm text-foreground outline-none",
+				className,
+			)}
+			style={style}
 			onChange={handleChange}
 			onKeyDown={handleKeyDown}
 		/>
@@ -246,16 +185,8 @@ export function InputOTPSeparator(props: InputOTPSeparatorProps): JSX.Element {
 	const { children, style, className } = props;
 	return (
 		<span
-			className={className}
-			style={{
-				display: "inline-flex",
-				alignItems: "center",
-				justifyContent: "center",
-				fontFamily: bodyMedium.fontFamily,
-				fontSize: bodyMedium.fontSize,
-				color: lightColorScheme.onSurfaceVariant,
-				...style,
-			}}
+			className={cn("inline-flex items-center justify-center text-sm text-muted-foreground", className)}
+			style={style}
 			aria-hidden
 		>
 			{children ?? "−"}

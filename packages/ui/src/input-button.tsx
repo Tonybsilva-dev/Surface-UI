@@ -1,12 +1,6 @@
 import type { CSSProperties, InputHTMLAttributes, ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
-import {
-	lightColorScheme,
-	typographyTokens,
-	spacingTokens,
-	componentShapeTokens,
-	motionTokens,
-} from "./foundation";
+import { cn } from "./lib/utils";
 
 interface InputButtonContextValue {
 	showInput: boolean;
@@ -41,19 +35,12 @@ export function InputButtonProvider(props: InputButtonProviderProps): JSX.Elemen
 	return (
 		<InputButtonContext.Provider value={ctx}>
 			<div
-				className={className}
-				style={{
-					position: "relative",
-					display: "inline-flex",
-					alignItems: "stretch",
-					height: 40,
-					width: showInput ? "100%" : "auto",
-					maxWidth: 400,
-					borderRadius: componentShapeTokens.chip,
-					border: `1px solid ${lightColorScheme.outline}`,
-					overflow: "hidden",
-					...style,
-				}}
+				className={cn(
+					"relative inline-flex h-10 max-w-[400px] items-stretch overflow-hidden rounded-full border border-border",
+					showInput ? "w-full" : "w-auto",
+					className,
+				)}
+				style={style}
 			>
 				{children}
 			</div>
@@ -76,26 +63,14 @@ export function InputButtonAction(props: InputButtonActionProps): JSX.Element | 
 	const { setShowInput, showInput } = ctx;
 	if (showInput) return null;
 
-	const buttonStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		paddingInline: spacingTokens[4],
-		height: "100%",
-		border: "none",
-		borderRadius: 0,
-		backgroundColor: lightColorScheme.surface,
-		fontFamily: typographyTokens.label.large.fontFamily,
-		fontSize: typographyTokens.label.large.fontSize,
-		color: lightColorScheme.onSurface,
-		cursor: "pointer",
-	};
-
 	return (
 		<button
 			type="button"
-			className={className}
-			style={{ ...buttonStyles, ...style }}
+			className={cn(
+				"inline-flex h-full items-center justify-center border-0 bg-background px-4 text-sm font-medium text-foreground",
+				className,
+			)}
+			style={style}
 			onClick={() => setShowInput(true)}
 		>
 			{children}
@@ -118,29 +93,15 @@ export function InputButtonSubmit(props: InputButtonSubmitProps): JSX.Element {
 	if (!ctx) return <>{children}</>;
 	const { showInput, setShowInput } = ctx;
 
-	const buttonStyles: CSSProperties = {
-		display: "inline-flex",
-		alignItems: "center",
-		justifyContent: "center",
-		flexShrink: 0,
-		minWidth: showInput ? 72 : 40,
-		paddingInline: showInput ? spacingTokens[3] : 0,
-		height: "100%",
-		border: "none",
-		borderRadius: 0,
-		backgroundColor: lightColorScheme.primary,
-		color: lightColorScheme.onPrimary,
-		fontFamily: typographyTokens.label.large.fontFamily,
-		fontSize: typographyTokens.label.large.fontSize,
-		cursor: "pointer",
-		transition: `min-width ${motionTokens.duration.short2}, padding ${motionTokens.duration.short2}`,
-	};
-
 	return (
 		<button
 			type="button"
-			className={className}
-			style={{ ...buttonStyles, ...style }}
+			className={cn(
+				"inline-flex h-full shrink-0 items-center justify-center border-0 bg-primary px-3 text-sm font-medium text-primary-foreground transition-[min-width,padding] duration-150",
+				showInput ? "min-w-[72px]" : "min-w-10 px-0",
+				className,
+			)}
+			style={style}
 			onClick={() => setShowInput(!showInput)}
 		>
 			{showInput ? children : icon}
@@ -161,27 +122,16 @@ export function InputButtonInput(props: InputButtonInputProps): JSX.Element | nu
 	if (!ctx) return <input {...other} />;
 	const { showInput } = ctx;
 
-	const inputStyles: CSSProperties = {
-		flex: 1,
-		minWidth: 0,
-		height: "100%",
-		boxSizing: "border-box",
-		paddingInline: spacingTokens[3],
-		border: "none",
-		backgroundColor: lightColorScheme.surface,
-		fontFamily: typographyTokens.body.medium.fontFamily,
-		fontSize: typographyTokens.body.medium.fontSize,
-		color: lightColorScheme.onSurface,
-		outline: "none",
-	};
-
 	if (!showInput) return null;
 
 	return (
 		<input
 			type="text"
-			className={className}
-			style={{ ...inputStyles, ...style }}
+			className={cn(
+				"h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-sm text-foreground outline-none",
+				className,
+			)}
+			style={style}
 			{...other}
 		/>
 	);
