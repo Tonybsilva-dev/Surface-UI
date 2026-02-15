@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useArgs } from "@storybook/preview-api";
 import type { ComponentProps } from "react";
 import { useState } from "react";
 import { Input } from "@surface/ui/input";
@@ -91,6 +92,54 @@ type InputStoryArgs = ComponentProps<typeof Input> & {
 
 type Story = StoryObj<typeof Input>;
 
+function InputDefaultWithArgs() {
+	const [args] = useArgs<InputStoryArgs>();
+	const [value, setValue] = useState("");
+	// #region agent log
+	fetch("http://127.0.0.1:7248/ingest/3b8749ae-5c40-432a-b513-6e65887ca92d", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			location: "Input.stories.tsx:Default render (useArgs)",
+			message: "Story render args from useArgs",
+			data: {
+				resolved: {
+					size: args?.size,
+					status: args?.status,
+					allowClear: args?.allowClear,
+					showCount: args?.showCount,
+					showPrefix: args?.showPrefix,
+					showSuffix: args?.showSuffix,
+				},
+				runId: "post-fix",
+			},
+			timestamp: Date.now(),
+			hypothesisId: "D_fix",
+		}),
+	}).catch(() => {});
+	// #endregion
+	const prefix = args?.showPrefix === true ? <User className="size-4" aria-hidden /> : undefined;
+	const suffix = args?.showSuffix === true ? <Search className="size-4" aria-hidden /> : undefined;
+	return (
+		<div className="w-full max-w-sm">
+			<Input
+				placeholder={args?.placeholder ?? "Digite aqui…"}
+				disabled={args?.disabled === true}
+				size={args?.size ?? "middle"}
+				status={args?.status ?? "default"}
+				allowClear={args?.allowClear === true}
+				showCount={args?.showCount === true}
+				maxLength={args?.maxLength}
+				prefix={prefix}
+				suffix={suffix}
+				value={value}
+				onChange={(e) => setValue(e.target.value)}
+				onClear={() => setValue("")}
+			/>
+		</div>
+	);
+}
+
 export const Default: Story = {
 	args: {
 		placeholder: "Digite aqui…",
@@ -103,59 +152,7 @@ export const Default: Story = {
 		showPrefix: false,
 		showSuffix: false,
 	} as InputStoryArgs,
-	render: function InputDefault(renderArg: InputStoryArgs | { args?: InputStoryArgs }) {
-		// #region agent log
-		const fromNested = "args" in renderArg && typeof renderArg.args === "object" && renderArg.args;
-		const args: InputStoryArgs = fromNested ? renderArg.args! : (renderArg as InputStoryArgs);
-		fetch("http://127.0.0.1:7248/ingest/3b8749ae-5c40-432a-b513-6e65887ca92d", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				location: "Input.stories.tsx:Default render",
-				message: "Story render args resolution",
-				data: {
-					renderArgKeys: typeof renderArg === "object" && renderArg !== null ? Object.keys(renderArg) : [],
-					fromNested,
-					resolved: {
-						size: args?.size,
-						status: args?.status,
-						allowClear: args?.allowClear,
-						showCount: args?.showCount,
-						showPrefix: args?.showPrefix,
-						showSuffix: args?.showSuffix,
-					},
-					types: {
-						allowClear: typeof args?.allowClear,
-						showPrefix: typeof args?.showPrefix,
-					},
-				},
-				timestamp: Date.now(),
-				hypothesisId: "A_B_D_E",
-			}),
-		}).catch(() => {});
-		// #endregion
-		const [value, setValue] = useState("");
-		const prefix = args.showPrefix === true ? <User className="size-4" aria-hidden /> : undefined;
-		const suffix = args.showSuffix === true ? <Search className="size-4" aria-hidden /> : undefined;
-		return (
-			<div className="w-full max-w-sm">
-				<Input
-					placeholder={args.placeholder ?? "Digite aqui…"}
-					disabled={args.disabled === true}
-					size={args.size ?? "middle"}
-					status={args.status ?? "default"}
-					allowClear={args.allowClear === true}
-					showCount={args.showCount === true}
-					maxLength={args.maxLength}
-					prefix={prefix}
-					suffix={suffix}
-					value={value}
-					onChange={(e) => setValue(e.target.value)}
-					onClear={() => setValue("")}
-				/>
-			</div>
-		);
-	},
+	render: () => <InputDefaultWithArgs />,
 };
 
 export const WithPrefixAndSuffix: Story = {
