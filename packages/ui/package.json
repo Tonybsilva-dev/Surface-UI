@@ -99,6 +99,11 @@
       "import": "./dist/input.mjs",
       "require": "./dist/input.js"
     },
+    "./masked-input": {
+      "types": "./dist/masked-input.d.mts",
+      "import": "./dist/masked-input.mjs",
+      "require": "./dist/masked-input.js"
+    },
     "./table": {
       "types": "./dist/table.d.mts",
       "import": "./dist/table.mjs",
@@ -254,6 +259,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.0",
+    "react-imask": "^7.6.1",
     "recharts": "^2.0.0",
     "tailwind-merge": "^2.2.0",
     "tsup": "^8.0.0",

@@ -4,7 +4,7 @@ import { ToggleGroup, ToggleGroupItem } from "@surface/ui/toggle-group";
 import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof ToggleGroup> = {
-	title: "Components/Atoms/ToggleGroup",
+	title: "Components/Molecules/ToggleGroup",
 	component: ToggleGroup,
 	parameters: {
 		layout: "padded",

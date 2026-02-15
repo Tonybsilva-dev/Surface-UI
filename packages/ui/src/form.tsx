@@ -9,7 +9,7 @@ import {
 	useFormContext,
 	useFormState,
 } from "react-hook-form";
-import { AlertCircle } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 import { Label } from "./label";
 import { cn } from "./lib/utils";
 
@@ -52,8 +52,11 @@ function useFormField() {
 	const formState = useFormState({ name: fieldContext.name });
 	const fieldState = getFieldState(fieldContext.name, formState);
 
-	if (!fieldContext.name) {
+	if (!fieldContext?.name) {
 		throw new Error("useFormField should be used within <FormField>");
+	}
+	if (!itemContext?.id) {
+		throw new Error("useFormField should be used within <FormItem>");
 	}
 
 	const { id } = itemContext;
@@ -78,7 +81,7 @@ function FormItem({
 		<FormItemContext.Provider value={{ id }}>
 			<div
 				data-slot="form-item"
-				className={cn("grid gap-2", className)}
+				className={cn("grid gap-2 border-0 border-none", className)}
 				{...props}
 			/>
 		</FormItemContext.Provider>
@@ -133,7 +136,7 @@ function FormDescription({
 		<p
 			data-slot="form-description"
 			id={formDescriptionId}
-			className={cn("text-muted-foreground text-sm", className)}
+			className={cn("text-sm text-muted-foreground border-0 border-none", className)}
 			{...props}
 		/>
 	);
@@ -155,12 +158,13 @@ function FormMessage({
 			data-slot="form-message"
 			id={formMessageId}
 			className={cn(
-				"flex items-center gap-1 text-destructive text-sm animate-in fade-in-0 duration-300",
+				"flex items-center gap-1 text-sm text-destructive border-0 border-none",
+				"animate-in fade-in-0 duration-(--duration-medium) ease-(--ease-standard)",
 				className,
 			)}
 			{...props}
 		>
-			<AlertCircle className="size-3" aria-hidden />
+			<CircleAlert className="size-3 shrink-0" aria-hidden />
 			{body}
 		</p>
 	);

@@ -1,13 +1,20 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { cn } from "./lib/utils";
 
-function CollapsibleRoot(
-	props: React.ComponentProps<typeof CollapsiblePrimitive.Root>,
-): JSX.Element {
+type CollapsibleRootProps = React.ComponentProps<typeof CollapsiblePrimitive.Root> & {
+	/** Mostrar borda à volta do bloco. @default true */
+	bordered?: boolean;
+};
+
+function CollapsibleRoot({ bordered = true, className, ...props }: CollapsibleRootProps): JSX.Element {
 	return (
 		<CollapsiblePrimitive.Root
 			data-slot="collapsible"
-			className={cn("rounded-md border border-border", props.className)}
+			className={cn(
+				"rounded-md",
+				bordered ? "border border-border bg-background" : "border-0",
+				className,
+			)}
 			{...props}
 		/>
 	);

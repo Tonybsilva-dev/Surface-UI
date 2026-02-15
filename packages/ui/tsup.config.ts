@@ -33,6 +33,7 @@ const allEntries = [
 	"src/image.tsx",
 	"src/select.tsx",
 	"src/input.tsx",
+	"src/masked-input.tsx",
 	"src/input-button.tsx",
 	"src/input-otp.tsx",
 	"src/toggle-group.tsx",

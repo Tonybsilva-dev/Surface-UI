@@ -9,6 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 interface DropdownMenuContextValue {
 	open: boolean;
@@ -61,20 +62,18 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps): JSX.Elemen
 	const { open, setOpen, triggerRef } = ctx;
 
 	return (
-		<button
+		<Button
 			ref={triggerRef as React.Ref<HTMLButtonElement>}
 			type="button"
-			className={cn(
-				"inline-flex min-h-10 items-center justify-center rounded-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground cursor-pointer",
-				className,
-			)}
+			variant="ghost"
+			className={className}
 			style={style}
 			onClick={() => setOpen(!open)}
 			aria-expanded={open}
 			aria-haspopup="menu"
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 
@@ -135,7 +134,7 @@ export function DropdownMenuContent(
 			data-surface-dropdown-menu-content
 			role="menu"
 			className={cn(
-				"fixed z-[9999] max-h-[280px] overflow-y-auto rounded-md border border-border bg-card p-1 shadow-[var(--shadow-2)]",
+				"fixed z-[9999] max-h-[280px] overflow-y-auto rounded-md bg-card p-1 shadow-[var(--shadow-2)]",
 				className,
 			)}
 			style={{

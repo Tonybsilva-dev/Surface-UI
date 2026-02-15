@@ -12,7 +12,12 @@ const sizeClasses: Record<InputSize, string> = {
 	large: "h-10 text-base",
 };
 
-export interface InputProps extends Omit<ComponentProps<"input">, "size" | "prefix" | "suffix"> {
+/** Unifica o fundo quando o browser aplica auto-preenchimento (evita faixa branca). */
+const autofillClasses =
+	"[&::-webkit-autofill]:shadow-[0_0_0_30px_var(--background)_inset] [&::-webkit-autofill]:[-webkit-text-fill-color:var(--foreground)]";
+
+export interface InputProps
+	extends Omit<ComponentProps<"input">, "size" | "prefix" | "suffix"> {
 	/** Prefixo (ícone ou conteúdo à esquerda). */
 	prefix?: ReactNode;
 	/** Sufixo (ícone ou conteúdo à direita). Conflita com allowClear quando ambos preenchem a zona direita. */
@@ -78,7 +83,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 				showCount,
 				hasPrefix: prefix != null,
 				hasSuffix: suffix != null,
-				hasAddons: (prefix != null || suffix != null || allowClear || showCount),
+				hasAddons: prefix != null || suffix != null || allowClear || showCount,
 			},
 			timestamp: Date.now(),
 			hypothesisId: "C",
@@ -89,14 +94,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 	const setRef = (el: HTMLInputElement | null) => {
 		inputRef.current = el;
 		if (typeof ref === "function") ref(el);
-		else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = el;
+		else if (ref) ref.current = el;
 	};
 
 	const isControlled = value !== undefined;
 	const [uncontrolledValue, setUncontrolledValue] = useState(
 		(typeof defaultValue === "string" ? defaultValue : "") ?? "",
 	);
-	const currentValue = isControlled ? (typeof value === "string" ? value : "") : uncontrolledValue;
+	const currentValue = isControlled
+		? typeof value === "string"
+			? value
+			: ""
+		: uncontrolledValue;
 	const hasValue = currentValue.length > 0;
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -126,68 +135,77 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 		onKeyDown?.(e);
 	};
 
+	// Quando usado dentro de Form, FormControl passa aria-invalid; usamos para estado visual de erro
+	const ariaInvalid = props["aria-invalid"] === true || props["aria-invalid"] === "true";
+	let effectiveStatus: InputStatus = "default";
+	if (status !== "default") effectiveStatus = status;
+	else if (ariaInvalid) effectiveStatus = "error";
+
 	const borderByStatus =
-		status === "error"
+		effectiveStatus === "error"
 			? "border-destructive focus-visible:ring-destructive/20"
-			: status === "warning"
+			: effectiveStatus === "warning"
 				? "border-amber-500 focus-visible:ring-amber-500/20"
 				: "border-input focus-visible:ring-ring/50";
 
 	const baseInputClasses = cn(
-		"flex w-full min-w-0 rounded-md border bg-transparent px-3 py-1 shadow-sm transition-[color,box-shadow] outline-none",
+		"flex w-full min-w-0 rounded-none! border bg-transparent px-3 py-1 shadow-sm transition-[color,box-shadow] outline-none",
 		"placeholder:text-muted-foreground",
 		"selection:bg-primary selection:text-primary-foreground",
 		"disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
 		"focus-visible:ring-[3px]",
 		"aria-invalid:border-destructive",
+		autofillClasses,
 		sizeClasses[size],
 		borderByStatus,
 		classNames?.input,
 		className,
 	);
 
-	const hasAddons = prefix != null || suffix != null || allowClear || showCount;
+	const hasAddons =
+		prefix !== null || suffix !== null || allowClear || showCount;
 
 	if (!hasAddons) {
 		return (
 			<input
-				ref={ref}
-				type={type}
-				data-slot="input"
 				className={baseInputClasses}
-				value={value}
+				data-slot="input"
 				defaultValue={defaultValue}
-				onChange={onChange}
-				onKeyDown={handleKeyDown}
 				disabled={disabled}
 				maxLength={maxLength}
+				onChange={onChange}
+				onKeyDown={handleKeyDown}
+				ref={ref}
+				type={type}
+				value={value}
 				{...props}
 			/>
 		);
 	}
 
 	const effectiveSuffix =
-		suffix ?? (allowClear && hasValue ? (
+		suffix ??
+		(allowClear && hasValue ? (
 			<button
-				type="button"
 				aria-label="Limpar"
-				onClick={handleClear}
 				className={cn(
-					"text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center justify-center rounded p-0.5 transition-colors",
+					"text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center justify-center rounded-none! p-0.5 transition-colors",
 					classNames?.suffix,
 				)}
+				onClick={handleClear}
+				type="button"
 			>
-				<X className="size-4" aria-hidden />
+				<X aria-hidden className="size-4" />
 			</button>
 		) : null);
 
 	const countNode = showCount ? (
 		<span
-			data-slot="count"
 			className={cn(
 				"text-muted-foreground shrink-0 pr-3 text-xs tabular-nums",
 				classNames?.count,
 			)}
+			data-slot="count"
 		>
 			{currentValue.length}
 			{maxLength != null ? ` / ${maxLength}` : ""}
@@ -196,45 +214,52 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
 	return (
 		<span
-			data-slot="root"
 			className={cn(
-				"relative flex w-full min-w-0 items-center gap-2 rounded-md border border-input bg-background transition-[border-color,box-shadow] duration-150 focus-within:outline-none focus-within:ring-[3px]",
+				"relative flex w-full min-w-0 items-center gap-2 rounded-none! border border-input bg-background transition-[border-color,box-shadow] duration-150 focus-within:outline-none focus-within:ring-[3px]",
 				sizeClasses[size],
 				borderByStatus,
 				disabled && "pointer-events-none opacity-50",
 				classNames?.root,
 			)}
+			data-slot="root"
 		>
-			{prefix != null ? (
+			{prefix !== null ? (
 				<span
+					className={cn(
+						"text-muted-foreground flex shrink-0 items-center justify-center pl-3 [&_svg]:size-4",
+						classNames?.prefix,
+					)}
 					data-slot="prefix"
-					className={cn("text-muted-foreground flex shrink-0 items-center justify-center pl-3 [&_svg]:size-4", classNames?.prefix)}
 				>
 					{prefix}
 				</span>
 			) : null}
 			<input
-				ref={setRef}
-				type={type}
-				data-slot="input"
 				className={cn(
 					"min-w-0 flex-1 border-0 bg-transparent py-1 outline-none focus:ring-0 focus-visible:ring-0",
+					autofillClasses,
 					prefix != null ? "pl-0" : "pl-3",
 					effectiveSuffix != null || countNode ? "pr-2" : "pr-3",
 					classNames?.input,
 				)}
-				value={value}
+				data-slot="input"
 				defaultValue={defaultValue}
-				onChange={handleChange}
-				onKeyDown={handleKeyDown}
 				disabled={disabled}
 				maxLength={maxLength}
+				onChange={handleChange}
+				onKeyDown={handleKeyDown}
+				ref={setRef}
+				type={type}
+				value={value}
 				{...props}
 			/>
-			{effectiveSuffix != null ? (
+			{effectiveSuffix !== null ? (
 				<span
+					className={cn(
+						"text-muted-foreground flex shrink-0 items-center justify-center pr-2 [&_svg]:size-4",
+						classNames?.suffix,
+					)}
 					data-slot="suffix"
-					className={cn("text-muted-foreground flex shrink-0 items-center justify-center pr-2 [&_svg]:size-4", classNames?.suffix)}
 				>
 					{effectiveSuffix}
 				</span>

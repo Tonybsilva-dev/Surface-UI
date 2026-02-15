@@ -5,7 +5,7 @@ import { Text } from "@surface/ui/text";
 import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Collapsible> = {
-	title: "Components/Atoms/Collapsible",
+	title: "Components/Molecules/Collapsible",
 	component: Collapsible,
 	parameters: {
 		layout: "padded",
@@ -73,13 +73,8 @@ export const Default: Story = {
 	render: (args) => (
 		<Collapsible
 			defaultOpen={args.defaultOpen}
-			className={[
-				"w-full max-w-[360px]",
-				!args.bordered && "border-transparent",
-				args.className,
-			]
-				.filter(Boolean)
-				.join(" ")}
+			bordered={args.bordered}
+			className={`w-full max-w-[360px] ${args.className ?? ""}`.trim()}
 		>
 			<CollapsibleTrigger disabled={args.disabled}>
 				<Text variant="bodyMedium">{args.headerLabel}</Text>

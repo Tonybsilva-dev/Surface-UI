@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useArgs } from "@storybook/preview-api";
 import type { ComponentProps } from "react";
 import { useState } from "react";
 import { Input } from "@surface/ui/input";
 import type { InputSize, InputStatus } from "@surface/ui/input";
+import { Label } from "@surface/ui/label";
 import { PasswordStrength } from "@surface/ui/password-strength";
 import { User, Search } from "lucide-react";
 import { StoryCard, StorySection } from "../foundation/shared";
@@ -92,54 +92,6 @@ type InputStoryArgs = ComponentProps<typeof Input> & {
 
 type Story = StoryObj<typeof Input>;
 
-function InputDefaultWithArgs() {
-	const [args] = useArgs<InputStoryArgs>();
-	const [value, setValue] = useState("");
-	// #region agent log
-	fetch("http://127.0.0.1:7248/ingest/3b8749ae-5c40-432a-b513-6e65887ca92d", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({
-			location: "Input.stories.tsx:Default render (useArgs)",
-			message: "Story render args from useArgs",
-			data: {
-				resolved: {
-					size: args?.size,
-					status: args?.status,
-					allowClear: args?.allowClear,
-					showCount: args?.showCount,
-					showPrefix: args?.showPrefix,
-					showSuffix: args?.showSuffix,
-				},
-				runId: "post-fix",
-			},
-			timestamp: Date.now(),
-			hypothesisId: "D_fix",
-		}),
-	}).catch(() => {});
-	// #endregion
-	const prefix = args?.showPrefix === true ? <User className="size-4" aria-hidden /> : undefined;
-	const suffix = args?.showSuffix === true ? <Search className="size-4" aria-hidden /> : undefined;
-	return (
-		<div className="w-full max-w-sm">
-			<Input
-				placeholder={args?.placeholder ?? "Digite aqui…"}
-				disabled={args?.disabled === true}
-				size={args?.size ?? "middle"}
-				status={args?.status ?? "default"}
-				allowClear={args?.allowClear === true}
-				showCount={args?.showCount === true}
-				maxLength={args?.maxLength}
-				prefix={prefix}
-				suffix={suffix}
-				value={value}
-				onChange={(e) => setValue(e.target.value)}
-				onClear={() => setValue("")}
-			/>
-		</div>
-	);
-}
-
 export const Default: Story = {
 	args: {
 		placeholder: "Digite aqui…",
@@ -152,7 +104,29 @@ export const Default: Story = {
 		showPrefix: false,
 		showSuffix: false,
 	} as InputStoryArgs,
-	render: () => <InputDefaultWithArgs />,
+	render: function InputDefaultRender(args: InputStoryArgs) {
+		const [value, setValue] = useState("");
+		const prefix = args.showPrefix === true ? <User className="size-4" aria-hidden /> : undefined;
+		const suffix = args.showSuffix === true ? <Search className="size-4" aria-hidden /> : undefined;
+		return (
+			<div className="w-full max-w-sm">
+				<Input
+					placeholder={args.placeholder ?? "Digite aqui…"}
+					disabled={args.disabled === true}
+					size={args.size ?? "middle"}
+					status={args.status ?? "default"}
+					allowClear={args.allowClear === true}
+					showCount={args.showCount === true}
+					maxLength={args.maxLength}
+					prefix={prefix}
+					suffix={suffix}
+					value={value}
+					onChange={(e) => setValue(e.target.value)}
+					onClear={() => setValue("")}
+				/>
+			</div>
+		);
+	},
 };
 
 export const WithPrefixAndSuffix: Story = {
@@ -282,13 +256,15 @@ export const Overview: Story = {
 				</StoryCard>
 			</StorySection>
 			<StorySection title="Exemplo completo">
-				<StoryCard title="Input com prefix, clear e contagem">
+				<StoryCard title="Input com label, prefix, clear e contagem">
 					<p className="mb-4 text-sm text-muted-foreground">
-						Campo controlado com ícone de utilizador, botão limpar e contagem até 50 caracteres.
+						Campo com label acessível, ícone de utilizador, botão limpar e contagem até 50 caracteres.
 					</p>
-					<div className="w-full max-w-sm">
+					<div className="w-full max-w-sm space-y-2">
+						<Label htmlFor="input-overview-username">Nome de utilizador</Label>
 						<Input
-							placeholder="Nome de utilizador"
+							id="input-overview-username"
+							placeholder="Digite o nome"
 							prefix={<User className="size-4 text-muted-foreground" aria-hidden />}
 							allowClear
 							showCount

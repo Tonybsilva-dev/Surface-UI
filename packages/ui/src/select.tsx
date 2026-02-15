@@ -94,7 +94,7 @@ export function SelectTrigger(props: SelectTriggerProps): JSX.Element {
 			aria-haspopup="listbox"
 			disabled={disabled}
 			className={cn(
-				"inline-flex min-w-[120px] items-center justify-between gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground",
+				"inline-flex min-w-[120px] items-center justify-between gap-2 rounded-none border border-border bg-background px-3 py-2 text-sm text-foreground",
 				size === "sm" ? "h-8" : "h-10",
 				disabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
 				className,
@@ -187,7 +187,7 @@ export function SelectContent(props: SelectContentProps): JSX.Element | null {
 		<div
 			data-surface-select-content
 			role="listbox"
-			className={cn("fixed z-[9999] max-h-[280px] overflow-y-auto rounded-md border border-border bg-card p-1 shadow-[var(--shadow-2)]", className)}
+			className={cn("fixed z-[9999] max-h-[280px] overflow-y-auto rounded-none border border-border bg-card p-1 shadow-[var(--shadow-2)]", className)}
 			style={{
 				top: position.top,
 				left: position.left,
@@ -232,7 +232,7 @@ export function SelectItem(props: SelectItemProps): JSX.Element {
 			aria-selected={isSelected}
 			tabIndex={0}
 			className={cn(
-				"flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 text-sm text-foreground",
+				"flex cursor-pointer items-center gap-2 rounded-none px-3 py-2 text-sm text-foreground",
 				isSelected && "bg-muted",
 				className,
 			)}

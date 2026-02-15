@@ -8,7 +8,7 @@ import { StoryCard, StorySection } from "../foundation/shared";
 const wrapperClass = "min-h-[280px] w-full max-w-md";
 
 const meta: Meta<typeof Empty> = {
-	title: "Components/Atoms/Empty",
+	title: "Components/Molecules/Empty",
 	component: Empty,
 	parameters: {
 		layout: "padded",

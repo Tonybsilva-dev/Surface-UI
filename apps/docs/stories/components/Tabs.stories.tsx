@@ -5,7 +5,7 @@ import { Text } from "@surface/ui/text";
 import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Tabs.Root> = {
-  title: "Components/Atoms/Tabs",
+  title: "Components/Molecules/Tabs",
   component: Tabs.Root,
   parameters: {
     layout: "padded",

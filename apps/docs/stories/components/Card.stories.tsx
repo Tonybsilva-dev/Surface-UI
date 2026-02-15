@@ -12,7 +12,7 @@ import { StoryCard, StorySection } from "../foundation/shared";
 const wrapperClass = "p-8 max-w-[360px]";
 
 const meta: Meta<typeof Card> = {
-	title: "Components/Atoms/Card",
+	title: "Components/Molecules/Card",
 	component: Card,
 	parameters: {
 		layout: "padded",

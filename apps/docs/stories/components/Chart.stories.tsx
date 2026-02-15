@@ -24,6 +24,7 @@ import {
 } from "@surface/ui/chart";
 import { Card } from "@surface/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@surface/ui/toggle-group";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 /** Wrapper para as stories: dimensões fixas para o gráfico preencher todo o espaço. */
 const ChartWrapper = ({
@@ -48,7 +49,7 @@ const ChartWrapper = ({
 );
 
 const meta: Meta<typeof ChartContainer> = {
-	title: "Components/Atoms/Chart",
+	title: "Components/Organisms/Chart",
 	component: ChartContainer,
 	parameters: {
 		layout: "padded",
@@ -391,4 +392,155 @@ export const ChartAreaSatisfacaoClientes: Story = {
 			</Card>
 		);
 	},
+};
+
+/** Exemplo complexo reutilizado no Overview. */
+function ChartOverviewExample() {
+	const [groupBy, setGroupBy] = React.useState<"day" | "month">("month");
+	const chartData = groupBy === "month" ? satisfactionByMonth : satisfactionByDay;
+	return (
+		<Card className="w-full rounded-none">
+			<Card.Header className="flex flex-row items-start justify-between gap-4">
+				<div className="flex flex-col space-y-1.5">
+					<div className="text-lg font-medium leading-none tracking-tight">
+						Satisfação dos Clientes
+					</div>
+					<div className="text-sm text-muted-foreground">
+						{groupBy === "month" ? "Últimos 6 meses" : "Últimos 7 dias"}
+					</div>
+				</div>
+				<ToggleGroup
+					type="single"
+					value={groupBy}
+					onValueChange={(v) => {
+						if (v === "day" || v === "month") setGroupBy(v);
+					}}
+					variant="outline"
+				>
+					<ToggleGroupItem value="month">Por mês</ToggleGroupItem>
+					<ToggleGroupItem value="day">Por dia</ToggleGroupItem>
+				</ToggleGroup>
+			</Card.Header>
+			<Card.Content className="w-full px-2 pt-4 sm:px-6 sm:pt-6">
+				<ChartContainer
+					config={satisfactionChartConfig}
+					className="h-[250px] w-full min-h-[200px]"
+				>
+					<AreaChart data={chartData}>
+						<defs>
+							<linearGradient id="fillSatisfactionOverview" x1="0" y1="0" x2="0" y2="1">
+								<stop offset="5%" stopColor="var(--chart-average_score)" stopOpacity={0.8} />
+								<stop offset="95%" stopColor="var(--chart-average_score)" stopOpacity={0.1} />
+							</linearGradient>
+						</defs>
+						<CartesianGrid vertical={false} />
+						<XAxis
+							dataKey="period"
+							tickLine={false}
+							axisLine={false}
+							tickMargin={8}
+							minTickGap={32}
+							tickFormatter={(value: string) => {
+								if (groupBy === "month") {
+									const [y, m] = value.split("-");
+									return new Date(parseInt(y, 10), parseInt(m, 10) - 1).toLocaleDateString("pt-BR", {
+										month: "short",
+										year: "numeric",
+									});
+								}
+								return new Date(value).toLocaleDateString("pt-BR", {
+									month: "short",
+									day: "numeric",
+								});
+							}}
+						/>
+						<YAxis
+							tickLine={false}
+							axisLine={false}
+							tickMargin={8}
+							domain={[0, 5]}
+							tickFormatter={(v: number) => v.toFixed(1)}
+						/>
+						<ChartTooltip
+							cursor={false}
+							content={
+								<ChartTooltipContent
+									labelFormatter={(value: string) => {
+										if (groupBy === "month") {
+											const [y, m] = value.split("-");
+											return new Date(parseInt(y, 10), parseInt(m, 10) - 1).toLocaleDateString(
+												"pt-BR",
+												{ month: "long", year: "numeric" },
+											);
+										}
+										return new Date(value).toLocaleDateString("pt-BR", {
+											day: "numeric",
+											month: "long",
+											year: "numeric",
+										});
+									}}
+									indicator="dot"
+								/>
+							}
+						/>
+						<Area
+							dataKey="average_score"
+							type="natural"
+							fill="url(#fillSatisfactionOverview)"
+							stroke="var(--chart-average_score)"
+						/>
+					</AreaChart>
+				</ChartContainer>
+			</Card.Content>
+		</Card>
+	);
+}
+
+export const Overview: Story = {
+	render: () => (
+		<div className="space-y-8 p-8">
+			<StorySection title="Chart (overview)">
+				<StoryCard title="Documentação">
+					<div className="space-y-4 text-sm">
+						<section>
+							<h3 className="mb-2 font-semibold">O que é</h3>
+							<p>
+								O <strong>Chart</strong> é o container para gráficos baseados em Recharts, com tokens
+								da foundation (cores, sombras). Inclui <strong>ChartContainer</strong>,{" "}
+								<strong>ChartTooltip</strong> / <strong>ChartTooltipContent</strong>,{" "}
+								<strong>ChartLegend</strong> / <strong>ChartLegendContent</strong>. O gráfico preenche
+								o espaço quando o pai tem altura definida. Use <code>config</code> para mapear
+								dataKeys a labels e cores (CSS vars <code>--chart-*</code>).
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">API (props principais)</h3>
+							<ul className="list-inside list-disc space-y-1">
+								<li><code>config</code> — ChartConfig: mapeia dataKeys a label e color (gera --chart-*).</li>
+								<li><code>className</code> — Para definir altura/largura do container (ex.: h-[250px]).</li>
+								<li>Children: componentes Recharts (BarChart, LineChart, AreaChart, PieChart, etc.).</li>
+								<li>ChartTooltipContent / ChartLegendContent — formatação e legenda alinhadas ao config.</li>
+							</ul>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Onde é usado</h3>
+							<p>
+								Dashboards, relatórios de vendas, satisfação, métricas ao longo do tempo. Combine com
+								Card e ToggleGroup para painéis com filtros (ex.: por mês/dia). Veja a story
+								&quot;Chart Area Satisfação Clientes&quot; para um exemplo completo.
+							</p>
+						</section>
+					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo completo">
+				<StoryCard title="Dashboard: satisfação com filtro por período">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Card com título, toggle (mês/dia) e área de gráfico. Dados mockados; em produção viriam da API.
+					</p>
+					<ChartOverviewExample />
+				</StoryCard>
+			</StorySection>
+		</div>
+	),
 };
