@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Spinner } from "@surface/ui/spinner";
 import type { SpinnerSize } from "@surface/ui/spinner";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Spinner> = {
   title: "Components/Atoms/Spinner",
@@ -110,22 +110,78 @@ export const Variants: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Spinner (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Indicador de loading. Tamanhos sm/md/lg. Cores primary ou neutro. motionTokens para
-              animação.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <Spinner />
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Spinner (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Spinner</strong> é um átomo que exibe um indicador de carregamento
+                (círculo animado). API alinhada ao Spin do Ant Design: tamanhos sm/md/lg, variante
+                de cor (primary ou default), spinning (ligado/desligado) e tip (texto abaixo). Usa
+                motionTokens para a animação.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>size</code> — sm (20px), md (28px), lg (36px).
+                </li>
+                <li>
+                  <code>variant</code> — primary ou default (outline).
+                </li>
+                <li>
+                  <code>spinning</code> — se true, o indicador gira; se false, fica estático.
+                </li>
+                <li>
+                  <code>tip</code> — texto ou conteúdo abaixo do indicador.
+                </li>
+                <li>
+                  <code>delay</code> — atraso em ms antes de exibir (evita flash).
+                </li>
+                <li>
+                  <code>style</code> — estilos inline.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                No organismo <strong>DataTable</strong>, o Spinner é exibido no corpo da tabela
+                quando a prop <code>loading</code> é true, indicando que os dados estão a
+                carregar.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Spinner: tamanhos, variantes, tip e estado estático">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Exemplo que agrupa tamanhos (sm, md, lg), variantes (primary, default), tip e
+            spinning=false (estático).
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-wrap gap-6 items-center">
+              <Spinner size="sm" />
+              <Spinner size="md" />
+              <Spinner size="lg" />
+            </div>
+            <div className="flex flex-wrap gap-6 items-center">
+              <Spinner variant="primary" />
+              <Spinner variant="default" />
+            </div>
+            <div>
+              <Spinner tip="Carregando..." size="md" />
+            </div>
+            <div>
+              <Spinner spinning={false} tip="Spinning desligado" />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

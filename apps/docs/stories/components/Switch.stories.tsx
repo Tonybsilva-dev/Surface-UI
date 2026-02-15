@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Switch } from "@surface/ui/switch";
 import type { SwitchSize } from "@surface/ui/switch";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Switch> = {
   title: "Components/Atoms/Switch",
@@ -125,24 +125,75 @@ export const Disabled: Story = {
   ),
 };
 
+function SwitchPreferencesDemo() {
+  const [email, setEmail] = useState(true);
+  const [dark, setDark] = useState(false);
+  const [newsletter, setNewsletter] = useState(true);
+  return (
+    <div className="flex flex-col gap-4">
+      <Switch checked={email} onChange={(e) => setEmail(e.target.checked)}>
+        Notificações por email
+      </Switch>
+      <Switch checked={dark} onChange={(e) => setDark(e.target.checked)}>
+        Modo escuro
+      </Switch>
+      <Switch checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)}>
+        Newsletter semanal
+      </Switch>
+    </div>
+  );
+}
+
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Switch (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Selection control para alternar entre dois estados. Tamanhos sm/md. Usa
-              motionTokens para transição do thumb e primary/outline das foundations.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo (clique para alternar)">
-            <Switch>Ativar</Switch>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Switch (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Switch</strong> é um controlo de seleção para alternar entre dois
+                estados (ligado/desligado). Estilo alinhado aos tokens (primary, outline,
+                motionTokens para a transição do thumb).
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>checked</code> / <code>onChange</code> — estado controlado.
+                </li>
+                <li>
+                  <code>size</code> — sm, md (dimensões do interruptor).
+                </li>
+                <li>
+                  <code>disabled</code> — desativa o switch.
+                </li>
+                <li>
+                  <code>children</code> — rótulo opcional ao lado.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em páginas de preferências, formulários de configuração e listas onde se
+                ativa/desativa uma opção (notificações, modo escuro, newsletter).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Switch: preferências (notificações, modo escuro, newsletter)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Bloco de preferências com três switches reais: notificações por email, modo
+            escuro e newsletter semanal.
+          </p>
+          <SwitchPreferencesDemo />
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

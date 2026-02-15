@@ -17,5 +17,9 @@
     "turbo": "^2.8.7"
   },
   "packageManager": "pnpm@8.15.6",
-  "name": "design-system"
+  "name": "design-system",
+  "dependencies": {
+    "@storybook/react": "^10.2.8",
+    "@tanstack/react-table": "^8.21.3"
+  }
 }

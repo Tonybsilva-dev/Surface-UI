@@ -4,6 +4,7 @@ import {
 	Combobox,
 	type ComboboxOption,
 } from "@surface/ui/combobox";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Combobox> = {
 	title: "Components/Molecules/Combobox",
@@ -151,4 +152,91 @@ export const Loading: Story = {
 			</div>
 		);
 	},
+};
+
+const countryOptions: ComboboxOption[] = [
+	{ value: "pt", label: "Portugal" },
+	{ value: "es", label: "Espanha" },
+	{ value: "fr", label: "França" },
+	{ value: "de", label: "Alemanha" },
+	{ value: "it", label: "Itália" },
+	{ value: "uk", label: "Reino Unido" },
+];
+
+function ComboboxCountryDemo() {
+	const [value, setValue] = useState("");
+	return (
+		<div className="w-full max-w-[320px]">
+			<span className="mb-1 block text-sm font-medium" aria-hidden>País</span>
+			<Combobox
+				options={countryOptions}
+				value={value}
+				onValueChange={setValue}
+				placeholder="Selecione um país"
+				searchPlaceholder="Buscar país..."
+				emptyMessage="Nenhum país encontrado."
+				aria-label="Escolher país"
+			/>
+		</div>
+	);
+}
+
+export const Overview: Story = {
+	render: () => (
+		<div className="space-y-8 p-8">
+			<StorySection title="Combobox (overview)">
+				<StoryCard title="Documentação">
+					<div className="space-y-4 text-sm">
+						<section>
+							<h3 className="mb-2 font-semibold">O que é</h3>
+							<p>
+								O <strong>Combobox</strong> permite seleção com busca: o
+								utilizador filtra opções digitando. Pode usar a API simples
+								(options, value, onValueChange) ou a composição Combobox.Root +
+								Trigger + Content.
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">API (props)</h3>
+							<ul className="list-inside list-disc space-y-1">
+								<li>
+									<code>options</code> — array de &#123; value, label &#125;.
+								</li>
+								<li>
+									<code>value</code> / <code>onValueChange</code> — valor
+									controlado.
+								</li>
+								<li>
+									<code>placeholder</code>, <code>searchPlaceholder</code>,{" "}
+									<code>emptyMessage</code>.
+								</li>
+								<li>
+									<code>disabled</code>, <code>isLoading</code>,{" "}
+									<code>loadingMessage</code>, <code>triggerWidth</code>,{" "}
+									<code>aria-label</code>.
+								</li>
+							</ul>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Onde é usado</h3>
+							<p>
+								Em formulários com muitas opções (país, projeto, cliente,
+								categoria). Ideal quando a lista é longa e a busca reduz o
+								esforço do utilizador.
+							</p>
+						</section>
+					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo completo">
+				<StoryCard title="Combobox: seleção de país com busca">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Combobox para escolher país: Portugal, Espanha, França, Alemanha,
+						Itália, Reino Unido. O utilizador pode escrever para filtrar.
+					</p>
+					<ComboboxCountryDemo />
+				</StoryCard>
+			</StorySection>
+		</div>
+	),
 };

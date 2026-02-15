@@ -1,0 +1,27 @@
+---
+description: Componentes de UI devem ser construídos por composição (compound components)
+globs: packages/ui/src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Componentes por composição
+
+## Princípio
+
+Todo componente de UI no `@surface/ui` deve ser **construído por composição**: o consumidor monta a interface combinando um root e subcomponentes expostos na mesma API (ex.: `Card`, `Card.Header`, `Card.Title`, `Card.Content`), em vez de um único componente com muitas props que alteram estrutura ou conteúdo.
+
+## Padrão
+
+- **Root:** componente principal que recebe `variant`, `className`, `children` e eventualmente props de layout.
+- **Subcomponentes:** cada parte semântica é um subcomponente (Header, Title, Description, Content, Footer, Action, etc.), anexado ao root (ex.: `Card.Header`, `Card.Title`).
+- **Composição no uso:** o consumidor escolhe quais subcomponentes usar e em que ordem, sem depender de props booleanas ou slots para “mostrar título” ou “mostrar footer”.
+
+## Exemplos
+
+- **Card:** `Card` + `Card.Header` + `Card.Title` + `Card.Description` + `Card.Content` + `Card.Footer` + `Card.Action`.
+- **ToggleGroup:** `ToggleGroup` (root) + `ToggleGroupItem` (itens).
+- **Tabs:** `Tabs.Root` + `Tabs.List` + `Tabs.Trigger` + `Tabs.Content`.
+
+## Exceções
+
+Componentes atómicos que não têm partes semânticas (ex.: Button, Badge, Skeleton) podem ser um único componente com variantes (variant, size) e props de conteúdo (children, icon), sem subcomponentes. O importante é não usar props que mudem a **estrutura** do DOM (ex.: `showHeader={false}`); preferir omitir o subcomponente na composição.

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { InputOTP } from "@surface/ui/input-otp";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { Button } from "@surface/ui/button";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof InputOTP.Root> = {
   title: "Components/Molecules/InputOTP",
@@ -103,29 +104,80 @@ export const Disabled: Story = {
   ),
 };
 
+function InputOTPVerificationDemo() {
+  const [value, setValue] = useState("");
+  return (
+    <div className="space-y-4 max-w-[320px]">
+      <div>
+        <span className="mb-1 block text-sm font-medium" aria-hidden>Código de verificação</span>
+        <p className="mb-2 text-sm text-muted-foreground">
+          Introduza o código de 6 dígitos que enviámos para o seu email.
+        </p>
+        <InputOTP.Root value={value} onValueChange={setValue} maxLength={6}>
+          <InputOTP.Group>
+            <SlotRow length={6} />
+          </InputOTP.Group>
+        </InputOTP.Root>
+      </div>
+      <Button size="sm" disabled={value.length !== 6}>
+        Verificar
+      </Button>
+    </div>
+  );
+}
+
 export const Overview: Story = {
   render: () => (
-    <StorySection title="InputOTP (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Root define value/onValueChange e maxLength. Group envolve os Slot(index).
-              Cada Slot é um input de um caractere; foco avança automaticamente.
-              Separator opcional entre slots.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo 6 dígitos">
-            <InputOTP.Root maxLength={6}>
-              <InputOTP.Group>
-                <SlotRow length={6} />
-              </InputOTP.Group>
-            </InputOTP.Root>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="InputOTP (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>InputOTP</strong> são campos de dígitos para código OTP ou
+                verificação. Cada slot é um input de um caractere; o foco avança
+                automaticamente. Compound: Root, Group, Slot, Separator (opcional).
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>InputOTP.Root</code> — value, onValueChange, maxLength,
+                  disabled, defaultValue.
+                </li>
+                <li>
+                  <code>InputOTP.Group</code> — envolve os slots.
+                </li>
+                <li>
+                  <code>InputOTP.Slot</code> — index (posição do dígito).
+                </li>
+                <li>
+                  <code>InputOTP.Separator</code> — carácter entre slots (ex.: −).
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Verificação de email ou telefone, autenticação de dois fatores (2FA) e
+                códigos de ativação. Use com label e botão de submissão (ex.:
+                Verificar).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="InputOTP: Código de verificação (6 dígitos + Verificar)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Bloco de verificação com label, descrição, 6 dígitos e botão Verificar
+            (activo só quando os 6 dígitos estão preenchidos).
+          </p>
+          <InputOTPVerificationDemo />
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

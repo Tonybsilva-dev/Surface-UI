@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Text } from "@surface/ui/text";
 import type { TextVariant, TextTone, TextAs } from "@surface/ui/text";
-import { typographyTokens } from "@surface/ui/foundation";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const variants: TextVariant[] = [
   "displayLarge",
@@ -162,30 +161,112 @@ export const Truncate: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Text (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines – Type scale">
-            <p style={{ fontFamily: typographyTokens.fontFamily.default, fontSize: 14, margin: "0 0 12px" }}>
-              Display (hero), Headline (seções), Title (componentes), Body (corpo), Label (botões,
-              chips). Cada um com large/medium/small. Contraste e hierarquia conforme foundation.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Text variant="titleMedium">Título de card</Text>
-              <Text variant="bodyMedium" tone="default">
-                Corpo de texto principal.
+    <div className="space-y-8 p-8">
+      <StorySection title="Text (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Text</strong> é um átomo de tipografia que aplica a type scale do design
+                system (Display, Headline, Title, Body, Label), cada um com variantes large,
+                medium e small. Garante hierarquia visual e contraste acessível através de
+                variantes e tons de cor.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>children</code> — conteúdo do texto.
+                </li>
+                <li>
+                  <code>variant</code> — variante da type scale (Display, Headline, Title, Body,
+                  Label com large/medium/small).
+                </li>
+                <li>
+                  <code>tone</code> — tom de cor: default, muted, primary, error, inverse.
+                </li>
+                <li>
+                  <code>as</code> — elemento HTML (span, p, div, h1–h6) para semântica.
+                </li>
+                <li>
+                  <code>truncate</code> — se true, aplica ellipsis quando transborda numa linha.
+                </li>
+                <li>
+                  <code>align</code> — alinhamento (start, center, end).
+                </li>
+                <li>
+                  <code>style</code> — estilos inline.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                No organismo <strong>DataTable</strong>, o Text é usado nas células para exibir
+                nome, email e outros campos (ex.: bodyMedium para nomes, bodySmall tone muted para
+                emails), garantindo tipografia consistente em toda a tabela.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Text: variantes, tons e semântica">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Exemplo que agrupa variantes da type scale (Display, Headline, Title, Body, Label),
+            tons (default, muted, primary, error), elemento semântico (as) e truncate.
+          </p>
+          <div className="flex flex-col gap-6">
+            <div>
+              <Text variant="displaySmall" className="block mb-2">
+                Display Small
               </Text>
-              <Text variant="bodySmall" tone="muted">
-                Texto de suporte ou hint.
+              <Text variant="headlineSmall" className="block mb-2">
+                Headline Small
+              </Text>
+              <Text variant="titleMedium" className="block mb-2">
+                Title Medium – títulos de componentes
+              </Text>
+              <Text variant="bodyLarge" className="block mb-2">
+                Body Large – texto de leitura principal.
+              </Text>
+              <Text variant="bodyMedium" className="block mb-2">
+                Body Medium – padrão para parágrafos.
+              </Text>
+              <Text variant="labelLarge">Label Large</Text>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Text variant="bodyMedium" tone="default">
+                Tom default
+              </Text>
+              <Text variant="bodyMedium" tone="muted">
+                Tom muted (suporte)
+              </Text>
+              <Text variant="bodyMedium" tone="primary">
+                Tom primary
+              </Text>
+              <Text variant="bodyMedium" tone="error">
+                Tom error
               </Text>
             </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <div>
+              <Text as="h2" variant="titleLarge" className="block mb-2">
+                Semântica (as)
+              </Text>
+              <Text as="p" variant="bodyMedium">
+                Parágrafo com <Text as="span" tone="primary">ênfase</Text> no meio.
+              </Text>
+            </div>
+            <div className="max-w-[200px]">
+              <Text variant="bodySmall" truncate>
+                Este texto será truncado com ellipsis quando não couber na largura.
+              </Text>
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

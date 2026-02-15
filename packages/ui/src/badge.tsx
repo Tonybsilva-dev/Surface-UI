@@ -18,9 +18,8 @@ const badgeVariants = cva(
 				secondary:
 					"border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
 				destructive:
-					"border-transparent bg-destructive text-primary-foreground shadow hover:bg-destructive/80",
-				outline:
-					"border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+					"border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+				outline: "border-input text-foreground bg-transparent hover:bg-accent hover:text-accent-foreground",
 				success:
 					"border-transparent bg-[#52c41a] text-white shadow hover:opacity-90",
 				warning:
@@ -29,8 +28,8 @@ const badgeVariants = cva(
 					"border-transparent bg-destructive text-primary-foreground shadow hover:bg-destructive/80",
 			},
 			size: {
-				sm: "min-h-4 px-1.5",
-				md: "min-h-5 px-1.5",
+				sm: "min-h-5 px-2.5 py-0.5",
+				md: "min-h-5 px-2.5 py-0.5",
 			},
 		},
 		defaultVariants: {

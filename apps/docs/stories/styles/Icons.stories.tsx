@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Check, Search } from "lucide-react";
 import {
   iconOverview,
   iconDesigningGuidelines,
@@ -29,25 +30,6 @@ const typo = {
   muted: "#666",
 };
 
-/** Ícone genérico 24×24 (stroke) para demonstração sem depender de Lucide/Phosphor */
-function DemoIcon({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <title>Buscar</title>
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-  );
-}
-
-function CheckIcon({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <title>Confirmar</title>
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
 
 export const Overview: StoryObj = {
   render: () => (
@@ -66,9 +48,9 @@ export const Overview: StoryObj = {
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 600, color: typo.muted, marginBottom: 8 }}>Mesmo conceito: stroke, grid, escala</div>
                   <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                    <DemoIcon size={24} color={lightColorScheme.primary} />
-                    <DemoIcon size={20} color={lightColorScheme.onSurface} />
-                    <DemoIcon size={16} color={lightColorScheme.onSurfaceVariant} />
+                    <Search size={24} color={lightColorScheme.primary} aria-hidden />
+                    <Search size={20} color={lightColorScheme.onSurface} aria-hidden />
+                    <Search size={16} color={lightColorScheme.onSurfaceVariant} aria-hidden />
                   </div>
                   <p style={{ margin: "8px 0 0", fontSize: 12, color: typo.muted }}>24px · 20px · 16px (escala consistente)</p>
                 </div>
@@ -111,10 +93,10 @@ export const Designing: StoryObj = {
                   <div style={{ fontSize: 11, fontWeight: 600, color: typo.muted, marginBottom: 6 }}>Alinhamento em grid 24×24</div>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                     <div style={{ width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed #ccc", borderRadius: 4 }}>
-                      <DemoIcon size={20} />
+                      <Search size={20} aria-hidden />
                     </div>
                     <div style={{ width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", border: "1px dashed #ccc", borderRadius: 4 }}>
-                      <CheckIcon size={20} />
+                      <Check size={20} aria-hidden />
                     </div>
                   </div>
                 </div>
@@ -122,7 +104,7 @@ export const Designing: StoryObj = {
                   <div style={{ fontSize: 11, fontWeight: 600, color: typo.muted, marginBottom: 6 }}>Ícone decorativo vs informativo</div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <span style={{ fontSize: 13 }}>Sucesso</span>
-                    <CheckIcon size={18} color={lightColorScheme.primary} />
+                    <Check size={18} color={lightColorScheme.primary} aria-hidden />
                     <span style={{ fontSize: 11, color: typo.muted }}>→ use aria-label ou texto visível se for a única indicação de estado</span>
                   </div>
                 </div>
@@ -170,7 +152,7 @@ export const Applying: StoryObj = {
                       fontWeight: 500,
                     }}
                   >
-                    <DemoIcon size={20} color={lightColorScheme.onPrimary} />
+                    <Search size={20} color={lightColorScheme.onPrimary} aria-hidden />
                     Buscar
                   </button>
                 </div>
@@ -189,7 +171,7 @@ export const Applying: StoryObj = {
                     }}
                     title="Fechar"
                   >
-                    <DemoIcon size={24} />
+                    <Search size={24} aria-hidden />
                   </div>
                 </div>
                 <div>
@@ -197,7 +179,7 @@ export const Applying: StoryObj = {
                   <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                     {["Item um", "Item dois"].map((label) => (
                       <li key={label} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                        <CheckIcon size={16} color={lightColorScheme.primary} />
+                        <Check size={16} color={lightColorScheme.primary} aria-hidden />
                         <span style={{ fontSize: 14 }}>{label}</span>
                       </li>
                     ))}
@@ -234,21 +216,21 @@ export const Sizes: StoryObj = {
               <div style={{ display: "flex", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ padding: 12, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f5f5f5", borderRadius: 8, marginBottom: 8 }}>
-                    <DemoIcon size={16} color={lightColorScheme.onSurface} />
+                    <Search size={16} color={lightColorScheme.onSurface} aria-hidden />
                   </div>
                   <span style={{ fontSize: 12, fontWeight: 600 }}>16px</span>
                   <div style={{ fontSize: 11, color: typo.muted }}>small</div>
                 </div>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ padding: 12, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f5f5f5", borderRadius: 8, marginBottom: 8 }}>
-                    <DemoIcon size={20} color={lightColorScheme.onSurface} />
+                    <Search size={20} color={lightColorScheme.onSurface} aria-hidden />
                   </div>
                   <span style={{ fontSize: 12, fontWeight: 600 }}>20px</span>
                   <div style={{ fontSize: 11, color: typo.muted }}>medium</div>
                 </div>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ padding: 12, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f5f5f5", borderRadius: 8, marginBottom: 8 }}>
-                    <DemoIcon size={24} color={lightColorScheme.onSurface} />
+                    <Search size={24} color={lightColorScheme.onSurface} aria-hidden />
                   </div>
                   <span style={{ fontSize: 12, fontWeight: 600 }}>24px</span>
                   <div style={{ fontSize: 11, color: typo.muted }}>large</div>

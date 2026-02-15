@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Tab, Tabs } from "@surface/ui/tabs";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { Text } from "@surface/ui/text";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Tabs.Root> = {
   title: "Components/Atoms/Tabs",
@@ -104,28 +105,95 @@ export const WithDisabled: Story = {
   },
 };
 
+function TabsSettingsDemo() {
+  const [value, setValue] = useState("geral");
+  return (
+    <Tabs.Root value={value} onChange={setValue} className="w-full max-w-[480px]">
+      <Tabs.List>
+        <Tabs.Trigger value="geral">Geral</Tabs.Trigger>
+        <Tabs.Trigger value="notificacoes">Notificações</Tabs.Trigger>
+        <Tabs.Trigger value="seguranca">Segurança</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="geral" className="pt-4">
+        <Text variant="bodySmall" tone="muted" as="p">
+          Nome, email e idioma da conta. Estas definições aplicam-se ao seu perfil em
+          toda a aplicação.
+        </Text>
+      </Tabs.Content>
+      <Tabs.Content value="notificacoes" className="pt-4">
+        <Text variant="bodySmall" tone="muted" as="p">
+          Escolha como deseja receber notificações: email, push ou nenhuma. Pode alterar
+          a qualquer momento.
+        </Text>
+      </Tabs.Content>
+      <Tabs.Content value="seguranca" className="pt-4">
+        <Text variant="bodySmall" tone="muted" as="p">
+          Alterar palavra-passe, ativar autenticação de dois fatores e gerir sessões
+          ativas.
+        </Text>
+      </Tabs.Content>
+    </Tabs.Root>
+  );
+}
+
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Tabs (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="API">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              <strong>Nova:</strong> Tabs.Root (value, onChange), Tabs.List (wrapper dos
-              triggers), Tabs.Trigger (value, children), Tabs.Content (value, children —
-              painel exibido quando ativo).
-            </p>
-            <p style={{ margin: 0, fontSize: 13, color: "#666" }}>
-              Tab ativo: borda inferior primary. label.large, motionTokens.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <TabsWithContent />
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Tabs (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                As <strong>Tabs</strong> permitem navegação por abas: um conjunto de
+                triggers e painéis de conteúdo. A aba ativa tem borda inferior na cor
+                primary. Usa tokens de tipografia, cor e motion.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+              <p>
+                API compound: <strong>Tabs.Root</strong> (value, onChange),{" "}
+                <strong>Tabs.List</strong> (wrapper dos triggers),{" "}
+                <strong>Tabs.Trigger</strong> (value, children),{" "}
+                <strong>Tabs.Content</strong> (value, children — painel exibido quando
+                ativo).
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>Tabs.Root</code> — value (chave do tab ativo), onChange.
+                </li>
+                <li>
+                  <code>Tabs.Trigger</code> — value, disabled, children.
+                </li>
+                <li>
+                  <code>Tabs.Content</code> — value, children (conteúdo do painel).
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em páginas de definições, detalhes de entidade (perfil, projeto) e
+                qualquer contexto com secções alternáveis. Combine com{" "}
+                <strong>Text</strong> e formulários.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Tabs: Definições (Geral, Notificações, Segurança)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Bloco de definições com três abas e conteúdo real: geral (perfil), notificações
+            e segurança.
+          </p>
+          <TabsSettingsDemo />
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

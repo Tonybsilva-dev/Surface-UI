@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Chip } from "@surface/ui/chip";
 import type { ChipVariant, ChipSize } from "@surface/ui/chip";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Chip> = {
   title: "Components/Atoms/Chip",
@@ -91,27 +91,66 @@ export const Variants: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Chip (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Filtros, tags, seleção múltipla. Shape pill (componentShapeTokens.chip). onRemove
-              opcional para chip removível.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              <Chip>Tag</Chip>
-              <Chip variant="primary" selected>
-                Selecionado
-              </Chip>
-            </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Chip (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Chip</strong> é uma pílula para filtros, tags, categorias ou
+                seleção múltipla. Forma pill (rounded-full), variantes de cor e
+                onRemove opcional para chip removível. Usa tokens de borda e cor.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>variant</code> — default, primary, success, warning, error.
+                </li>
+                <li>
+                  <code>size</code> — sm, md.
+                </li>
+                <li>
+                  <code>selected</code> — destaca como selecionado (primary).
+                </li>
+                <li>
+                  <code>onRemove</code> — se definido, exibe botão de remover.
+                </li>
+                <li>
+                  <code>children</code> — conteúdo do chip.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Filtros de listagem, tags de categorias, seleção múltipla em
+                formulários e qualquer contexto de escolhas em formato compacto.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Chip: variantes, selecionado e removível">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Tags para categorias, chip selecionado e chip removível (onRemove).
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Chip variant="default">React</Chip>
+            <Chip variant="primary">TypeScript</Chip>
+            <Chip variant="primary" selected>
+              Selecionado
+            </Chip>
+            <Chip variant="success">Aprovado</Chip>
+            <Chip variant="warning">Pendente</Chip>
+            <Chip variant="error">Erro</Chip>
+            <Chip onRemove={() => {}}>Removível</Chip>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

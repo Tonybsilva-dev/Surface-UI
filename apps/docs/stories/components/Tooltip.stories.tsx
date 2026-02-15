@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip } from "../../../../packages/ui/src/tooltip";
-import type { TooltipPlacement } from "../../../../packages/ui/src/tooltip";
+import { Tooltip } from "@surface/ui/tooltip";
+import type { TooltipPlacement } from "@surface/ui/tooltip";
 import { Button } from "@surface/ui/button";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { IconButton } from "@surface/ui/icon-button";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Atoms/Tooltip",
@@ -95,24 +96,77 @@ export const Placements: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Tooltip (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Comunicação: texto ao hover/focus. placement top/bottom/left/right. Usa
-              inverseSurface para fundo, motionTokens para transição.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <Tooltip title="Clique para enviar" placement="top">
-              <Button>Enviar</Button>
+    <div className="space-y-8 p-8">
+      <StorySection title="Tooltip (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Tooltip</strong> exibe texto ou conteúdo ao passar o rato ou
+                ao receber foco. Posicionamento configurável (top, bottom, left, right).
+                Usa inverseSurface para o fundo e motionTokens para a transição.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>title</code> — conteúdo do tooltip (ReactNode).
+                </li>
+                <li>
+                  <code>placement</code> — top, bottom, left, right.
+                </li>
+                <li>
+                  Modo compound: <code>Tooltip.Trigger</code> +{" "}
+                  <code>Tooltip.Content</code> para conteúdo customizado.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Acessibilidade</h3>
+              <p>
+                O tooltip é mostrado ao hover e ao foco. Use texto curto e descritivo.
+                Para ícones sem rótulo visível, o tooltip funciona como alternativa
+                textual (a11y).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Tooltip: botões de ação e ícone com dica">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Botões com tooltips reais (Guardar, Eliminar, Editar, Copiar link) e um
+            ícone com tooltip &quot;Mais opções&quot;.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <Tooltip title="Guardar" placement="top">
+              <Button variant="outline" size="sm">
+                Guardar
+              </Button>
             </Tooltip>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <Tooltip title="Eliminar" placement="top">
+              <Button variant="outline" size="sm">
+                Eliminar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Editar" placement="top">
+              <Button variant="outline" size="sm">
+                Editar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Copiar link" placement="top">
+              <Button variant="outline" size="sm">
+                Copiar link
+              </Button>
+            </Tooltip>
+            <Tooltip title="Mais opções" placement="bottom">
+              <IconButton icon={<span aria-hidden>⋯</span>} aria-label="Mais opções" />
+            </Tooltip>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

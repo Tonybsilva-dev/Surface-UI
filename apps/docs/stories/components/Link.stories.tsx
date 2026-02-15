@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Link } from "@surface/ui/link";
 import type { LinkVariant } from "@surface/ui/link";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Link> = {
   title: "Components/Atoms/Link",
@@ -99,27 +99,92 @@ export const Underline: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Link (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Links usam cor primary para ênfase (guidelines de cor). Estado hover com sublinhado
-              opcional. Contraste e acessibilidade conforme foundation.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <Link href="#">Link primary</Link>
-              <Link href="#" variant="muted">
-                Link secundário
+    <div className="space-y-8 p-8">
+      <StorySection title="Link (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Link</strong> é uma âncora estilizada com variantes de cor e
+                sublinhado. Usa tokens de tipografia e cor das guidelines. Ideal para
+                navegação e referências em texto.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>variant</code> — default (onSurface), primary (ênfase), muted
+                  (secundário).
+                </li>
+                <li>
+                  <code>underline</code> — always, hover, none.
+                </li>
+                <li>
+                  <code>href</code> — URL (atributo nativo).
+                </li>
+                <li>
+                  <code>children</code> — conteúdo do link.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em rodapés, parágrafos de ajuda, mensagens de erro com link para
+                recuperação, e navegação secundária. Combine com <strong>Text</strong>{" "}
+                para blocos de conteúdo.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Link: variantes e sublinhado em contexto (rodapé e parágrafo)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Links em contexto real: rodapé com Política de privacidade, Suporte e
+            Documentação; parágrafo com link primary; variantes default, primary e muted.
+          </p>
+          <div className="space-y-8">
+            <div>
+              <p className="mb-2 text-sm text-muted-foreground">
+                Parágrafo com link: Consulte a{" "}
+                <Link href="#" variant="primary" underline="hover">
+                  Documentação
+                </Link>{" "}
+                para mais detalhes ou contacte o{" "}
+                <Link href="#" variant="primary" underline="hover">
+                  Suporte
+                </Link>
+                .
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4 text-sm">
+              <Link href="#" variant="default" underline="hover">
+                Política de privacidade
+              </Link>
+              <Link href="#" variant="primary" underline="hover">
+                Suporte
+              </Link>
+              <Link href="#" variant="muted" underline="none">
+                Documentação
               </Link>
             </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <div className="flex flex-col gap-2 text-sm">
+              <Link href="#" underline="always">
+                Sempre sublinhado
+              </Link>
+              <Link href="#" underline="hover">
+                Sublinhado ao hover
+              </Link>
+              <Link href="#" underline="none" variant="muted">
+                Sem sublinhado (muted)
+              </Link>
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

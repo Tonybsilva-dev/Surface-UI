@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Progress } from "@surface/ui/progress";
 import type { ProgressSize, ProgressStatus } from "@surface/ui/progress";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { Text } from "@surface/ui/text";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Progress> = {
   title: "Components/Atoms/Progress",
@@ -126,25 +127,90 @@ export const Composition: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Progress (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Barra de progresso. percent 0–100 ou indeterminado. size (sm/md/lg), status
-              (normal/success/exception). motionTokens para transição.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <Progress percent={60} showInfo style={{ width: "100%" }} />
-              <Progress percent={undefined} style={{ width: "100%" }} />
+    <div className="space-y-8 p-8">
+      <StorySection title="Progress (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Progress</strong> é uma barra de progresso linear. Exibe um
+                percentual entre 0 e 100 ou fica indeterminada (animação) quando{" "}
+                <code>percent</code> é omitido. Usa tokens de motion e cor.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>percent</code> — valor 0–100; omitir = barra indeterminada.
+                </li>
+                <li>
+                  <code>size</code> — sm, md, lg (altura da barra).
+                </li>
+                <li>
+                  <code>status</code> — normal, success, exception (cor da barra).
+                </li>
+                <li>
+                  <code>showInfo</code> — mostra o percentual ao lado da barra.
+                </li>
+                <li>
+                  Modo compound: <code>Progress.Root</code> + <code>Progress.Bar</code> +{" "}
+                  <code>Progress.Info</code>.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em cards de tarefa, upload de ficheiros, passos de wizard e listas com
+                estado de carregamento. Combine com <strong>Text</strong> e{" "}
+                <strong>Card</strong> para contextos ricos.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Progress: upload, tarefa, sucesso, erro e indeterminado">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Cenários reais: upload de ficheiro com nome e percentual, tarefa em progresso,
+            conclusão (100% success), falha (exception) e barra indeterminada.
+          </p>
+          <div className="flex flex-col gap-8 max-w-[400px]">
+            <div className="space-y-2">
+              <Text variant="labelSmall" tone="muted">
+                relatório-2024.pdf
+              </Text>
+              <Progress percent={72} size="sm" showInfo />
             </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <div className="space-y-2">
+              <Text variant="labelSmall" tone="muted">
+                Tarefa em progresso
+              </Text>
+              <Progress percent={65} size="md" status="normal" showInfo />
+            </div>
+            <div className="space-y-2">
+              <Text variant="labelSmall" tone="muted">
+                Concluído
+              </Text>
+              <Progress percent={100} size="md" status="success" showInfo />
+            </div>
+            <div className="space-y-2">
+              <Text variant="labelSmall" tone="muted">
+                Falha no envio
+              </Text>
+              <Progress percent={60} size="md" status="exception" showInfo />
+            </div>
+            <div className="space-y-2">
+              <Text variant="labelSmall" tone="muted">
+                A carregar…
+              </Text>
+              <Progress percent={undefined} size="md" />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

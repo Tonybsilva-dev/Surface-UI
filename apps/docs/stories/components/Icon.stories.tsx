@@ -1,26 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Clock } from "lucide-react";
 import { Icon } from "@surface/ui/icon";
 import type { IconSize } from "@surface/ui/icon";
 import { lightColorScheme } from "@surface/ui/foundation";
 import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
 
-/** Placeholder SVG (stroke) – em produção use Lucide/Phosphor. */
-function PlaceholderIcon({ size = 24 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 6v6l4 2" />
-    </svg>
-  );
+function iconSizePx(size: IconSize): number {
+  return size === "sm" ? 16 : size === "large" ? 24 : 20;
 }
 
 const meta: Meta<typeof Icon> = {
@@ -66,7 +52,7 @@ type Story = StoryObj<typeof Icon>;
 export const Default: Story = {
   render: (args) => (
     <Icon {...args}>
-      <PlaceholderIcon size={24} />
+      <Clock size={iconSizePx(args.size)} aria-hidden />
     </Icon>
   ),
 };
@@ -75,13 +61,13 @@ export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
       <Icon size="sm">
-        <PlaceholderIcon size={16} />
+        <Clock size={16} aria-hidden />
       </Icon>
       <Icon size="md">
-        <PlaceholderIcon size={20} />
+        <Clock size={20} aria-hidden />
       </Icon>
       <Icon size="large">
-        <PlaceholderIcon size={24} />
+        <Clock size={24} aria-hidden />
       </Icon>
     </div>
   ),
@@ -91,13 +77,13 @@ export const Color: Story = {
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
       <Icon color={lightColorScheme.onSurface} size="large">
-        <PlaceholderIcon size={24} />
+        <Clock size={24} aria-hidden />
       </Icon>
       <Icon color={lightColorScheme.primary} size="large">
-        <PlaceholderIcon size={24} />
+        <Clock size={24} aria-hidden />
       </Icon>
       <Icon color={lightColorScheme.error} size="large">
-        <PlaceholderIcon size={24} />
+        <Clock size={24} aria-hidden />
       </Icon>
     </div>
   ),
@@ -107,12 +93,12 @@ export const Accessibility: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <p style={{ margin: 0, fontSize: 14 }}>
-        Decorativo (aria-hidden): <Icon ariaHidden><PlaceholderIcon size={20} /></Icon>
+        Decorativo (aria-hidden): <Icon ariaHidden><Clock size={20} aria-hidden /></Icon>
       </p>
       <p style={{ margin: 0, fontSize: 14 }}>
         Informativo (aria-label):{" "}
         <Icon ariaHidden={false} ariaLabel="Relógio">
-          <PlaceholderIcon size={20} />
+          <Clock size={20} aria-hidden />
         </Icon>
       </p>
     </div>
@@ -136,13 +122,13 @@ export const Overview: Story = {
           <StoryCard title="Exemplos">
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <Icon size="sm">
-                <PlaceholderIcon size={16} />
+                <Clock size={16} aria-hidden />
               </Icon>
               <Icon size="md" color={lightColorScheme.primary}>
-                <PlaceholderIcon size={20} />
+                <Clock size={20} aria-hidden />
               </Icon>
               <Icon size="large">
-                <PlaceholderIcon size={24} />
+                <Clock size={24} aria-hidden />
               </Icon>
             </div>
           </StoryCard>

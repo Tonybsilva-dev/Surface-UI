@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Command } from "@surface/ui/command";
 import { Button } from "@surface/ui/button";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Command> = {
 	title: "Components/Molecules/Command",
@@ -49,25 +50,38 @@ export default meta;
 
 type Story = StoryObj<typeof Command>;
 
-/** Composição: Command + Input + List + Empty + Group + Itens. Controles para placeholder e empty. */
+/** Composição: Command + Input + List + Empty + Group + Itens. Placeholder e itens com shortcuts reais. */
 export const Composition: Story = {
 	render: function CompositionRender(args) {
 		return (
-			<div className="w-full max-w-[320px] rounded-md border border-border">
+			<div className="w-full max-w-[360px] rounded-md border border-border">
 				<Command className="rounded-lg border shadow-md">
-					<Command.Input placeholder={args.placeholder} />
+					<Command.Input placeholder="Buscar comando ou página…" />
 					<Command.List>
 						<Command.Empty>{args.emptyText}</Command.Empty>
-						<Command.Group heading="Sugestões">
-							<Command.Item value="novo ficheiro">Novo ficheiro</Command.Item>
-							<Command.Item value="nova pasta">Nova pasta</Command.Item>
-							<Command.Item value="abrir">Abrir...</Command.Item>
+						<Command.Group heading="Ações">
+							<Command.Item value="novo ficheiro">
+								Novo ficheiro
+								<Command.Shortcut>⌘N</Command.Shortcut>
+							</Command.Item>
+							<Command.Item value="guardar">
+								Guardar
+								<Command.Shortcut>⌘S</Command.Shortcut>
+							</Command.Item>
+							<Command.Item value="imprimir">
+								Imprimir
+								<Command.Shortcut>⌘P</Command.Shortcut>
+							</Command.Item>
+							<Command.Item value="abrir">
+								Abrir…
+								<Command.Shortcut>⌘O</Command.Shortcut>
+							</Command.Item>
 						</Command.Group>
 						<Command.Separator />
-						<Command.Group heading="Recent">
-							<Command.Item value="projeto-a">projeto-a</Command.Item>
-							<Command.Item value="projeto-b">projeto-b</Command.Item>
-							<Command.Item value="documento.pdf">documento.pdf</Command.Item>
+						<Command.Group heading="Navegação">
+							<Command.Item value="dashboard">Dashboard</Command.Item>
+							<Command.Item value="definicoes">Definições</Command.Item>
+							<Command.Item value="perfil">Perfil</Command.Item>
 						</Command.Group>
 					</Command.List>
 				</Command>
@@ -111,4 +125,83 @@ export const Dialog: Story = {
 			</>
 		);
 	},
+};
+
+export const Overview: Story = {
+	render: () => (
+		<div className="space-y-8 p-8">
+			<StorySection title="Command (overview)">
+				<StoryCard title="Documentação">
+					<div className="space-y-4 text-sm">
+						<section>
+							<h3 className="mb-2 font-semibold">O que é</h3>
+							<p>
+								O <strong>Command</strong> é uma lista filtrável (estilo cmdk) por
+								composição: Command (root) + Input + List + Empty + Group + Item
+								+ Separator + Shortcut. <strong>Command.Dialog</strong> abre o
+								Command dentro de um Dialog (command palette).
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+							<p>
+								Command.Input (busca), Command.List (container), Command.Empty
+								(sem resultados), Command.Group (heading), Command.Item (value +
+								children), Command.Shortcut (tecla), Command.Separator.
+								Command.Dialog para palette em overlay.
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Onde é usado</h3>
+							<p>
+								Command palette para atalhos e navegação (Guardar, Novo ficheiro,
+								Dashboard, Definições). Útil em aplicações com muitas ações ou
+								páginas.
+							</p>
+						</section>
+					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo completo">
+				<StoryCard title="Command: palette com Ações e Navegação">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Palette com grupos reais: Ações (Novo ficheiro, Guardar, Imprimir,
+						Abrir) com shortcuts e Navegação (Dashboard, Definições, Perfil).
+					</p>
+					<div className="w-full max-w-[360px] rounded-md border border-border">
+						<Command className="rounded-lg border shadow-md">
+							<Command.Input placeholder="Buscar comando ou página…" />
+							<Command.List>
+								<Command.Empty>Nenhum resultado encontrado.</Command.Empty>
+								<Command.Group heading="Ações">
+									<Command.Item value="novo ficheiro">
+										Novo ficheiro
+										<Command.Shortcut>⌘N</Command.Shortcut>
+									</Command.Item>
+									<Command.Item value="guardar">
+										Guardar
+										<Command.Shortcut>⌘S</Command.Shortcut>
+									</Command.Item>
+									<Command.Item value="imprimir">
+										Imprimir
+										<Command.Shortcut>⌘P</Command.Shortcut>
+									</Command.Item>
+									<Command.Item value="abrir">
+										Abrir…
+										<Command.Shortcut>⌘O</Command.Shortcut>
+									</Command.Item>
+								</Command.Group>
+								<Command.Separator />
+								<Command.Group heading="Navegação">
+									<Command.Item value="dashboard">Dashboard</Command.Item>
+									<Command.Item value="definicoes">Definições</Command.Item>
+									<Command.Item value="perfil">Perfil</Command.Item>
+								</Command.Group>
+							</Command.List>
+						</Command>
+					</div>
+				</StoryCard>
+			</StorySection>
+		</div>
+	),
 };

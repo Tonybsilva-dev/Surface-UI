@@ -1,15 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { InputButton } from "@surface/ui/input-button";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
-
-function ArrowIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof InputButton.Provider> = {
   title: "Components/Molecules/InputButton",
@@ -35,7 +28,7 @@ export const Default: Story = {
       <InputButton.Provider>
         <InputButton.Action>Escrever email</InputButton.Action>
         <InputButton.Input placeholder="seu@email.com" />
-        <InputButton.Submit icon={<ArrowIcon />}>Enviar</InputButton.Submit>
+        <InputButton.Submit icon={<ArrowRight className="size-4" aria-hidden />}>Enviar</InputButton.Submit>
       </InputButton.Provider>
     </div>
   ),
@@ -49,7 +42,7 @@ export const Controlled: Story = {
         <InputButton.Provider showInput={show} setShowInput={setShow}>
           <InputButton.Action>Expandir</InputButton.Action>
           <InputButton.Input placeholder="Digite..." />
-          <InputButton.Submit icon={<ArrowIcon />}>OK</InputButton.Submit>
+          <InputButton.Submit icon={<ArrowRight className="size-4" aria-hidden />}>OK</InputButton.Submit>
         </InputButton.Provider>
         <p style={{ marginTop: 8, fontSize: 14 }}>Aberto: {String(show)}</p>
       </div>
@@ -59,29 +52,56 @@ export const Controlled: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="InputButton (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Provider envolve Action (botão inicial), Input (campo quando expandido) e
-              Submit (ícone quando fechado, texto quando aberto). Clique em Action ou
-              Submit para alternar.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <div style={{ width: 320 }}>
-              <InputButton.Provider>
-                <InputButton.Action>Escrever</InputButton.Action>
-                <InputButton.Input placeholder="..." />
-                <InputButton.Submit icon={<ArrowIcon />}>Enviar</InputButton.Submit>
-              </InputButton.Provider>
-            </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="InputButton (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>InputButton</strong> é um botão que expande para mostrar um
+                campo de input. Quando fechado mostra o Action e o Submit (ícone); quando
+                aberto mostra o Input e o Submit com texto. Compound: Provider, Action,
+                Input, Submit.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+              <p>
+                <strong>InputButton.Provider</strong> envolve{" "}
+                <strong>InputButton.Action</strong> (botão inicial),{" "}
+                <strong>InputButton.Input</strong> (campo quando expandido) e{" "}
+                <strong>InputButton.Submit</strong> (ícone quando fechado, texto quando
+                aberto). Clique em Action ou Submit para alternar. Opcional: showInput,
+                setShowInput para controlo externo.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+				Subscrever newsletter, adicionar email à lista, pesquisa rápida na barra
+				e ações que precisam de um valor antes de submeter (ex.: convite por
+				email).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="InputButton: Subscrever newsletter">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Botão &quot;Adicionar email&quot; que expande para campo de email e botão
+            &quot;Subscrever&quot;.
+          </p>
+          <div className="max-w-[360px]">
+            <InputButton.Provider>
+              <InputButton.Action>Adicionar email</InputButton.Action>
+              <InputButton.Input placeholder="seu@email.com" />
+              <InputButton.Submit icon={<ArrowRight className="size-4" aria-hidden />}>Subscrever</InputButton.Submit>
+            </InputButton.Provider>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

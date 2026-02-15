@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { forwardRef } from "react";
 import { cn } from "./lib/utils";
 
 export type IconButtonVariant =
@@ -44,31 +45,29 @@ const sizeClasses: Record<IconButtonSize, string> = {
 const baseClasses =
 	"inline-flex items-center justify-center shrink-0 rounded-md border font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[var(--disabled-opacity)] p-0";
 
-export function IconButton(props: IconButtonProps): JSX.Element {
-	const {
-		icon,
-		variant = "default",
-		size = "default",
-		className,
-		...other
-	} = props;
-
-	return (
-		<button
-			type="button"
-			className={cn(
-				baseClasses,
-				variantClasses[variant],
-				sizeClasses[size],
-				className,
-			)}
-			{...other}
-		>
-			<span aria-hidden className="inline-flex items-center justify-center text-current">
-				{icon}
-			</span>
-		</button>
-	);
-}
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+	function IconButton(
+		{ icon, variant = "default", size = "default", className, ...other },
+		ref,
+	) {
+		return (
+			<button
+				ref={ref}
+				type="button"
+				className={cn(
+					baseClasses,
+					variantClasses[variant],
+					sizeClasses[size],
+					className,
+				)}
+				{...other}
+			>
+				<span aria-hidden className="inline-flex items-center justify-center text-current">
+					{icon}
+				</span>
+			</button>
+		);
+	},
+);
 
 IconButton.displayName = "IconButton";

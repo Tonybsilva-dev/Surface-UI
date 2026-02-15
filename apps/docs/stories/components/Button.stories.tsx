@@ -145,54 +145,97 @@ const typo = {
 
 export const Overview: Story = {
   render: () => (
-    <div style={{ fontFamily: typo.fontFamily, fontSize: typo.body }}>
+    <div className="space-y-8 p-8">
       <StorySection title="Button (overview)">
-        <TwoColumn
-          left={
-            <StoryCard title="Papel do botão">
-              <p style={{ margin: "0 0 12px" }}>
-                Botões disparam ações primárias e secundárias. Eles usam:
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Button</strong> é um átomo para ações primárias e secundárias. Usa tokens
+                de cor, tipografia (typographyTokens.label.large) e shape
+                (componentShapeTokens.button). Suporta variantes visuais e tamanhos (sm, default,
+                lg, icon).
               </p>
-              <ul style={{ margin: "0 0 12px", paddingLeft: 20 }}>
-                <li style={{ marginBottom: 4 }}>Cor: primary / onPrimary / surface / outline.</li>
-                <li style={{ marginBottom: 4 }}>Tipografia: `typographyTokens.label.large`.</li>
-                <li style={{ marginBottom: 4 }}>Shape: `componentShapeTokens.button` (raio 6px).</li>
-                <li style={{ marginBottom: 4 }}>Estados: disabled com `disabledOpacity`.</li>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>children</code> — texto ou conteúdo do botão.
+                </li>
+                <li>
+                  <code>variant</code> — default, destructive, outline, secondary, ghost, link.
+                </li>
+                <li>
+                  <code>size</code> — default, sm, lg, icon (quadrado).
+                </li>
+                <li>
+                  <code>disabled</code> — desabilita o botão (opacidade reduzida).
+                </li>
+                <li>
+                  <code>type</code> — tipo nativo (button, submit, reset).
+                </li>
+                <li>
+                  <code>fullWidth</code> — se true, ocupa 100% da largura.
+                </li>
+                <li>
+                  <code>leadingIcon</code> / <code>trailingIcon</code> — ícone antes/depois do
+                  texto.
+                </li>
+                <li>
+                  <code>asChild</code> — se true, renderiza o filho único com o estilo do botão.
+                </li>
+                <li>
+                  <code>style</code> — estilos inline.
+                </li>
               </ul>
-              <p style={{ margin: 0, fontSize: 13, color: typo.muted }}>
-                Variantes: <code>default</code>, <code>destructive</code>, <code>outline</code>,{" "}
-                <code>secondary</code>, <code>ghost</code>, <code>link</code>. Tamanhos:{" "}
-                <code>default</code>, <code>sm</code>, <code>lg</code>, <code>icon</code>.
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                No organismo <strong>DataTable</strong>, o Button é usado na toolbar como trigger
+                “Personalizar colunas” (variante button com texto + chevron) e em botões de ação
+                (ex.: “Ver mais”).
               </p>
-            </StoryCard>
-          }
-          right={
-            <StoryCard title="Exemplos">
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <Button>Default</Button>
-                  <Button variant="destructive">Destructive</Button>
-                  <Button variant="outline">Outline</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="ghost">Ghost</Button>
-                  <Button variant="link">Link</Button>
-                </div>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <Button size="sm">Small</Button>
-                  <Button size="default">Default</Button>
-                  <Button size="lg">Large</Button>
-                  <Button size="icon" leadingIcon={<span aria-hidden>→</span>} />
-                </div>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <Button disabled>Disabled</Button>
-                  <Button variant="outline" disabled>
-                    Disabled outline
-                  </Button>
-                </div>
-              </div>
-            </StoryCard>
-          }
-        />
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Button: variantes, tamanhos, ícones e estados">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Exemplo que agrupa variantes (default, destructive, outline, secondary, ghost, link),
+            tamanhos (sm, default, lg, icon), leadingIcon, disabled e asChild.
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-wrap gap-3">
+              <Button>Default</Button>
+              <Button variant="destructive">Destructive</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button variant="link">Link</Button>
+            </div>
+            <div className="flex flex-wrap gap-3 items-center">
+              <Button size="sm">Small</Button>
+              <Button size="default">Default</Button>
+              <Button size="lg">Large</Button>
+              <Button size="icon" leadingIcon={<span aria-hidden>→</span>} />
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button disabled>Disabled</Button>
+              <Button variant="outline" disabled>
+                Disabled outline
+              </Button>
+            </div>
+            <div>
+              <Button asChild variant="outline">
+                <a href="#overview">Link estilizado como botão (asChild)</a>
+              </Button>
+            </div>
+          </div>
+        </StoryCard>
       </StorySection>
     </div>
   ),

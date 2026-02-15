@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@surface/ui/toggle-group";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof ToggleGroup> = {
 	title: "Components/Atoms/ToggleGroup",
@@ -124,4 +125,103 @@ export const WithDisabledItem: Story = {
 			</ToggleGroup>
 		);
 	},
+};
+
+function ToggleGroupCalendarDemo() {
+	const [view, setView] = useState<string>("week");
+	return (
+		<ToggleGroup
+			type="single"
+			value={view}
+			onValueChange={setView}
+			variant="outline"
+		>
+			<ToggleGroupItem value="day">Dia</ToggleGroupItem>
+			<ToggleGroupItem value="week">Semana</ToggleGroupItem>
+			<ToggleGroupItem value="month">Mês</ToggleGroupItem>
+		</ToggleGroup>
+	);
+}
+
+function ToggleGroupAlignDemo() {
+	const [align, setAlign] = useState<string>("left");
+	return (
+		<ToggleGroup
+			type="single"
+			value={align}
+			onValueChange={setAlign}
+			variant="outline"
+		>
+			<ToggleGroupItem value="left">Esquerda</ToggleGroupItem>
+			<ToggleGroupItem value="center">Centro</ToggleGroupItem>
+			<ToggleGroupItem value="right">Direita</ToggleGroupItem>
+		</ToggleGroup>
+	);
+}
+
+export const Overview: Story = {
+	render: () => (
+		<div className="space-y-8 p-8">
+			<StorySection title="ToggleGroup (overview)">
+				<StoryCard title="Documentação">
+					<div className="space-y-4 text-sm">
+						<section>
+							<h3 className="mb-2 font-semibold">O que é</h3>
+							<p>
+								O <strong>ToggleGroup</strong> é um grupo de botões de seleção
+								única. Um único item fica ativo por vez. Variantes: outline
+								(borda) e default (fundo muted). API por composição: ToggleGroup
+								(root) + ToggleGroupItem.
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">API (props)</h3>
+							<ul className="list-inside list-disc space-y-1">
+								<li>
+									<code>type</code> — &quot;single&quot; (seleção única).
+								</li>
+								<li>
+									<code>value</code> / <code>onValueChange</code> — valor
+									controlado.
+								</li>
+								<li>
+									<code>variant</code> — outline, default.
+								</li>
+								<li>
+									<code>ToggleGroupItem</code> — value, disabled, children.
+								</li>
+							</ul>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Onde é usado</h3>
+							<p>
+								Em vistas de calendário (Dia / Semana / Mês), alinhamento de
+								texto (Esquerda / Centro / Direita), filtros de período e
+								qualquer escolha entre opções mutuamente exclusivas num formato
+								compacto.
+							</p>
+						</section>
+					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo completo">
+				<StoryCard title="ToggleGroup: vista de calendário e alinhamento">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Vista de calendário (Dia, Semana, Mês) e selector de alinhamento
+						(Esquerda, Centro, Direita) com variante outline.
+					</p>
+					<div className="flex flex-col gap-8">
+						<div>
+							<p className="mb-2 text-sm font-medium">Vista</p>
+							<ToggleGroupCalendarDemo />
+						</div>
+						<div>
+							<p className="mb-2 text-sm font-medium">Alinhamento</p>
+							<ToggleGroupAlignDemo />
+						</div>
+					</div>
+				</StoryCard>
+			</StorySection>
+		</div>
+	),
 };

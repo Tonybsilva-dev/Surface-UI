@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Select } from "@surface/ui/select";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Select.Root> = {
   title: "Components/Molecules/Select",
@@ -91,32 +91,93 @@ export const Disabled: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Select (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Select.Root com value/onValueChange (controlado) ou defaultValue.
-              Select.Trigger + Select.Value (placeholder). Select.Content (portal) com
-              Select.Item (value + children). Select.Label e Select.Separator para
-              agrupamento.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <Select.Root defaultValue="1" onValueChange={(v) => console.log(v)}>
-              <Select.Trigger>
-                <Select.Value placeholder="Selecione" />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Item value="1">Um</Select.Item>
-                <Select.Item value="2">Dois</Select.Item>
-              </Select.Content>
-            </Select.Root>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Select (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Select</strong> é um dropdown de seleção única. Compound:
+                Select.Root, Select.Trigger, Select.Value, Select.Content, Select.Item,
+                Select.Label, Select.Separator. O conteúdo abre em portal.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+              <p>
+                <strong>Select.Root</strong> com value/onValueChange (controlado) ou
+                defaultValue. <strong>Select.Trigger</strong> +{" "}
+                <strong>Select.Value</strong> (placeholder).{" "}
+                <strong>Select.Content</strong> (portal) com{" "}
+                <strong>Select.Item</strong> (value + children).{" "}
+                <strong>Select.Label</strong> e <strong>Select.Separator</strong> para
+                agrupamento.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Formulários: país, moeda, prioridade, categoria, qualquer escolha única
+                numa lista. Para listas longas com busca use o Combobox.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Select: País, Prioridade e Moeda (com grupos opcional)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Três selects reais: País (Portugal, Espanha, França), Prioridade (Baixa,
+            Média, Alta) e Moeda (EUR, USD, GBP). O último usa Label e Separator para
+            agrupar por região.
+          </p>
+          <div className="flex flex-col gap-6 max-w-[280px]">
+            <div>
+              <span className="mb-1 block text-sm font-medium" aria-hidden>País</span>
+              <Select.Root defaultValue="pt">
+                <Select.Trigger>
+                  <Select.Value placeholder="Selecione o país" />
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value="pt">Portugal</Select.Item>
+                  <Select.Item value="es">Espanha</Select.Item>
+                  <Select.Item value="fr">França</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </div>
+            <div>
+              <span className="mb-1 block text-sm font-medium" aria-hidden>Prioridade</span>
+              <Select.Root defaultValue="medium">
+                <Select.Trigger>
+                  <Select.Value placeholder="Prioridade" />
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value="low">Baixa</Select.Item>
+                  <Select.Item value="medium">Média</Select.Item>
+                  <Select.Item value="high">Alta</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </div>
+            <div>
+              <span className="mb-1 block text-sm font-medium" aria-hidden>Moeda</span>
+              <Select.Root defaultValue="eur">
+                <Select.Trigger>
+                  <Select.Value placeholder="Moeda" />
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Label>Europa</Select.Label>
+                  <Select.Item value="eur">EUR (Euro)</Select.Item>
+                  <Select.Item value="gbp">GBP (Libra)</Select.Item>
+                  <Select.Separator />
+                  <Select.Label>Américas</Select.Label>
+                  <Select.Item value="usd">USD (Dólar)</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

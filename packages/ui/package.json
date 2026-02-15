@@ -94,6 +94,31 @@
       "import": "./dist/card.mjs",
       "require": "./dist/card.js"
     },
+    "./empty": {
+      "types": "./dist/empty.d.mts",
+      "import": "./dist/empty.mjs",
+      "require": "./dist/empty.js"
+    },
+    "./input": {
+      "types": "./dist/input.d.mts",
+      "import": "./dist/input.mjs",
+      "require": "./dist/input.js"
+    },
+    "./table": {
+      "types": "./dist/table.d.mts",
+      "import": "./dist/table.mjs",
+      "require": "./dist/table.js"
+    },
+    "./pagination": {
+      "types": "./dist/pagination.d.mts",
+      "import": "./dist/pagination.mjs",
+      "require": "./dist/pagination.js"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.mts",
+      "import": "./dist/data-table.mjs",
+      "require": "./dist/data-table.js"
+    },
     "./drawer": {
       "types": "./dist/drawer.d.mts",
       "import": "./dist/drawer.mjs",
@@ -184,6 +209,26 @@
       "import": "./dist/chart.mjs",
       "require": "./dist/chart.js"
     },
+    "./form": {
+      "types": "./dist/form.d.mts",
+      "import": "./dist/form.mjs",
+      "require": "./dist/form.js"
+    },
+    "./collapsible": {
+      "types": "./dist/collapsible.d.mts",
+      "import": "./dist/collapsible.mjs",
+      "require": "./dist/collapsible.js"
+    },
+    "./carousel": {
+      "types": "./dist/carousel.d.mts",
+      "import": "./dist/carousel.mjs",
+      "require": "./dist/carousel.js"
+    },
+    "./password-strength": {
+      "types": "./dist/password-strength.d.mts",
+      "import": "./dist/password-strength.mjs",
+      "require": "./dist/password-strength.js"
+    },
     "./foundation": {
       "types": "./dist/foundation/index.d.mts",
       "import": "./dist/foundation/index.mjs",
@@ -201,12 +246,19 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.0",
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "embla-carousel-react": "^8.0.0",
+    "@tanstack/react-table": "^8.21.0",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
     "clsx": "^2.1.0",
+    "lucide-react": "^0.460.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.53.0",
     "recharts": "^2.0.0",
     "tailwind-merge": "^2.2.0",
     "vaul": "^1.1.2"

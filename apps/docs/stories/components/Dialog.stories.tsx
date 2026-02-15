@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "@surface/ui/dialog";
 import { Button } from "@surface/ui/button";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { Text } from "@surface/ui/text";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Dialog.Root> = {
   title: "Components/Molecules/Dialog",
@@ -87,36 +88,71 @@ export const WithoutCloseButton: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Dialog (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Root (open, onOpenChange), Trigger (abre), Content (portal + overlay).
-              Header, Body, Footer para estrutura. Title e Description para a11y.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo">
-            <Dialog.Root>
-              <Dialog.Trigger>
-                <Button>Abrir</Button>
-              </Dialog.Trigger>
-              <Dialog.Content>
-                <Dialog.Header>
-                  <Dialog.Title>Título</Dialog.Title>
-                  <Dialog.Description>Descrição.</Dialog.Description>
-                </Dialog.Header>
-                <Dialog.Body>Conteúdo.</Dialog.Body>
-                <Dialog.Footer>
-                  <Button>OK</Button>
-                </Dialog.Footer>
-              </Dialog.Content>
-            </Dialog.Root>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Dialog (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Dialog</strong> é um modal com overlay. O conteúdo é
+                renderizado num portal. Estrutura compound: Root, Trigger, Content,
+                Header, Body, Footer, Title, Description, Close.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+              <p>
+                <strong>Dialog.Root</strong> (open, onOpenChange),{" "}
+                <strong>Dialog.Trigger</strong> (abre o dialog),{" "}
+                <strong>Dialog.Content</strong> (portal + overlay). Dentro:{" "}
+                <strong>Dialog.Header</strong>, <strong>Dialog.Title</strong>,{" "}
+                <strong>Dialog.Description</strong> (a11y),{" "}
+                <strong>Dialog.Body</strong>, <strong>Dialog.Footer</strong>,{" "}
+                <strong>Dialog.Close</strong>.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Confirmações destrutivas (eliminar projeto, sair sem guardar), edição
+                de perfil, formulários modais e avisos que exigem decisão do
+                utilizador.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Dialog: Eliminar projeto (confirmação destrutiva)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Dialog de confirmação com título, descrição e botões Cancelar / Eliminar.
+          </p>
+          <Dialog.Root>
+            <Dialog.Trigger>
+              <Button variant="outline">Eliminar projeto</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Eliminar projeto?</Dialog.Title>
+                <Dialog.Description>
+                  Esta ação não pode ser revertida. Todos os dados do projeto serão
+                  removidos permanentemente.
+                </Dialog.Description>
+              </Dialog.Header>
+              <Dialog.Body>
+                <Text variant="bodySmall" tone="muted" as="p">
+                  Se tiver dúvidas, cancele e exporte os dados antes de eliminar.
+                </Text>
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Button variant="outline">Cancelar</Button>
+                <Button variant="destructive">Eliminar</Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Root>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

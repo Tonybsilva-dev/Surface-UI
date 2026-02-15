@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Checkbox } from "@surface/ui/checkbox";
 import type { CheckboxSize } from "@surface/ui/checkbox";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
+
+function noop(): void {}
 
 const meta: Meta<typeof Checkbox> = {
   title: "Components/Atoms/Checkbox",
@@ -173,23 +175,87 @@ function InteractiveCheckboxGroup() {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Checkbox (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Selection controls: estado selecionado/não selecionado visível; uso para opções
-              binárias ou listas. Indeterminate para “selecionar todos”. Disabled com opacidade
-              reduzida (disabledOpacity).
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos (clique para alterar)">
-            <InteractiveCheckboxGroup />
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Checkbox (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Checkbox</strong> é um átomo de controlo de seleção para opções binárias
+                ou listas. Exibe estados checked, unchecked e indeterminate (ex.: “selecionar
+                todos”). Desabilitado usa opacidade reduzida (disabledOpacity). Alinhado às
+                guidelines de selection controls.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>children</code> — rótulo opcional do checkbox.
+                </li>
+                <li>
+                  <code>size</code> — sm (18px), md (20px).
+                </li>
+                <li>
+                  <code>checked</code> — estado selecionado (controlado).
+                </li>
+                <li>
+                  <code>indeterminate</code> — estado indeterminado (ex.: selecionar todos).
+                </li>
+                <li>
+                  <code>disabled</code> — desabilita o checkbox.
+                </li>
+                <li>
+                  <code>onChange</code> — callback ao alterar (evento nativo).
+                </li>
+                <li>
+                  <code>style</code> — estilos inline no wrapper (label).
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                No organismo <strong>DataTable</strong>, o Checkbox é usado na coluna de seleção
+                de linhas (cabeçalho “selecionar todos” e cada linha) e no popover de colunas
+                visíveis para marcar/desmarcar cada coluna.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Checkbox: tamanhos, estados e grupo “selecionar todos”">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Exemplo que agrupa tamanhos (sm, md), estados (unchecked, checked, indeterminate,
+            disabled) e um grupo interativo com “selecionar todos”.
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-6">
+              <Checkbox size="sm">Small</Checkbox>
+              <Checkbox size="md">Medium</Checkbox>
+            </div>
+            <div className="flex flex-wrap gap-6 items-center">
+              <Checkbox onChange={noop}>Unchecked</Checkbox>
+              <Checkbox checked onChange={noop}>
+                Checked
+              </Checkbox>
+              <Checkbox indeterminate onChange={noop}>
+                Indeterminate
+              </Checkbox>
+              <Checkbox disabled>Disabled</Checkbox>
+              <Checkbox disabled checked>
+                Disabled checked
+              </Checkbox>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">Grupo interativo (clique para alterar):</p>
+              <InteractiveCheckboxGroup />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

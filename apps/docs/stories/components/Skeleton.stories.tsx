@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Skeleton } from "@surface/ui/skeleton";
 import type { SkeletonVariant } from "@surface/ui/skeleton";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Skeleton> = {
   title: "Components/Atoms/Skeleton",
@@ -77,25 +77,64 @@ export const Text: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Skeleton (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Placeholder animado (pulse) para conteúdo em carregamento. rectangular, circular ou
-              text. motionTokens para duração e easing.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <Skeleton width={200} height={24} />
-              <Skeleton variant="circular" width={40} height={40} />
+    <div className="space-y-8 p-8">
+      <StorySection title="Skeleton (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Skeleton</strong> é um placeholder animado (pulse) para indicar
+                conteúdo em carregamento. Reduz a perceção de espera e mantém o layout
+                estável. Usa motionTokens para duração e easing.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>variant</code> — rectangular, circular, text.
+                </li>
+                <li>
+                  <code>width</code> / <code>height</code> — dimensões (número ou string,
+                  ex.: 200, &quot;100%&quot;, &quot;1em&quot; para text).
+                </li>
+                <li>
+                  <code>style</code> — estilos inline.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em cards de utilizador, listas de itens, tabelas e páginas que carregam
+                dados. Combine variantes (circular para avatar, text para linhas,
+                rectangular para botões ou imagens).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Skeleton: card de loading (avatar + linhas + botão)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Simulação de um card de perfil em carregamento: avatar circular, duas linhas
+            de texto e um botão retangular.
+          </p>
+          <div className="max-w-[280px] rounded-xl border border-border p-4">
+            <div className="flex items-start gap-3">
+              <Skeleton variant="circular" width={48} height={48} className="shrink-0" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton variant="text" width="80%" height={20} />
+                <Skeleton variant="text" width="60%" height={16} />
+              </div>
             </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <div className="mt-4">
+              <Skeleton variant="rectangular" width={120} height={36} className="rounded-md" />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

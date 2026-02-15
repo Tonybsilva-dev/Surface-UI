@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { TextArea } from "@surface/ui/textarea";
 import type { TextAreaSize, TextAreaStatus } from "@surface/ui/textarea";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof TextArea> = {
   title: "Components/Atoms/Textarea",
@@ -137,26 +137,96 @@ export const Composition: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Textarea (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              inputGuidelines: label visível ou placeholder; validação em momento adequado.
-              Textarea com status error/warning e tamanhos sm/md/lg alinhados ao TextInput.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <TextArea
-              placeholder="Descrição"
-              rows={3}
-              style={{ width: "100%", maxWidth: 320 }}
-            />
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Textarea (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>TextArea</strong> é um campo de texto multilinha. Suporta
+                compound (TextArea.Root + TextArea.Input), tamanhos (sm/md/lg), estados
+                (default, error, warning) e botão de limpar (allowClear). Consistente
+                com o Input do design system.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>size</code> — sm, md, lg.
+                </li>
+                <li>
+                  <code>status</code> — default, error, warning.
+                </li>
+                <li>
+                  <code>placeholder</code>, <code>rows</code>, <code>disabled</code>.
+                </li>
+                <li>
+                  <code>allowClear</code> — mostra botão para limpar o conteúdo.
+                </li>
+                <li>
+                  Modo compound: <code>TextArea.Root</code> + <code>TextArea.Input</code>
+                  ; Input aceita <code>resize</code> (vertical, none).
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em formulários para descrições, notas, comentários e conteúdo longo.
+                Use label visível ou placeholder; validação em momento adequado. Combine
+                com <strong>Form</strong> e <strong>Label</strong>.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Textarea: Descrição do projeto, Notas e estado de erro">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Campo &quot;Descrição do projeto&quot; com allowClear, &quot;Notas&quot; simples e um
+            exemplo em estado erro.
+          </p>
+          <div className="flex flex-col gap-6 max-w-[400px]">
+            <div>
+              <label htmlFor="textarea-desc" className="mb-1 block text-sm font-medium">
+                Descrição do projeto
+              </label>
+              <TextArea
+                id="textarea-desc"
+                placeholder="Descreva o objetivo, scope e requisitos do projeto..."
+                rows={4}
+                allowClear
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div>
+              <label htmlFor="textarea-notes" className="mb-1 block text-sm font-medium">
+                Notas
+              </label>
+              <TextArea
+                id="textarea-notes"
+                placeholder="Notas internas ou comentários adicionais."
+                rows={3}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div>
+              <label htmlFor="textarea-error" className="mb-1 block text-sm font-medium text-destructive">
+                Mensagem (com erro)
+              </label>
+              <TextArea
+                id="textarea-error"
+                placeholder="Este campo é obrigatório."
+                status="error"
+                rows={2}
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

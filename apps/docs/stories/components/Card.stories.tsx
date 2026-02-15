@@ -7,7 +7,7 @@ import { Text } from "@surface/ui/text";
 import { Avatar } from "@surface/ui/avatar";
 import { Divider } from "@surface/ui/divider";
 import { Progress } from "@surface/ui/progress";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const wrapperClass = "p-8 max-w-[360px]";
 
@@ -255,48 +255,128 @@ export const WithDividerAndBadges: Story = {
 
 export const Overview: Story = {
 	render: () => (
-		<div className="p-8">
+		<div className="space-y-8 p-8">
 			<StorySection title="Card (overview)">
-				<TwoColumn
-					left={
-						<StoryCard title="Guidelines">
-							<p style={{ margin: "0 0 12px", fontSize: 14 }}>
-								Containment: agrupa conteúdo. elevated (sombra), outlined
-								(borda), filled (fundo). componentShapeTokens.card,
-								elevationTokens, spacingTokens. Use Card.Header, Card.Content e
-								Card.Footer para composição. Combine com Text, Button, Badge,
-								Avatar, Divider e Progress para layouts ricos.
+				<StoryCard title="Documentação">
+					<div className="space-y-4 text-sm">
+						<section>
+							<h3 className="mb-2 font-semibold">O que é</h3>
+							<p>
+								O <strong>Card</strong> é um átomo de contenção que agrupa
+								conteúdo em blocos visuais. Suporta variantes elevated (sombra +
+								borda), outlined (borda) e filled (fundo surfaceVariant). Usa
+								tokens de elevação, shape e spacing.
 							</p>
-						</StoryCard>
-					}
-					right={
-						<StoryCard title="Exemplo">
-							<Card variant="elevated">
-								<Card.Header>
-									<Card.Title>
-										<Text variant="titleSmall">Título</Text>
-									</Card.Title>
-									<Card.Description>
-										<Text variant="bodySmall" tone="muted">
-											Descrição ou conteúdo secundário.
-										</Text>
-									</Card.Description>
-								</Card.Header>
-								<Card.Content>
-									<Text variant="bodySmall" tone="muted" as="p">
-										Conteúdo principal.
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Estrutura / Como se usa</h3>
+							<p>
+								Composição: <strong>Card</strong> (root), <strong>Card.Header</strong>,{" "}
+								<strong>Card.Title</strong>, <strong>Card.Description</strong>,{" "}
+								<strong>Card.Content</strong>, <strong>Card.Footer</strong>,{" "}
+								<strong>Card.Action</strong>. Monte o layout com estes subcomponentes
+								conforme necessário.
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">API (props)</h3>
+							<ul className="list-inside list-disc space-y-1">
+								<li>
+									<code>variant</code> — elevated, outlined, filled.
+								</li>
+								<li>
+									<code>className</code> — classes no root. Subcomponentes aceitam
+									className e props HTML.
+								</li>
+							</ul>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Componentes utilizados</h3>
+							<p className="mb-2">
+								Combine o Card com <strong>Text</strong>, <strong>Button</strong>,{" "}
+								<strong>Badge</strong>, <strong>Avatar</strong>, <strong>Divider</strong> e{" "}
+								<strong>Progress</strong> para layouts ricos (perfis, listagens,
+								dashboards).
+							</p>
+						</section>
+					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo completo">
+				<StoryCard title="Card: exemplo complexo com Avatar, Badge, Divider, Progress e múltiplas ações">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Card elevated com Header (Avatar + título + descrição + Badge), Content
+						(parágrafo), Divider, Progress e Footer com vários botões.
+					</p>
+					<div className="flex flex-wrap gap-6">
+						<Card variant="elevated" className="max-w-[360px]">
+							<Card.Header>
+								<div className="flex items-start gap-3">
+									<Avatar
+										src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
+										alt="Avatar"
+										size="md"
+									/>
+									<div className="flex-1 min-w-0">
+										<Card.Title>
+											<Text variant="titleSmall">Maria Silva</Text>
+										</Card.Title>
+										<Card.Description>
+											<Text variant="bodySmall" tone="muted">
+												Admin · maria@empresa.pt
+											</Text>
+										</Card.Description>
+										<Badge variant="secondary" size="sm" className="mt-1">
+											Ativo
+										</Badge>
+									</div>
+								</div>
+							</Card.Header>
+							<Card.Content>
+								<Text variant="bodySmall" tone="muted" as="p">
+									Descrição ou conteúdo principal do card. Pode incluir listas,
+									parágrafos ou outros átomos do design system.
+								</Text>
+								<Divider className="my-3" />
+								<Text variant="labelSmall" tone="muted" className="block mb-1">
+									Progresso
+								</Text>
+								<Progress value={65} className="h-2" />
+							</Card.Content>
+							<Card.Footer className="flex flex-wrap gap-2">
+								<Button variant="outline" size="sm">
+									Editar
+								</Button>
+								<Button variant="secondary" size="sm">
+									Ver perfil
+								</Button>
+								<Button size="sm">Guardar</Button>
+							</Card.Footer>
+						</Card>
+						<Card variant="outlined" className="max-w-[360px]">
+							<Card.Header>
+								<Card.Title>
+									<Text variant="titleSmall">Outlined</Text>
+								</Card.Title>
+								<Card.Description>
+									<Text variant="bodySmall" tone="muted">
+										Variante apenas com borda, sem sombra.
 									</Text>
-								</Card.Content>
-								<Card.Footer>
-									<Button variant="outline" size="sm">
-										Acção 1
-									</Button>
-									<Button size="sm">Acção 2</Button>
-								</Card.Footer>
-							</Card>
-						</StoryCard>
-					}
-				/>
+								</Card.Description>
+							</Card.Header>
+							<Card.Content>
+								<Text variant="bodySmall" tone="muted" as="p">
+									Conteúdo secundário. Combine com Badge, Divider e Progress.
+								</Text>
+							</Card.Content>
+							<Card.Footer>
+								<Button variant="outline" size="sm">
+									Acção
+								</Button>
+							</Card.Footer>
+						</Card>
+					</div>
+				</StoryCard>
 			</StorySection>
 		</div>
 	),

@@ -2,18 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Radio, RadioGroup } from "@surface/ui/radio";
 
-function RadioGroupWithState() {
-  const [value, setValue] = useState("2");
-  return (
-    <RadioGroup value={value} onChange={(e) => setValue(e.target.value)}>
-      <Radio value="1">Opção 1</Radio>
-      <Radio value="2">Opção 2</Radio>
-      <Radio value="3">Opção 3</Radio>
-    </RadioGroup>
-  );
-}
 import type { RadioSize } from "@surface/ui/radio";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
 const meta: Meta<typeof Radio> = {
   title: "Components/Atoms/Radio",
@@ -127,24 +117,95 @@ export const Disabled: Story = {
   ),
 };
 
+function RadioOverviewShipping() {
+  const [method, setMethod] = useState("email");
+  return (
+    <RadioGroup value={method} onChange={(e) => setMethod(e.target.value)} name="shipping">
+      <Radio value="email">Email</Radio>
+      <Radio value="correio">Correio</Radio>
+      <Radio value="levantamento">Levantamento em loja</Radio>
+    </RadioGroup>
+  );
+}
+
+function RadioOverviewPeriod() {
+  const [period, setPeriod] = useState("month");
+  return (
+    <RadioGroup value={period} onChange={(e) => setPeriod(e.target.value)} name="period">
+      <Radio value="week">Última semana</Radio>
+      <Radio value="month">Mês</Radio>
+      <Radio value="year">Ano</Radio>
+    </RadioGroup>
+  );
+}
+
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Radio (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Guidelines">
-            <p style={{ margin: "0 0 12px", fontSize: 14 }}>
-              Seleção única em lista. Use RadioGroup para value/onChange centralizados.
-              Tamanhos sm/md. Tokens: primary, outline, motion.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplo (clique para alterar)">
-            <RadioGroupWithState />
-          </StoryCard>
-        }
-      />
-    </StorySection>
+    <div className="space-y-8 p-8">
+      <StorySection title="Radio (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>Radio</strong> permite seleção única numa lista. Use standalone
+                (controlado com checked/onChange) ou dentro de{" "}
+                <strong>RadioGroup</strong> para value/onChange centralizados. Estilo
+                alinhado aos tokens (primary, outline, motion).
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>value</code> — valor deste item (em RadioGroup).
+                </li>
+                <li>
+                  <code>checked</code> / <code>onChange</code> — uso controlado
+                  standalone.
+                </li>
+                <li>
+                  <code>size</code> — sm, md (tamanho do círculo).
+                </li>
+                <li>
+                  <code>disabled</code> — desativa o item ou use em RadioGroup para
+                  desativar todo o grupo.
+                </li>
+                <li>
+                  RadioGroup: <code>value</code>, <code>onChange</code>, <code>name</code>
+                  .
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                Em formulários de escolha única: método de envio, período de relatório,
+                tipo de notificação, opções de pagamento. Combine com{" "}
+                <strong>Label</strong> e <strong>Form</strong>.
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="Radio: método de envio e período (RadioGroup)">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Dois cenários reais: escolha do método de envio (Email, Correio, Levantamento)
+            e do período (Última semana, Mês, Ano).
+          </p>
+          <div className="flex flex-col gap-8">
+            <div>
+              <p className="mb-2 text-sm font-medium">Método de envio</p>
+              <RadioOverviewShipping />
+            </div>
+            <div>
+              <p className="mb-2 text-sm font-medium">Período</p>
+              <RadioOverviewPeriod />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

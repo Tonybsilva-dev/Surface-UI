@@ -1,15 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Settings } from "lucide-react";
 import { IconButton } from "@surface/ui/icon-button";
 import type { IconButtonVariant, IconButtonSize } from "@surface/ui/icon-button";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection } from "../foundation/shared";
 
-function IconMock({ size = 24 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <title>Ícone</title>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-    </svg>
-  );
+function iconClassName(size: "default" | "sm" | "md" | "lg"): string {
+  return size === "sm" ? "size-[18px]" : size === "lg" ? "size-6" : "size-[22px]";
 }
 
 const meta: Meta<typeof IconButton> = {
@@ -90,17 +86,7 @@ export const Default: Story = {
   render: (args) => (
     <IconButton
       {...args}
-      icon={
-        <IconMock
-          size={
-            args.size === "sm"
-              ? 18
-              : args.size === "lg"
-                ? 24
-                : 22
-          }
-        />
-      }
+      icon={<Settings className={iconClassName(args.size)} aria-hidden />}
     />
   ),
   args: {
@@ -115,13 +101,13 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
-      <IconButton icon={<IconMock />} aria-label="Default" variant="default" />
-      <IconButton icon={<IconMock />} aria-label="Primary" variant="primary" />
-      <IconButton icon={<IconMock />} aria-label="Destructive" variant="destructive" />
-      <IconButton icon={<IconMock />} aria-label="Outline" variant="outline" />
-      <IconButton icon={<IconMock />} aria-label="Secondary" variant="secondary" />
-      <IconButton icon={<IconMock />} aria-label="Ghost" variant="ghost" />
-      <IconButton icon={<IconMock />} aria-label="Link" variant="link" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" variant="default" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Primary" variant="primary" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Destructive" variant="destructive" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Outline" variant="outline" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Secondary" variant="secondary" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Ghost" variant="ghost" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Link" variant="link" />
     </div>
   ),
 };
@@ -129,37 +115,92 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-      <IconButton icon={<IconMock size={18} />} aria-label="Small" size="sm" />
-      <IconButton icon={<IconMock size={22} />} aria-label="Default" size="default" />
-      <IconButton icon={<IconMock size={22} />} aria-label="Medium" size="md" />
-      <IconButton icon={<IconMock size={24} />} aria-label="Large" size="lg" />
+      <IconButton icon={<Settings className="size-[18px]" aria-hidden />} aria-label="Small" size="sm" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" size="default" />
+      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Medium" size="md" />
+      <IconButton icon={<Settings className="size-6" aria-hidden />} aria-label="Large" size="lg" />
     </div>
   ),
 };
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="IconButton (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px" }}>
-              Botão só com ícone. Sempre forneça <code>aria-label</code> para acessibilidade.
-              Variantes e tamanhos alinhados ao Button.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <IconButton icon={<IconMock />} aria-label="Default" variant="default" />
-              <IconButton icon={<IconMock />} aria-label="Destructive" variant="destructive" />
-              <IconButton icon={<IconMock />} aria-label="Outline" variant="outline" />
-              <IconButton icon={<IconMock />} aria-label="Disabled" disabled />
+    <div className="space-y-8 p-8">
+      <StorySection title="IconButton (overview)">
+        <StoryCard title="Documentação">
+          <div className="space-y-4 text-sm">
+            <section>
+              <h3 className="mb-2 font-semibold">O que é</h3>
+              <p>
+                O <strong>IconButton</strong> é um átomo que exibe apenas um ícone como ação
+                clicável. Usa as mesmas variantes visuais do Button (default, primary,
+                destructive, outline, secondary, ghost, link) e tamanhos (sm 32px, default/md 40px,
+                lg 48px). Requer <code>aria-label</code> para acessibilidade.
+              </p>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">API (props)</h3>
+              <ul className="list-inside list-disc space-y-1">
+                <li>
+                  <code>icon</code> — ícone (SVG ou elemento ReactNode).
+                </li>
+                <li>
+                  <code>aria-label</code> — label acessível (obrigatório).
+                </li>
+                <li>
+                  <code>variant</code> — default, primary, destructive, outline, secondary, ghost,
+                  link.
+                </li>
+                <li>
+                  <code>size</code> — default, sm, md, lg (área clicável 32px / 40px / 48px).
+                </li>
+                <li>
+                  <code>disabled</code> — desabilita o botão.
+                </li>
+                <li>
+                  <code>type</code> — tipo nativo (button, submit, reset).
+                </li>
+                <li>
+                  <code>style</code> — estilos inline.
+                </li>
+              </ul>
+            </section>
+            <section>
+              <h3 className="mb-2 font-semibold">Onde é usado</h3>
+              <p>
+                No organismo <strong>DataTable</strong>, o IconButton é usado na toolbar como
+                botão de refresh (atualizar) e como trigger em ícone do seletor de colunas
+                visíveis (quando columnVisibilityTriggerVariant é &quot;icon&quot;).
+              </p>
+            </section>
+          </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Exemplo completo">
+        <StoryCard title="IconButton: variantes, tamanhos e estados">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Exemplo que agrupa variantes, tamanhos (sm, default, md, lg) e estado disabled.
+          </p>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-wrap gap-3 items-center">
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" variant="default" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Primary" variant="primary" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Destructive" variant="destructive" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Outline" variant="outline" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Secondary" variant="secondary" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Ghost" variant="ghost" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Link" variant="link" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Disabled" disabled />
             </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            <div className="flex flex-wrap gap-3 items-center">
+              <IconButton icon={<Settings className="size-[18px]" aria-hidden />} aria-label="Small" size="sm" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" size="default" />
+              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Medium" size="md" />
+              <IconButton icon={<Settings className="size-6" aria-hidden />} aria-label="Large" size="lg" />
+            </div>
+          </div>
+        </StoryCard>
+      </StorySection>
+    </div>
   ),
 };

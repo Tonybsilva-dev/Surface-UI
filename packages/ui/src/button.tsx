@@ -39,13 +39,14 @@ export type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
 export type ButtonSize = VariantProps<typeof buttonVariants>["size"];
 
 export interface ButtonProps
-	extends ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
+	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size" | "variant"> {
 	asChild?: boolean;
 	children?: ReactNode;
 	fullWidth?: boolean;
 	leadingIcon?: ReactNode;
+	size?: ButtonSize;
 	trailingIcon?: ReactNode;
+	variant?: ButtonVariant;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
