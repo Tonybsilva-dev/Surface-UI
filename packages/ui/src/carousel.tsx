@@ -204,7 +204,7 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute  h-8 w-8 rounded-full",
+        "absolute h-8 w-8",
         orientation === "horizontal"
           ? "-left-12 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -233,7 +233,7 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
+        "absolute h-8 w-8",
         orientation === "horizontal"
           ? "-right-12 top-1/2 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -250,6 +250,62 @@ const CarouselNext = React.forwardRef<
 });
 CarouselNext.displayName = "CarouselNext";
 
+export interface CarouselDotsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
+	/** Número total de slides. */
+	slideCount: number;
+	/** Índice do slide ativo (0-based). */
+	selectedIndex: number;
+	/** Callback ao clicar num dot (índice). */
+	onSelect: (index: number) => void;
+	/** Classe do container dos dots. Por defeito sem bordas. */
+	className?: string;
+	/** Classe de cada dot; use para tamanho/cor (ativo vs inativo via data-state). */
+	dotClassName?: string;
+}
+
+const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
+	(
+		{
+			slideCount,
+			selectedIndex,
+			onSelect,
+			className,
+			dotClassName,
+			...props
+		},
+		ref,
+	) => (
+		<div
+			ref={ref}
+			role="tablist"
+			aria-label="Slides"
+			className={cn("flex justify-center gap-2", className)}
+			{...props}
+		>
+			{Array.from({ length: slideCount }).map((_, i) => (
+				<Button
+					// biome-ignore lint/suspicious/noArrayIndexKey: dots are identified by slide index
+					key={i}
+					type="button"
+					variant="ghost"
+					size="icon"
+					role="tab"
+					aria-selected={i === selectedIndex}
+					aria-label={`Ir para slide ${i + 1}`}
+					data-state={i === selectedIndex ? "active" : "inactive"}
+					onClick={() => onSelect(i)}
+					className={cn(
+						"h-2 w-2 min-h-2 min-w-2 rounded-full p-0 transition-colors",
+						i === selectedIndex ? "bg-primary hover:bg-primary" : "bg-muted-foreground/40 hover:bg-muted-foreground/60",
+						dotClassName,
+					)}
+				/>
+			))}
+		</div>
+	),
+);
+CarouselDots.displayName = "CarouselDots";
+
 export {
   type CarouselApi,
   Carousel,
@@ -257,4 +313,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDots,
 };

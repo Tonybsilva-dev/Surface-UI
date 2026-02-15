@@ -19,9 +19,25 @@ const meta: Meta<typeof Image> = {
       description: "Texto alternativo (obrigatório). Use '' se decorativa.",
       control: "text",
     },
+    fallback: {
+      description: "ReactNode ou URL de imagem a mostrar quando src falha.",
+      control: "text",
+      table: { category: "Comportamento" },
+    },
     objectFit: {
       control: "select",
       options: ["cover", "contain", "fill", "none"],
+    },
+    radius: {
+      description: "Borda (string, ex. 0.5rem, ou número em px).",
+      control: "text",
+      table: { category: "Aparência" },
+    },
+    aspectRatio: {
+      description: "Proporção do container: video (16/9), square (1/1) ou valor CSS.",
+      control: "select",
+      options: [undefined, "video", "square", "3/2", "4/3"],
+      table: { category: "Layout" },
     },
   },
   args: {
@@ -40,8 +56,8 @@ export const Default: Story = {
   args: {
     src: placeholderUrl,
     alt: "Imagem de exemplo",
-    width: 320,
-    height: 200,
+    aspectRatio: "video",
+    className: "w-full max-w-md",
     style: { display: "block" },
   },
 };
@@ -51,8 +67,8 @@ export const WithFallback: Story = {
     src: "https://invalid-url-that-will-fail.example/img.jpg",
     alt: "Imagem que falha",
     fallback: "Falha ao carregar",
-    width: 320,
-    height: 200,
+    aspectRatio: "video",
+    className: "w-full max-w-md",
     style: { display: "block" },
   },
 };
@@ -119,16 +135,16 @@ export const Overview: Story = {
                 <li><code>fallback</code> — ReactNode ou URL de imagem a mostrar em caso de erro.</li>
                 <li><code>objectFit</code> — cover | contain | fill | none.</li>
                 <li><code>radius</code> — string (ex.: &quot;0.5rem&quot;) ou número em px.</li>
-                <li><code>className</code> — Aplicado ao wrapper; use com wrapper externo para aspect ratio.</li>
+                <li><code>aspectRatio</code> — &quot;video&quot; (16/9), &quot;square&quot; (1/1) ou valor CSS (ex.: 3/2).</li>
+                <li><code>className</code> — Aplicado ao wrapper.</li>
               </ul>
             </section>
             <section>
               <h3 className="mb-2 font-semibold">Aspect ratio</h3>
               <p>
-                O componente não expõe uma prop de aspect ratio. Para manter proporção fixa (ex.: 16/9 ou quadrado),
-                envolva o <strong>Image</strong> num wrapper com <code>className=&quot;aspect-video&quot;</code> ou{" "}
-                <code>aspect-square</code> (Tailwind) ou CSS <code>aspect-ratio: 16/9</code>, e passe{" "}
-                <code>className=&quot;w-full h-full&quot;</code> ao Image para preencher o wrapper. Ver exemplo abaixo.
+                Use a prop <code>aspectRatio</code> para evitar saltos de layout (CLS): <code>aspectRatio=&quot;video&quot;</code> (16/9),
+                <code>aspectRatio=&quot;square&quot;</code> (1/1) ou um valor CSS como <code>3/2</code>. Alternativamente, envolva o Image
+                num wrapper com <code>className=&quot;aspect-video&quot;</code> e <code>className=&quot;w-full h-full&quot;</code> no Image.
               </p>
             </section>
             <section>

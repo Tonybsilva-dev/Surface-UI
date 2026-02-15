@@ -64,6 +64,8 @@ import { cn } from '@surface/ui/lib/utils';
 
 Consulte o **Storybook** ([apps/docs](https://github.com/Tonybsilva-dev/Surface-UI/tree/main/apps/docs)) para exemplos e props.
 
+**Design atómico:** no repositório, o ficheiro [docs/design-system-coverage.md](../../docs/design-system-coverage.md) mapeia moléculas que não usam átomos e organismos que não usam moléculas, com refactors sugeridos.
+
 ---
 
 ## 🛠️ Scripts

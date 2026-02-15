@@ -8,6 +8,7 @@ import {
 	CarouselItem,
 	CarouselPrevious,
 	CarouselNext,
+	CarouselDots,
 } from "@surface/ui/carousel";
 import { Text } from "@surface/ui/text";
 import { StoryCard, StorySection } from "../foundation/shared";
@@ -20,7 +21,7 @@ const meta: Meta<typeof Carousel> = {
 		docs: {
 			description: {
 				component:
-					"Carrossel com setas (Embla). Carousel + CarouselContent + CarouselItem + CarouselPrevious + CarouselNext. opts expõe a API do Embla (align, loop, duration, draggable).",
+					"Carrossel baseado em **Embla Carousel** (não React Slick). Carousel + CarouselContent + CarouselItem + CarouselPrevious + CarouselNext. Setas usam o átomo Button (sem bordas arredondadas). Use **setApi** para obter a API: scrollTo(i), scrollPrev(), scrollNext(), selectedScrollSnap(), canScrollPrev(), canScrollNext(), on/off('select'). opts expõe opções Embla (align, loop, duration, draggable, etc.).",
 			},
 		},
 	},
@@ -35,6 +36,12 @@ const meta: Meta<typeof Carousel> = {
 			control: "boolean",
 			table: { category: "UI", type: { summary: "boolean" } },
 		},
+		orientation: {
+			description: "Eixo do carrossel (horizontal ou vertical).",
+			control: "select",
+			options: ["horizontal", "vertical"],
+			table: { category: "Layout", type: { summary: "horizontal | vertical" } },
+		},
 		loop: {
 			description: "Rolar infinitamente (loop).",
 			control: "boolean",
@@ -47,7 +54,7 @@ const meta: Meta<typeof Carousel> = {
 			table: { category: "Embla opts", type: { summary: "start | center | end" } },
 		},
 		duration: {
-			description: "Duração da animação ao navegar (API). Valores ~20–60.",
+			description: "Duração da animação ao navegar (ms). Valores ~20–60.",
 			control: { type: "number", min: 10, max: 80, step: 5 },
 			table: { category: "Embla opts", type: { summary: "number" } },
 		},
@@ -60,6 +67,7 @@ const meta: Meta<typeof Carousel> = {
 	args: {
 		showArrows: true,
 		showDots: false,
+		orientation: "horizontal",
 		loop: true,
 		align: "center",
 		duration: 25,
@@ -76,6 +84,47 @@ const slides = [
 	{ title: "Slide 2", body: "Segundo slide. O carrossel suporta navegação por setas e teclado." },
 	{ title: "Slide 3", body: "Terceiro slide. Tokens de motion e acessibilidade (role=region, aria-roledescription)." },
 ];
+
+/** Exemplo de carousel sem bordas nos slides (para uso na Overview). */
+function BorderlessExample() {
+	const [api, setApi] = useState<CarouselApi | null>(null);
+	const [selectedIndex, setSelectedIndex] = useState(0);
+
+	useEffect(() => {
+		if (!api) return;
+		setSelectedIndex(api.selectedScrollSnap());
+		const handler = () => setSelectedIndex(api.selectedScrollSnap());
+		api.on("select", handler);
+		return () => api.off("select", handler);
+	}, [api]);
+
+	return (
+		<Carousel opts={{ align: "center", loop: true, duration: 25, draggable: true }} setApi={setApi}>
+			<CarouselContent className="rounded-lg overflow-hidden">
+				{slides.map((slide) => (
+					<CarouselItem key={slide.title}>
+						<div className="rounded-lg bg-muted/80 p-6">
+							<Text variant="titleSmall" className="block mb-2">
+								{slide.title}
+							</Text>
+							<Text variant="bodySmall" tone="muted" as="p">
+								{slide.body}
+							</Text>
+						</div>
+					</CarouselItem>
+				))}
+			</CarouselContent>
+			<CarouselPrevious />
+			<CarouselNext />
+			<CarouselDots
+				slideCount={slides.length}
+				selectedIndex={selectedIndex}
+				onSelect={(i) => api?.scrollTo(i)}
+				className="mt-4"
+			/>
+		</Carousel>
+	);
+}
 
 /** Container centralizado para melhor visualização do carousel. */
 const CarouselWrapper = ({
@@ -110,7 +159,7 @@ export const Default: Story = {
 
 		return (
 			<CarouselWrapper>
-				<Carousel opts={opts} setApi={setApi}>
+				<Carousel opts={opts} setApi={setApi} orientation={args.orientation as "horizontal" | "vertical"}>
 					<CarouselContent>
 						{slides.map((slide) => (
 							<CarouselItem key={slide.title}>
@@ -133,20 +182,58 @@ export const Default: Story = {
 					) : null}
 				</Carousel>
 				{args.showDots ? (
-					<div className="mt-4 flex justify-center gap-2">
-						{slides.map((slide, i) => (
-							<button
-								key={slide.title}
-								type="button"
-								aria-label={`Ir para slide ${i + 1}`}
-								onClick={() => api?.scrollTo(i)}
-								className={`h-2 w-2 rounded-full transition-colors ${
-									i === selectedIndex ? "bg-primary" : "bg-muted-foreground/40"
-								}`}
-							/>
-						))}
-					</div>
+					<CarouselDots
+						slideCount={slides.length}
+						selectedIndex={selectedIndex}
+						onSelect={(i) => api?.scrollTo(i)}
+						className="mt-4"
+					/>
 				) : null}
+			</CarouselWrapper>
+		);
+	},
+};
+
+/** Carousel sem bordas nos slides: o conteúdo preenche sem card/border. */
+export const Borderless: Story = {
+	render: function BorderlessCarousel() {
+		const [api, setApi] = useState<CarouselApi | null>(null);
+		const [selectedIndex, setSelectedIndex] = useState(0);
+
+		useEffect(() => {
+			if (!api) return;
+			setSelectedIndex(api.selectedScrollSnap());
+			const handler = () => setSelectedIndex(api.selectedScrollSnap());
+			api.on("select", handler);
+			return () => api.off("select", handler);
+		}, [api]);
+
+		return (
+			<CarouselWrapper>
+				<Carousel opts={{ align: "center", loop: true, duration: 25, draggable: true }} setApi={setApi}>
+					<CarouselContent className="rounded-lg overflow-hidden">
+						{slides.map((slide) => (
+							<CarouselItem key={slide.title}>
+								<div className="rounded-lg bg-muted/80 p-6">
+									<Text variant="titleSmall" className="block mb-2">
+										{slide.title}
+									</Text>
+									<Text variant="bodySmall" tone="muted" as="p">
+										{slide.body}
+									</Text>
+								</div>
+							</CarouselItem>
+						))}
+					</CarouselContent>
+					<CarouselPrevious />
+					<CarouselNext />
+					<CarouselDots
+						slideCount={slides.length}
+						selectedIndex={selectedIndex}
+						onSelect={(i) => api?.scrollTo(i)}
+						className="mt-4"
+					/>
+				</Carousel>
 			</CarouselWrapper>
 		);
 	},
@@ -162,10 +249,8 @@ export const Overview: Story = {
 							<h3 className="mb-2 font-semibold">O que é</h3>
 							<p>
 								O <strong>Carousel</strong> é um carrossel horizontal (ou
-								vertical) com setas de navegação. Baseado em Embla. Usa o Button
-								do design system para Previous/Next e tokens de motion.
-								Acessível (role=region, aria-roledescription=carousel, slides com
-								role=group).
+								vertical) com setas de navegação e dots opcionais. Baseado em Embla. Usa o Button
+								do design system para Previous/Next. <strong>Sem bordas por defeito</strong> — as bordas vêm do conteúdo que colocas em CarouselItem (ex.: card com border).
 							</p>
 						</section>
 						<section>
@@ -175,7 +260,37 @@ export const Overview: Story = {
 								<strong>CarouselContent</strong> +{" "}
 								<strong>CarouselItem</strong> (por slide) +{" "}
 								<strong>CarouselPrevious</strong> + <strong>CarouselNext</strong>
-								. opts passa opções ao Embla (align, loop, etc.).
+								. Opcional: <strong>CarouselDots</strong> (slideCount, selectedIndex, onSelect). opts passa opções ao Embla (align, loop, duration, draggable).
+							</p>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">API (setApi)</h3>
+							<p className="mb-2">
+								Com <code>setApi(api)</code> obténs a instância Embla. Métodos disponíveis:
+							</p>
+							<table className="w-full text-left text-sm border border-border rounded-md">
+								<thead>
+									<tr className="border-b border-border bg-muted/50">
+										<th className="p-2 font-medium">Método</th>
+										<th className="p-2 font-medium">Descrição</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr className="border-b border-border"><td className="p-2 font-mono">scrollTo(index)</td><td className="p-2">Ir para o slide no índice (0-based).</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">scrollPrev()</td><td className="p-2">Slide anterior.</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">scrollNext()</td><td className="p-2">Próximo slide.</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">selectedScrollSnap()</td><td className="p-2">Índice do slide atual.</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">canScrollPrev()</td><td className="p-2">Se pode voltar.</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">canScrollNext()</td><td className="p-2">Se pode avançar.</td></tr>
+									<tr className="border-b border-border"><td className="p-2 font-mono">on(&quot;select&quot;, fn)</td><td className="p-2">Callback quando o slide muda (para sync com CarouselDots).</td></tr>
+									<tr><td className="p-2 font-mono">off(&quot;select&quot;, fn)</td><td className="p-2">Remover listener.</td></tr>
+								</tbody>
+							</table>
+						</section>
+						<section>
+							<h3 className="mb-2 font-semibold">Sem bordas</h3>
+							<p>
+								O Carousel não aplica borda ao content nem aos items. Para slides sem bordas, não uses <code>border</code> no conteúdo de CarouselItem (ver story Borderless).
 							</p>
 						</section>
 						<section>
@@ -213,6 +328,16 @@ export const Overview: Story = {
 							<CarouselPrevious />
 							<CarouselNext />
 						</Carousel>
+					</CarouselWrapper>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Exemplo sem bordas">
+				<StoryCard title="Carousel sem bordas (Borderless)">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Mesmo carrossel com setas e dots; slides sem border (apenas fundo suave). O componente não impõe bordas.
+					</p>
+					<CarouselWrapper>
+						<BorderlessExample />
 					</CarouselWrapper>
 				</StoryCard>
 			</StorySection>

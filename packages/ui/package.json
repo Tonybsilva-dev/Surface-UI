@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node ../../node_modules/tsup/dist/cli-default.js",
     "clean": "rm -rf dist .turbo",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "ds:coverage": "node scripts/ds-coverage.cjs"
   },
   "exports": {
     "./button": {

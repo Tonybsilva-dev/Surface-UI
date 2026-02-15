@@ -2,11 +2,20 @@ import type { ImgHTMLAttributes, ReactNode } from "react";
 import { useState } from "react";
 import { cn } from "./lib/utils";
 
+/** Valores comuns para aspect ratio (Tailwind: aspect-video 16/9, aspect-square 1/1). */
+export type ImageAspectRatio = "video" | "square" | number | string;
+
 export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "alt"> {
 	alt: string;
+	/** Conteúdo ou URL de imagem a mostrar quando src falha. */
 	fallback?: ReactNode | string;
 	objectFit?: "cover" | "contain" | "fill" | "none";
 	radius?: string | number;
+	/**
+	 * Proporção do container (evita CLS). "video" = 16/9, "square" = 1/1, ou valor CSS (ex.: 3/2, "16/9").
+	 * Aplicado ao wrapper; a imagem preenche com objectFit.
+	 */
+	aspectRatio?: ImageAspectRatio;
 	className?: string;
 }
 
@@ -24,6 +33,7 @@ export function Image(props: ImageProps): JSX.Element {
 		fallback,
 		objectFit = "cover",
 		radius = "0.5rem",
+		aspectRatio,
 		className,
 		onLoad,
 		onError,
@@ -44,16 +54,31 @@ export function Image(props: ImageProps): JSX.Element {
 		onError?.(e);
 	};
 
+	const aspectClass =
+		aspectRatio === "video"
+			? "aspect-video"
+			: aspectRatio === "square"
+				? "aspect-square"
+				: undefined;
+	const aspectStyle =
+		aspectRatio != null && aspectRatio !== "video" && aspectRatio !== "square"
+			? {
+					aspectRatio: typeof aspectRatio === "number" ? String(aspectRatio) : aspectRatio,
+				}
+			: undefined;
+
 	const wrapperClass = cn(
 		"inline-block overflow-hidden bg-muted",
+		aspectClass,
 		className,
 	);
 	const radiusStyle =
 		typeof radius === "number" ? { borderRadius: `${radius}px` } : { borderRadius: radius };
+	const wrapperStyle = { ...radiusStyle, ...aspectStyle };
 
 	if (error && fallback !== undefined) {
 		return (
-			<span className={wrapperClass} style={radiusStyle}>
+			<span className={wrapperClass} style={wrapperStyle}>
 				{typeof fallback === "string" ? (
 					<img
 						src={fallback}
@@ -71,7 +96,7 @@ export function Image(props: ImageProps): JSX.Element {
 	}
 
 	return (
-		<span className={wrapperClass} style={radiusStyle}>
+		<span className={wrapperClass} style={wrapperStyle}>
 			{!loaded && src ? (
 				<span
 					className="block w-full h-full min-h-20 bg-muted"
