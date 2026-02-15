@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="160" height="32">
-  <rect width="32" height="32" rx="6" fill="currentColor"/>
-  <text x="16" y="22" font-size="14" font-weight="bold" text-anchor="middle" fill="white">DS</text>
-  <text x="44" y="22" font-size="14" font-family="system-ui,sans-serif" fill="currentColor">Design System</text>
-</svg>
