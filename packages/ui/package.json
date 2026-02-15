@@ -4,7 +4,7 @@
   "private": true,
   "sideEffects": ["**/foundation/theme.css"],
   "scripts": {
-    "build": "pnpm exec tsup",
+    "build": "node ../../node_modules/tsup/dist/cli-default.js",
     "clean": "rm -rf dist .turbo",
     "lint": "eslint src/"
   },
