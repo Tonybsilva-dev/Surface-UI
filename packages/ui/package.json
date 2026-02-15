@@ -64,11 +64,6 @@
       "import": "./dist/spinner.mjs",
       "require": "./dist/spinner.js"
     },
-    "./text-input": {
-      "types": "./dist/text-input.d.mts",
-      "import": "./dist/text-input.mjs",
-      "require": "./dist/text-input.js"
-    },
     "./switch": {
       "types": "./dist/switch.d.mts",
       "import": "./dist/switch.mjs",
