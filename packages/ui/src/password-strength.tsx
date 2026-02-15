@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "./lib/utils";
 
 /**
@@ -8,17 +9,19 @@ interface PasswordStrengthProps {
   password: string;
 }
 
-export const PasswordStrength = ({ password }: PasswordStrengthProps) => {
-  const getStrength = (password: string) => {
-    let score = 0;
-    if (password.length >= 8) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-    return score;
-  };
+const SEGMENT_KEYS = ["segment-0", "segment-1", "segment-2", "segment-3", "segment-4"] as const;
 
+function getStrength(value: string): number {
+  let score = 0;
+  if (value.length >= 8) score++;
+  if (/[a-z]/.test(value)) score++;
+  if (/[A-Z]/.test(value)) score++;
+  if (/[0-9]/.test(value)) score++;
+  if (/[^A-Za-z0-9]/.test(value)) score++;
+  return score;
+}
+
+export function PasswordStrength({ password }: PasswordStrengthProps): ReactNode {
   const strength = getStrength(password);
 
   const STRENGTH_LABELS = [
@@ -40,26 +43,25 @@ export const PasswordStrength = ({ password }: PasswordStrengthProps) => {
   if (!password) return null;
 
   return (
-    <div
-      className="mt-2"
-      role="status"
-      aria-live="polite"
+    <output
       aria-label={`Força da senha: ${STRENGTH_LABELS[strength - 1] ?? "Muito Fraca"}`}
+      aria-live="polite"
+      className="mt-2"
     >
-      <div className="flex gap-1 mb-1">
-        {Array.from({ length: 5 }, (_, index) => (
+      <div className="mb-1 flex gap-1">
+        {SEGMENT_KEYS.map((key, index) => (
           <div
-            key={`segment-${index}`}
             className={cn(
-              "h-1 flex-1 rounded-full transition-colors duration-[var(--duration-medium)] ease-[var(--ease-standard)]",
+              "h-1 flex-1 rounded-full transition-colors duration-(--duration-medium) ease-(--ease-standard)",
               index < strength ? STRENGTH_COLORS[strength - 1] : "bg-muted",
             )}
+            key={key}
           />
         ))}
       </div>
       <p className="text-xs text-muted-foreground">
         Força da senha: {STRENGTH_LABELS[strength - 1] ?? "Muito Fraca"}
       </p>
-    </div>
+    </output>
   );
-};
+}
