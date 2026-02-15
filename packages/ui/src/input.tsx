@@ -64,6 +64,27 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 	},
 	ref,
 ) {
+	// #region agent log
+	fetch("http://127.0.0.1:7248/ingest/3b8749ae-5c40-432a-b513-6e65887ca92d", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			location: "input.tsx:Input",
+			message: "Input received props",
+			data: {
+				size,
+				status,
+				allowClear,
+				showCount,
+				hasPrefix: prefix != null,
+				hasSuffix: suffix != null,
+				hasAddons: (prefix != null || suffix != null || allowClear || showCount),
+			},
+			timestamp: Date.now(),
+			hypothesisId: "C",
+		}),
+	}).catch(() => {});
+	// #endregion
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const setRef = (el: HTMLInputElement | null) => {
 		inputRef.current = el;

@@ -104,9 +104,36 @@ export const Default: Story = {
 		showSuffix: false,
 	} as InputStoryArgs,
 	render: function InputDefault(renderArg: InputStoryArgs | { args?: InputStoryArgs }) {
-		const args: InputStoryArgs = "args" in renderArg && typeof renderArg.args === "object" && renderArg.args
-			? renderArg.args
-			: (renderArg as InputStoryArgs);
+		// #region agent log
+		const fromNested = "args" in renderArg && typeof renderArg.args === "object" && renderArg.args;
+		const args: InputStoryArgs = fromNested ? renderArg.args! : (renderArg as InputStoryArgs);
+		fetch("http://127.0.0.1:7248/ingest/3b8749ae-5c40-432a-b513-6e65887ca92d", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				location: "Input.stories.tsx:Default render",
+				message: "Story render args resolution",
+				data: {
+					renderArgKeys: typeof renderArg === "object" && renderArg !== null ? Object.keys(renderArg) : [],
+					fromNested,
+					resolved: {
+						size: args?.size,
+						status: args?.status,
+						allowClear: args?.allowClear,
+						showCount: args?.showCount,
+						showPrefix: args?.showPrefix,
+						showSuffix: args?.showSuffix,
+					},
+					types: {
+						allowClear: typeof args?.allowClear,
+						showPrefix: typeof args?.showPrefix,
+					},
+				},
+				timestamp: Date.now(),
+				hypothesisId: "A_B_D_E",
+			}),
+		}).catch(() => {});
+		// #endregion
 		const [value, setValue] = useState("");
 		const prefix = args.showPrefix === true ? <User className="size-4" aria-hidden /> : undefined;
 		const suffix = args.showSuffix === true ? <Search className="size-4" aria-hidden /> : undefined;
