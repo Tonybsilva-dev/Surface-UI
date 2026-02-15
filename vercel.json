@@ -1,7 +1,7 @@
 {
   "buildCommand": "pnpm exec turbo run build --filter=docs",
   "outputDirectory": "apps/docs/storybook-static",
-  "installCommand": "pnpm install",
+  "installCommand": "NODE_ENV=development pnpm install",
   "framework": null,
   "ignoreCommand": "exit 0"
 }
