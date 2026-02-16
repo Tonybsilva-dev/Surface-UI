@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Tab, Tabs } from "@surface/ui/tabs";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Tabs.Root> = {
   title: "Components/Molecules/Tabs",
@@ -192,6 +192,37 @@ export const Overview: Story = {
             e segurança.
           </p>
           <TabsSettingsDemo />
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "tabs-list", label: "list (tab triggers)", description: "Tabs.List — container dos triggers" },
+              { id: "tabs-panel", label: "panel", description: "Tabs.Content — painel do tab ativo" },
+            ]}
+            renderExample={(wrap) => (
+              <Tabs.Root defaultValue="1">
+                {wrap("tabs-list", (
+                  <Tabs.List>
+                    <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
+                    <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
+                  </Tabs.List>
+                ))}
+                {wrap("tabs-panel", (
+                  <Tabs.Content value="1">
+                    <div style={{ padding: 16, fontSize: 14, color: "#333" }}>Conteúdo da aba 1.</div>
+                  </Tabs.Content>
+                ))}
+                <Tabs.Content value="2">
+                  <div style={{ padding: 16, fontSize: 14, color: "#333" }}>Conteúdo da aba 2.</div>
+                </Tabs.Content>
+              </Tabs.Root>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

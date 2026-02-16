@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Checkbox } from "@surface/ui/checkbox";
 import type { CheckboxSize } from "@surface/ui/checkbox";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 function noop(): void {}
 
@@ -254,6 +254,25 @@ export const Overview: Story = {
               <InteractiveCheckboxGroup />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "checkbox-root", label: "root", description: "Checkbox — input + indicador" },
+              { id: "checkbox-label", label: "label", description: "Texto associado (children)" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="flex items-center gap-2">
+                {wrap("checkbox-root", <Checkbox id="cb-sem" />)}
+                {wrap("checkbox-label", <label htmlFor="cb-sem">Aceito os termos</label>)}
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

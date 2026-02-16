@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PasswordStrength } from "@surface/ui/password-strength";
 import { Input } from "@surface/ui/input";
 import { Label } from "@surface/ui/label";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 function PasswordStrengthOverviewDemo() {
 	const [password, setPassword] = useState("");
@@ -106,6 +106,27 @@ export const Overview: Story = {
 						Digite para ver os níveis (muito fraca → muito forte).
 					</p>
 					<PasswordStrengthOverviewDemo />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "pw-root", label: "root", description: "PasswordStrength — container" },
+							{ id: "pw-input", label: "input", description: "Campo de senha (externo)" },
+							{ id: "pw-bar", label: "strength bar", description: "Barra de força" },
+							{ id: "pw-hint", label: "hint", description: "Texto de critérios" },
+						]}
+						renderExample={(wrap) => (
+							<div className="w-full max-w-[320px] space-y-2">
+								{wrap("pw-input", <Input type="password" placeholder="Senha" aria-label="Senha" />)}
+								{wrap("pw-root", <PasswordStrength password="" />)}
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

@@ -3,7 +3,7 @@ import { Tooltip } from "@surface/ui/tooltip";
 import type { TooltipPlacement } from "@surface/ui/tooltip";
 import { Button } from "@surface/ui/button";
 import { IconButton } from "@surface/ui/icon-button";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Atoms/Tooltip",
@@ -165,6 +165,24 @@ export const Overview: Story = {
               <IconButton icon={<span aria-hidden>⋯</span>} aria-label="Mais opções" />
             </Tooltip>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar. O content aparece ao hover.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "tooltip-trigger", label: "trigger", description: "Elemento que dispara o tooltip" },
+              { id: "tooltip-content", label: "content", description: "Conteúdo do tooltip" },
+            ]}
+            renderExample={(wrap) => (
+              <Tooltip title="Dica de ajuda">
+                {wrap("tooltip-trigger", <Button variant="outline">Passar rato</Button>)}
+              </Tooltip>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

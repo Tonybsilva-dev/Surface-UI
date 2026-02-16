@@ -3,7 +3,7 @@ import { Empty } from "@surface/ui/empty";
 import { Button } from "@surface/ui/button";
 import { Text } from "@surface/ui/text";
 import { Inbox } from "lucide-react";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const wrapperClass = "min-h-[280px] w-full max-w-md";
 
@@ -258,6 +258,33 @@ export const Overview: Story = {
 							</Empty>
 						</div>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "empty-media", label: "media/icon", description: "Empty.Media — ícone ou ilustração" },
+							{ id: "empty-title", label: "title", description: "Empty.Title — título do estado vazio" },
+							{ id: "empty-description", label: "description", description: "Empty.Description — texto explicativo" },
+							{ id: "empty-content", label: "content (ação)", description: "Empty.Content — botão(es) de ação" },
+						]}
+						renderExample={(wrap) => (
+							<div className={wrapperClass}>
+								<Empty>
+									<Empty.Header>
+										{wrap("empty-media", <Empty.Media variant="icon"><Inbox className="size-6" aria-hidden /></Empty.Media>)}
+										{wrap("empty-title", <Empty.Title><Text variant="titleMedium">Nenhum item</Text></Empty.Title>)}
+										{wrap("empty-description", <Empty.Description><Text variant="bodySmall" tone="muted" as="p">Não há dados para mostrar.</Text></Empty.Description>)}
+									</Empty.Header>
+									{wrap("empty-content", <Empty.Content><Button size="sm">Criar item</Button></Empty.Content>)}
+								</Empty>
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

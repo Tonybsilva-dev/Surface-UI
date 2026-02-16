@@ -44,6 +44,7 @@ const allEntries = [
 	"src/form.tsx",
 	"src/collapsible.tsx",
 	"src/carousel.tsx",
+	"src/list.tsx",
 	"src/password-strength.tsx",
 	"src/foundation/index.ts",
 	"src/foundation/theme.css",

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { InputButton } from "@surface/ui/input-button";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof InputButton.Provider> = {
   title: "Components/Molecules/InputButton",
@@ -100,6 +100,28 @@ export const Overview: Story = {
               <InputButton.Submit icon={<ArrowRight className="size-4" aria-hidden />}>Subscrever</InputButton.Submit>
             </InputButton.Provider>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "inputbutton-input", label: "input", description: "InputButton.Input — campo de texto" },
+              { id: "inputbutton-button", label: "button", description: "InputButton.Action / Submit — botão que expande ou submete" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="max-w-[360px]">
+                <InputButton.Provider>
+                  {wrap("inputbutton-button", <InputButton.Action>Escrever email</InputButton.Action>)}
+                  {wrap("inputbutton-input", <InputButton.Input placeholder="seu@email.com" />)}
+                  <InputButton.Submit icon={<ArrowRight className="size-4" aria-hidden />}>Enviar</InputButton.Submit>
+                </InputButton.Provider>
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

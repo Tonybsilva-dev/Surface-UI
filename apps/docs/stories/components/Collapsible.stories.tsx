@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@surface/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Collapsible> = {
 	title: "Components/Molecules/Collapsible",
@@ -183,6 +183,27 @@ export const Overview: Story = {
 							</CollapsibleContent>
 						</Collapsible>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "collapsible-trigger", label: "trigger", description: "CollapsibleTrigger — botão que expande/recolhe" },
+							{ id: "collapsible-content", label: "content", description: "CollapsibleContent — conteúdo expansível" },
+						]}
+						renderExample={(wrap) => (
+							<div className="max-w-[400px]">
+								<Collapsible defaultOpen>
+									{wrap("collapsible-trigger", <CollapsibleTrigger><Text variant="bodyMedium">Como altero a minha palavra-passe?</Text><ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" /></CollapsibleTrigger>)}
+									{wrap("collapsible-content", <CollapsibleContent><div className="px-3 pb-3 pt-0"><Text variant="bodySmall" tone="muted" as="p">Em Definições → Segurança pode definir uma nova palavra-passe.</Text></div></CollapsibleContent>)}
+								</Collapsible>
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

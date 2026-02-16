@@ -1,5 +1,6 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 type CollapsibleRootProps = React.ComponentProps<typeof CollapsiblePrimitive.Root> & {
 	/** Mostrar borda à volta do bloco. @default true */
@@ -23,15 +24,20 @@ function CollapsibleRoot({ bordered = true, className, ...props }: CollapsibleRo
 function CollapsibleTrigger(
 	props: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>,
 ): JSX.Element {
+	const { className, children, ...rest } = props;
 	return (
-		<CollapsiblePrimitive.CollapsibleTrigger
-			data-slot="collapsible-trigger"
-			className={cn(
-				"flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-sm font-medium text-foreground transition-colors duration-[var(--duration-short)] ease-[var(--ease-standard)] hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-[var(--disabled-opacity)] [&[data-state=open]>svg]:rotate-180",
-				props.className,
-			)}
-			{...props}
-		/>
+		<CollapsiblePrimitive.CollapsibleTrigger asChild {...rest}>
+			<Button
+				data-slot="collapsible-trigger"
+				variant="ghost"
+				className={cn(
+					"flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left [&[data-state=open]>svg]:rotate-180",
+					className,
+				)}
+			>
+				{children}
+			</Button>
+		</CollapsiblePrimitive.CollapsibleTrigger>
 	);
 }
 

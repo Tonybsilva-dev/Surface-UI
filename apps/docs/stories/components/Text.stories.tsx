@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Text } from "@surface/ui/text";
 import type { TextVariant, TextTone, TextAs } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const variants: TextVariant[] = [
   "displayLarge",
@@ -265,6 +265,19 @@ export const Overview: Story = {
               </Text>
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "text-root", label: "root", description: "Text — variante/tone como descrição" },
+            ]}
+            renderExample={(wrap) => wrap("text-root", <Text variant="bodyMedium" tone="default">Texto de exemplo.</Text>)}
+          />
         </StoryCard>
       </StorySection>
     </div>

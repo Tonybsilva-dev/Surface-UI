@@ -24,7 +24,7 @@ import {
 } from "@surface/ui/chart";
 import { Card } from "@surface/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@surface/ui/toggle-group";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 /** Wrapper para as stories: dimensões fixas para o gráfico preencher todo o espaço. */
 const ChartWrapper = ({
@@ -539,6 +539,36 @@ export const Overview: Story = {
 						Card com título, toggle (mês/dia) e área de gráfico. Dados mockados; em produção viriam da API.
 					</p>
 					<ChartOverviewExample />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "chart-container", label: "container/card", description: "ChartContainer — wrapper do gráfico" },
+							{ id: "chart-legend", label: "legend", description: "ChartLegend — legenda das séries" },
+							{ id: "chart-area", label: "chart area", description: "Área do gráfico (Recharts)" },
+						]}
+						renderExample={(wrap) => (
+							<ChartWrapper height={220}>
+								{wrap("chart-container", (
+									<ChartContainer config={barConfig}>
+										<BarChart data={barData} margin={{ top: 8, right: 8, left: 8, bottom: 8 }}>
+											<CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
+											<XAxis dataKey="name" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
+											<YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} width={36} />
+											<ChartTooltip content={<ChartTooltipContent />} />
+											{wrap("chart-legend", <ChartLegend content={<ChartLegendContent />} />)}
+											{wrap("chart-area", <Bar dataKey="value" fill="var(--chart-value, #1677ff)" radius={[4, 4, 0, 0]} />)}
+										</BarChart>
+									</ChartContainer>
+								))}
+							</ChartWrapper>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

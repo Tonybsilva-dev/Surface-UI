@@ -12,7 +12,7 @@ import {
 import { Input } from "@surface/ui/input";
 import { Button } from "@surface/ui/button";
 import { PasswordStrength } from "@surface/ui/password-strength";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Form> = {
 	title: "Components/Molecules/Form",
@@ -83,6 +83,52 @@ function LoginFormDemo() {
 				/>
 				<Button type="submit">Entrar</Button>
 			</form>
+		</Form>
+	);
+}
+
+/** Exemplo do Semantic DOM: form com wrap. useForm no topo para respeitar regras de hooks. */
+function FormSemanticExample({
+	wrap,
+}: {
+	wrap: (id: string, children: React.ReactNode) => React.ReactNode;
+}) {
+	const form = useForm({ defaultValues: { email: "", password: "" } });
+	return (
+		<Form {...form}>
+			{wrap("form-form", (
+				<form onSubmit={(e) => e.preventDefault()} className="w-full max-w-sm space-y-4">
+					{wrap("form-field", (
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input type="email" placeholder="nome@exemplo.pt" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					))}
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Palavra-passe</FormLabel>
+								<FormControl>
+									<Input type="password" placeholder="Mín. 8 caracteres" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					{wrap("form-submit", <Button type="submit">Entrar</Button>)}
+				</form>
+			))}
 		</Form>
 	);
 }
@@ -263,6 +309,21 @@ export const Overview: Story = {
 						Exemplo de uso do Form com email e palavra-passe. Para o login completo (layout de página, links, termos) ver Templates → Login.
 					</p>
 					<LoginFormDemo />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "form-form", label: "form", description: "Form (FormProvider) + elemento form" },
+							{ id: "form-field", label: "field (label + input)", description: "FormField + FormItem + FormLabel + FormControl" },
+							{ id: "form-submit", label: "submit / actions", description: "Botão de submissão ou ações" },
+						]}
+						renderExample={(wrap) => <FormSemanticExample wrap={wrap} />}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { ReactNode } from "react";
 import { LoginFormCompleto, LoginFormSkeleton } from "../components/LoginFormCompleto";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta = {
 	title: "Components/Templates/Login",
@@ -146,6 +146,29 @@ export const Overview: Story = {
 					<LoginPageLayout>
 						<LoginFormCompleto />
 					</LoginPageLayout>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "login-layout", label: "layout (aside + main)", description: "Grid: main (formulário) + aside (marca)" },
+							{ id: "login-form", label: "form", description: "Formulário de login" },
+							{ id: "login-fields", label: "field(s)", description: "Campos email e senha" },
+							{ id: "login-submit", label: "submit", description: "Botão de submissão" },
+							{ id: "login-link", label: "link (recuperar senha)", description: "Link para recuperação" },
+						]}
+						renderExample={(wrap) => (
+							wrap("login-layout", (
+								<LoginPageLayout>
+									{wrap("login-form", wrap("login-fields", wrap("login-submit", wrap("login-link", <LoginFormCompleto />))))}
+								</LoginPageLayout>
+							))
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

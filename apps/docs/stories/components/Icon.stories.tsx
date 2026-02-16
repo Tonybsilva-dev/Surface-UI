@@ -3,7 +3,7 @@ import * as LucideIcons from "lucide-react";
 import { Icon } from "@surface/ui/icon";
 import type { IconSize } from "@surface/ui/icon";
 import { lightColorScheme } from "@surface/ui/foundation";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 /** Subset de ícones Lucide para seleção nas stories. */
 const ICON_OPTIONS = [
@@ -215,6 +215,19 @@ export const Overview: Story = {
 							<LucideIcons.Star size={24} aria-hidden />
 						</Icon>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "icon-root", label: "root (children)", description: "Icon — wrapper do ícone" },
+						]}
+						renderExample={(wrap) => wrap("icon-root", <Icon size="md"><LucideIcons.Clock size={20} aria-hidden /></Icon>)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

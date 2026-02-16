@@ -7,6 +7,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { forwardRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./lib/utils";
+import { Text } from "./text";
 
 export interface EmptyProps extends HTMLAttributes<HTMLDivElement> {
 	children?: ReactNode;
@@ -121,11 +122,13 @@ export const EmptyTitle = forwardRef<HTMLDivElement, EmptyTitleProps>(
 		return (
 			<div
 				data-slot="empty-title"
-				className={cn("text-lg font-medium tracking-tight", className)}
+				className={cn(className)}
 				ref={ref}
 				{...other}
 			>
-				{children}
+				<Text variant="titleMedium" as="span">
+					{children}
+				</Text>
 			</div>
 		);
 	},
@@ -142,14 +145,13 @@ export const EmptyDescription = forwardRef<HTMLDivElement, EmptyDescriptionProps
 		return (
 			<div
 				data-slot="empty-description"
-				className={cn(
-					"text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4",
-					className,
-				)}
+				className={cn("[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4", className)}
 				ref={ref}
 				{...other}
 			>
-				{children}
+				<Text variant="bodySmall" tone="muted" as="span">
+					{children}
+				</Text>
 			</div>
 		);
 	},

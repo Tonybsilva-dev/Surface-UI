@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Drawer } from "@surface/ui/drawer";
 import { Button } from "@surface/ui/button";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 type DrawerDirection = "top" | "bottom" | "left" | "right";
 
@@ -248,6 +248,33 @@ export const Overview: Story = {
 						abre da direita.
 					</p>
 					<DrawerCartDemo />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar. Abra o drawer para ver content, header e footer.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "drawer-trigger", label: "trigger", description: "Drawer.Trigger ou botão que abre" },
+							{ id: "drawer-content", label: "content", description: "Drawer.Content — painel deslizante" },
+							{ id: "drawer-header", label: "header", description: "Drawer.Header — título e descrição" },
+							{ id: "drawer-footer", label: "footer", description: "Drawer.Footer — ações" },
+						]}
+						renderExample={(wrap) => (
+							<div className="p-4">
+								<Drawer direction="bottom">
+									{wrap("drawer-trigger", <Drawer.Trigger asChild><Button>Abrir drawer</Button></Drawer.Trigger>)}
+									<Drawer.Content>
+										{wrap("drawer-header", <Drawer.Header><Drawer.Title>Título</Drawer.Title><Drawer.Description>Descrição.</Drawer.Description></Drawer.Header>)}
+										<div className="p-4 pt-0"><Text variant="bodySmall" tone="muted" as="p">Conteúdo.</Text></div>
+										{wrap("drawer-footer", <Drawer.Footer><Drawer.Close asChild><Button variant="outline" size="sm">Fechar</Button></Drawer.Close><Button size="sm">Guardar</Button></Drawer.Footer>)}
+									</Drawer.Content>
+								</Drawer>
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

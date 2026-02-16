@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Switch } from "@surface/ui/switch";
 import type { SwitchSize } from "@surface/ui/switch";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Switch> = {
   title: "Components/Atoms/Switch",
@@ -192,6 +192,20 @@ export const Overview: Story = {
             escuro e newsletter semanal.
           </p>
           <SwitchPreferencesDemo />
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "switch-root", label: "root", description: "Switch — interruptor" },
+              { id: "switch-label", label: "label", description: "Texto associado (children)" },
+            ]}
+            renderExample={(wrap) => wrap("switch-root", wrap("switch-label", <Switch checked={false}>Ligar</Switch>))}
+          />
         </StoryCard>
       </StorySection>
     </div>

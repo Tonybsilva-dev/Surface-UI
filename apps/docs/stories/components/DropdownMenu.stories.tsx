@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DropdownMenu } from "@surface/ui/dropdown-menu";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 function noop(): void {}
 
@@ -145,6 +145,32 @@ export const Overview: Story = {
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar. O content e itens aparecem ao abrir o menu.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "dropdown-trigger", label: "trigger", description: "DropdownMenu.Trigger — abre o menu" },
+              { id: "dropdown-content", label: "content", description: "DropdownMenu.Content — portal do menu" },
+              { id: "dropdown-item", label: "item(s)", description: "DropdownMenu.Item — cada opção" },
+            ]}
+            renderExample={(wrap) => (
+              <DropdownMenu.Root>
+                {wrap("dropdown-trigger", <DropdownMenu.Trigger>Ações</DropdownMenu.Trigger>)}
+                {wrap("dropdown-content", (
+                  <DropdownMenu.Content>
+                    {wrap("dropdown-item", <DropdownMenu.Item onClick={noop}>Guardar</DropdownMenu.Item>)}
+                    <DropdownMenu.Item onClick={noop}>Copiar</DropdownMenu.Item>
+                    <DropdownMenu.Item onClick={noop} variant="destructive">Eliminar</DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                ))}
+              </DropdownMenu.Root>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

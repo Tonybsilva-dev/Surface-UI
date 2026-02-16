@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Divider } from "@surface/ui/divider";
 import type { DividerOrientation, DividerVariant } from "@surface/ui/divider";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection, TwoColumn, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Divider> = {
   title: "Components/Atoms/Divider",
@@ -89,35 +89,50 @@ export const Vertical: Story = {
 
 export const Overview: Story = {
   render: () => (
-    <StorySection title="Divider (overview)">
-      <TwoColumn
-        left={
-          <StoryCard title="Uso">
-            <p style={{ margin: "0 0 12px" }}>
-              Separador horizontal ou vertical. Variantes: fullWidth (linha inteira) ou inset (com
-              margem). Opcional: texto no centro.
-            </p>
-          </StoryCard>
-        }
-        right={
-          <StoryCard title="Exemplos">
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div>
-                <div style={{ marginBottom: 8 }}>FullWidth</div>
-                <Divider />
+    <>
+      <StorySection title="Divider (overview)">
+        <TwoColumn
+          left={
+            <StoryCard title="Uso">
+              <p style={{ margin: "0 0 12px" }}>
+                Separador horizontal ou vertical. Variantes: fullWidth (linha inteira) ou inset (com
+                margem). Opcional: texto no centro.
+              </p>
+            </StoryCard>
+          }
+          right={
+            <StoryCard title="Exemplos">
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <div>
+                  <div style={{ marginBottom: 8 }}>FullWidth</div>
+                  <Divider />
+                </div>
+                <div>
+                  <div style={{ marginBottom: 8 }}>Inset</div>
+                  <Divider variant="inset" />
+                </div>
+                <div>
+                  <div style={{ marginBottom: 8 }}>Com rótulo</div>
+                  <Divider>ou</Divider>
+                </div>
               </div>
-              <div>
-                <div style={{ marginBottom: 8 }}>Inset</div>
-                <Divider variant="inset" />
-              </div>
-              <div>
-                <div style={{ marginBottom: 8 }}>Com rótulo</div>
-                <Divider>ou</Divider>
-              </div>
-            </div>
-          </StoryCard>
-        }
-      />
-    </StorySection>
+            </StoryCard>
+          }
+        />
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "divider-root", label: "root", description: "Divider — separador" },
+            ]}
+            renderExample={(wrap) => wrap("divider-root", <Divider />)}
+          />
+        </StoryCard>
+      </StorySection>
+    </>
   ),
 };

@@ -5,6 +5,8 @@
 import type { ReactNode } from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
+import { Text } from "./text";
 
 export type DrawerRootProps = React.ComponentProps<typeof DrawerPrimitive.Root>;
 
@@ -20,8 +22,11 @@ export type DrawerTriggerProps =
 	React.ComponentProps<typeof DrawerPrimitive.Trigger>;
 
 export function DrawerTrigger(props: DrawerTriggerProps): JSX.Element {
+	const { children, ...rest } = props;
 	return (
-		<DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />
+		<DrawerPrimitive.Trigger asChild data-slot="drawer-trigger" {...rest}>
+			<Button variant="outline">{children}</Button>
+		</DrawerPrimitive.Trigger>
 	);
 }
 
@@ -42,8 +47,13 @@ export type DrawerCloseProps =
 	React.ComponentProps<typeof DrawerPrimitive.Close>;
 
 export function DrawerClose(props: DrawerCloseProps): JSX.Element {
+	const { children, ...rest } = props;
 	return (
-		<DrawerPrimitive.Close data-slot="drawer-close" {...props} />
+		<DrawerPrimitive.Close asChild data-slot="drawer-close" {...rest}>
+			<Button variant="ghost" size="icon">
+				{children ?? "×"}
+			</Button>
+		</DrawerPrimitive.Close>
 	);
 }
 
@@ -164,14 +174,15 @@ export type DrawerTitleProps =
 
 export function DrawerTitle({
 	className,
+	children,
 	...props
 }: DrawerTitleProps): JSX.Element {
 	return (
-		<DrawerPrimitive.Title
-			data-slot="drawer-title"
-			className={cn("text-foreground font-semibold", className)}
-			{...props}
-		/>
+		<DrawerPrimitive.Title data-slot="drawer-title" asChild {...props}>
+			<Text variant="titleSmall" as="span" className={cn(className)}>
+				{children}
+			</Text>
+		</DrawerPrimitive.Title>
 	);
 }
 
@@ -184,14 +195,15 @@ export type DrawerDescriptionProps =
 
 export function DrawerDescription({
 	className,
+	children,
 	...props
 }: DrawerDescriptionProps): JSX.Element {
 	return (
-		<DrawerPrimitive.Description
-			data-slot="drawer-description"
-			className={cn("text-muted-foreground text-sm", className)}
-			{...props}
-		/>
+		<DrawerPrimitive.Description data-slot="drawer-description" asChild {...props}>
+			<Text variant="bodySmall" tone="muted" as="span" className={cn(className)}>
+				{children}
+			</Text>
+		</DrawerPrimitive.Description>
 	);
 }
 

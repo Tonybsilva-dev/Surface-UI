@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Select } from "@surface/ui/select";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Select.Root> = {
   title: "Components/Molecules/Select",
@@ -249,6 +249,39 @@ export const Overview: Story = {
             Três selects controlados no mesmo bloco; o de moeda usa Label e Separator. Valores em baixo.
           </p>
           <OverviewFormDemo />
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar. O content e options aparecem ao abrir o select.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "select-trigger", label: "trigger", description: "Select.Trigger — botão que abre a lista" },
+              { id: "select-value", label: "value/placeholder", description: "Select.Value — valor selecionado ou placeholder" },
+              { id: "select-options", label: "options (content)", description: "Select.Content + Select.Item — lista de opções" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="w-full max-w-[260px] space-y-2">
+                <span className="block text-sm font-medium" aria-hidden>Categoria</span>
+                <Select.Root defaultValue="eletronica">
+                  {wrap("select-trigger", (
+                    <Select.Trigger className="w-full">
+                      {wrap("select-value", <Select.Value placeholder="Escolha uma categoria" />)}
+                    </Select.Trigger>
+                  ))}
+                  {wrap("select-options", (
+                    <Select.Content>
+                      <Select.Item value="eletronica">Eletrónica</Select.Item>
+                      <Select.Item value="vestuario">Vestuário</Select.Item>
+                      <Select.Item value="alimentacao">Alimentação</Select.Item>
+                    </Select.Content>
+                  ))}
+                </Select.Root>
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

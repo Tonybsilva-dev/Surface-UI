@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { createContext, useContext } from "react";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 type TabsContextValue = {
 	value: string;
@@ -68,15 +69,16 @@ export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
 	const isDisabled = disabled ?? ctx?.disabled ?? false;
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="ghost"
 			role="tab"
 			aria-selected={isActive}
 			aria-disabled={isDisabled}
 			disabled={isDisabled}
 			className={cn(
-				"inline-flex items-center justify-center py-2 px-4 text-sm font-medium leading-none bg-transparent border-0 rounded-none border-b-2 transition-colors duration-100",
-				isActive ? "text-primary border-primary" : "text-muted-foreground border-transparent",
+				"rounded-none border-b-2 border-transparent py-2 px-4",
+				isActive ? "text-primary border-primary" : "text-muted-foreground",
 				isDisabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
 				className,
 			)}
@@ -84,7 +86,7 @@ export function TabsTrigger(props: TabsTriggerProps): JSX.Element {
 			onClick={() => ctx?.onChange(value)}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 

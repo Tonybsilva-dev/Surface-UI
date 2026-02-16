@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { Command as CommandPrimitive } from "cmdk";
 import { cn } from "./lib/utils";
 import { Dialog } from "./dialog";
+import { Text } from "./text";
 
 const SearchIcon = () => (
 	<svg
@@ -138,13 +139,17 @@ CommandList.displayName = "Command.List";
 export interface CommandEmptyProps
 	extends React.ComponentProps<typeof CommandPrimitive.Empty> {}
 
-export function CommandEmpty({ className, ...props }: CommandEmptyProps): JSX.Element {
+export function CommandEmpty({ className, children, ...props }: CommandEmptyProps): JSX.Element {
 	return (
 		<CommandPrimitive.Empty
 			data-slot="command-empty"
-			className={cn("py-6 text-center text-sm text-muted-foreground", className)}
+			className={cn("py-6 text-center", className)}
 			{...props}
-		/>
+		>
+			<Text variant="bodySmall" tone="muted" as="span">
+				{children}
+			</Text>
+		</CommandPrimitive.Empty>
 	);
 }
 

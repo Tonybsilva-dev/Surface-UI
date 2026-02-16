@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Progress } from "@surface/ui/progress";
 import type { ProgressSize, ProgressStatus } from "@surface/ui/progress";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Progress> = {
   title: "Components/Atoms/Progress",
@@ -209,6 +209,30 @@ export const Overview: Story = {
               <Progress percent={undefined} size="md" />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "progress-root", label: "root", description: "Progress.Root — container" },
+              { id: "progress-bar", label: "bar", description: "Progress.Bar — barra" },
+              { id: "progress-label", label: "label", description: "Progress.Info — percentual" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="w-full max-w-xs">
+                {wrap("progress-root", (
+                  <Progress.Root percent={60} size="md">
+                    {wrap("progress-bar", <Progress.Bar />)}
+                    {wrap("progress-label", <Progress.Info />)}
+                  </Progress.Root>
+                ))}
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

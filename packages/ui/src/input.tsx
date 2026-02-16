@@ -34,13 +34,16 @@ export interface InputProps
 	size?: InputSize;
 	/** Estado de validação visual. */
 	status?: InputStatus;
-	/** Classes por slot semântico (root, prefix, input, suffix, count). */
+	/** Texto de ajuda exibido abaixo do campo. */
+	hint?: ReactNode;
+	/** Classes por slot semântico (root, prefix, input, suffix, count, hint). */
 	classNames?: Partial<{
 		root: string;
 		prefix: string;
 		input: string;
 		suffix: string;
 		count: string;
+		hint: string;
 	}>;
 	/** Callback quando Enter é pressionado. */
 	onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -57,6 +60,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 		maxLength,
 		size = "middle",
 		status = "default",
+		hint,
 		classNames,
 		value,
 		defaultValue,
@@ -166,7 +170,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 		prefix !== null || suffix !== null || allowClear || showCount;
 
 	if (!hasAddons) {
-		return (
+		const inputEl = (
 			<input
 				className={baseInputClasses}
 				data-slot="input"
@@ -181,6 +185,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 				{...props}
 			/>
 		);
+		if (hint != null) {
+			return (
+				<div className="flex w-full flex-col gap-1.5">
+					{inputEl}
+					<span className={cn("text-muted-foreground text-xs", classNames?.hint)} data-slot="hint">
+						{hint}
+					</span>
+				</div>
+			);
+		}
+		return inputEl;
 	}
 
 	const effectiveSuffix =
@@ -212,7 +227,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 		</span>
 	) : null;
 
-	return (
+	const fieldEl = (
 		<span
 			className={cn(
 				"relative flex w-full min-w-0 items-center gap-2 rounded-none! border border-input bg-background transition-[border-color,box-shadow] duration-150 focus-within:outline-none focus-within:ring-[3px]",
@@ -267,6 +282,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 			{countNode}
 		</span>
 	);
+
+	if (hint != null) {
+		return (
+			<div className="flex w-full flex-col gap-1.5">
+				{fieldEl}
+				<span className={cn("text-muted-foreground text-xs", classNames?.hint)} data-slot="hint">
+					{hint}
+				</span>
+			</div>
+		);
+	}
+	return fieldEl;
 });
 
 Input.displayName = "Input";

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { InputOTP } from "@surface/ui/input-otp";
 import { Button } from "@surface/ui/button";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof InputOTP.Root> = {
   title: "Components/Molecules/InputOTP",
@@ -176,6 +176,32 @@ export const Overview: Story = {
             (activo só quando os 6 dígitos estão preenchidos).
           </p>
           <InputOTPVerificationDemo />
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "inputotp-root", label: "root", description: "InputOTP.Root — container controlado" },
+              { id: "inputotp-slots", label: "input slots", description: "InputOTP.Slot — cada dígito" },
+              { id: "inputotp-button", label: "button", description: "Botão de verificação (externo)" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="space-y-4 max-w-[320px]">
+                {wrap("inputotp-root", (
+                  <InputOTP.Root maxLength={6}>
+                    <InputOTP.Group>
+                      {wrap("inputotp-slots", <SlotRow length={4} />)}
+                    </InputOTP.Group>
+                  </InputOTP.Root>
+                ))}
+                {wrap("inputotp-button", <Button size="sm">Verificar</Button>)}
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

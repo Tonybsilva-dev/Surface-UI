@@ -4,7 +4,6 @@ import { cn } from "./lib/utils";
 
 export type IconButtonVariant =
 	| "default"
-	| "primary"
 	| "destructive"
 	| "outline"
 	| "secondary"
@@ -22,8 +21,6 @@ export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
 
 const variantClasses: Record<IconButtonVariant, string> = {
 	default:
-		"bg-primary text-primary-foreground hover:bg-primary/90 border-transparent",
-	primary:
 		"bg-primary text-primary-foreground hover:bg-primary/90 border-transparent",
 	destructive:
 		"bg-destructive text-primary-foreground hover:bg-destructive/90 border-transparent",

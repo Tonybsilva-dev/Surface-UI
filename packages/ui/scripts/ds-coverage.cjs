@@ -44,6 +44,7 @@ const MOLECULES = new Set([
   "card",
   "collapsible",
   "carousel",
+  "list",
   "input-button",
   "input-otp",
   "drawer",

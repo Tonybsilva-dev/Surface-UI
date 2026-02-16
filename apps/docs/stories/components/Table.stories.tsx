@@ -10,7 +10,7 @@ import {
 	TableCaption,
 } from "@surface/ui/table";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const wrapperClass = "w-full max-w-2xl";
 
@@ -317,6 +317,52 @@ export const Overview: Story = {
 							</TableFooter>
 						</Table>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "table-table", label: "table", description: "Table — wrapper com scroll" },
+							{ id: "table-thead", label: "thead", description: "TableHeader — cabeçalho" },
+							{ id: "table-tbody", label: "tbody", description: "TableBody — corpo" },
+							{ id: "table-tr", label: "tr", description: "TableRow — linha" },
+							{ id: "table-th", label: "th", description: "TableHead — célula de cabeçalho" },
+							{ id: "table-td", label: "td", description: "TableCell — célula" },
+						]}
+						renderExample={(wrap) => {
+							const thead = (
+								<TableHeader>
+									<TableRow>
+										{wrap("table-th", <TableHead>Nome</TableHead>)}
+										<TableHead>Estado</TableHead>
+									</TableRow>
+								</TableHeader>
+							);
+							const tbody = (
+								<TableBody>
+									<TableRow>
+										{wrap("table-td", <TableCell><Text variant="bodyMedium">Maria</Text></TableCell>)}
+										<TableCell><Text variant="labelSmall" tone="muted">Ativo</Text></TableCell>
+									</TableRow>
+								</TableBody>
+							);
+							return (
+								<div className={wrapperClass}>
+									{wrap("table-table", (
+										<Table>
+											<TableCaption>Exemplo semântico</TableCaption>
+											{wrap("table-thead", thead)}
+											{wrap("table-tbody", tbody)}
+										</Table>
+									))}
+								</div>
+							);
+						}}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

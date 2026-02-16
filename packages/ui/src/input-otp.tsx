@@ -12,6 +12,7 @@ import {
 	useState,
 } from "react";
 import { cn } from "./lib/utils";
+import { Text } from "./text";
 
 interface InputOTPContextValue {
 	value: string;
@@ -185,11 +186,13 @@ export function InputOTPSeparator(props: InputOTPSeparatorProps): JSX.Element {
 	const { children, style, className } = props;
 	return (
 		<span
-			className={cn("inline-flex items-center justify-center text-sm text-muted-foreground", className)}
+			className={cn("inline-flex items-center justify-center", className)}
 			style={style}
 			aria-hidden
 		>
-			{children ?? "−"}
+			<Text variant="bodySmall" tone="muted" as="span">
+				{children ?? "−"}
+			</Text>
 		</span>
 	);
 }

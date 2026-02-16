@@ -7,7 +7,7 @@ import { Text } from "@surface/ui/text";
 import { Avatar } from "@surface/ui/avatar";
 import { Divider } from "@surface/ui/divider";
 import { Progress } from "@surface/ui/progress";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const wrapperClass = "p-8 max-w-[360px]";
 
@@ -376,6 +376,42 @@ export const Overview: Story = {
 							</Card.Footer>
 						</Card>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "card-header", label: "header", description: "Card.Header — cabeçalho do card" },
+							{ id: "card-title", label: "title", description: "Card.Title — título" },
+							{ id: "card-description", label: "description", description: "Card.Description — subtítulo/descrição" },
+							{ id: "card-content", label: "content", description: "Card.Content — corpo do card" },
+							{ id: "card-footer", label: "footer", description: "Card.Footer — rodapé com ações" },
+							{ id: "card-action", label: "action", description: "Card.Action — botão de ação no footer" },
+						]}
+						renderExample={(wrap) => (
+							<Card variant="elevated" className="max-w-[360px]">
+								{wrap(
+									"card-header",
+									<Card.Header>
+										<div className="flex items-start gap-3">
+											<Avatar src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Avatar" size="md" />
+											<div className="flex-1 min-w-0">
+												{wrap("card-title", <Card.Title><Text variant="titleSmall">Maria Silva</Text></Card.Title>)}
+												{wrap("card-description", <Card.Description><Text variant="bodySmall" tone="muted">Admin · maria@empresa.pt</Text></Card.Description>)}
+												<Badge variant="secondary" size="sm" className="mt-1">Ativo</Badge>
+											</div>
+										</div>
+									</Card.Header>,
+								)}
+								{wrap("card-content", <Card.Content><Text variant="bodySmall" tone="muted" as="p">Conteúdo do card. Use Card.Content para o corpo.</Text><Divider className="my-3" /><Progress value={65} className="h-2" /></Card.Content>)}
+								{wrap("card-footer", <Card.Footer className="flex flex-wrap gap-2">{wrap("card-action", <Button variant="outline" size="sm">Editar</Button>)}<Button variant="secondary" size="sm">Ver perfil</Button></Card.Footer>)}
+							</Card>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

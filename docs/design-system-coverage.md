@@ -4,7 +4,7 @@ Este documento mapeia quais moléculas não usam átomos do design system e quai
 
 **Atualizar** este ficheiro quando forem adicionados ou alterados componentes em `packages/ui/src`.
 
-Última verificação dos imports em `packages/ui/src`: confirmado que a lista abaixo está correta (moléculas sem átomos: 14; organismos sem moléculas: Chart).
+Última verificação: após refactors, **0 moléculas** sem átomos e **0 organismos** sem moléculas (script `ds:coverage` termina com código 0).
 
 **Script de verificação:** na raiz do monorepo execute `pnpm --filter @surface/ui ds:coverage`. O script lista moléculas que não usam átomos e organismos que não usam moléculas; termina com código de saída 1 se existir alguma violação (útil para CI quando se quiser impor a regra).
 
@@ -22,60 +22,26 @@ A análise é feita pelos imports nos ficheiros `.tsx` de `packages/ui/src` (có
 
 ## 1. Moléculas que não usam átomos
 
-Estas moléculas só importam React, Radix/outras libs e `./lib/utils`; nenhum import de átomo (Button, Input, Label, etc.):
-
-| Componente  | Ficheiro                    | Imports relevantes                  |
-| ----------- | --------------------------- | ----------------------------------- |
-| Select      | `packages/ui/src/select.tsx` | react, react-dom, cn                |
-| Empty       | `packages/ui/src/empty.tsx` | react, cva, cn                      |
-| ToggleGroup | `packages/ui/src/toggle-group.tsx` | react, cva, cn               |
-| Tabs        | `packages/ui/src/tabs.tsx`  | react, cn                           |
-| Card        | `packages/ui/src/card.tsx`  | react, cn                           |
-| Collapsible | `packages/ui/src/collapsible.tsx` | @radix-ui/react-collapsible, cn |
-| InputButton | `packages/ui/src/input-button.tsx` | react, cn                       |
-| InputOTP    | `packages/ui/src/input-otp.tsx` | react, input-otp, cn             |
-| Drawer      | `packages/ui/src/drawer.tsx` | vaul, cn                           |
-| Dialog      | `packages/ui/src/dialog.tsx` | react, react-dom, cn               |
-| Command     | `packages/ui/src/command.tsx` | cmdk, Dialog (molécula), cn        |
-| Table       | `packages/ui/src/table.tsx` | react, cn                           |
-| Toast       | `packages/ui/src/toast.tsx` | react, react-dom, cn                |
-| Popover     | `packages/ui/src/popover.tsx` | react, radix, cn                   |
-
-**Total: 14 moléculas** que não consomem átomos do design system.
+**Nenhuma.** Todas as moléculas foram refatoradas para usar pelo menos um átomo (Button, Text, Input, etc.). Execute `pnpm --filter @surface/ui ds:coverage` para verificar.
 
 ---
 
-## 2. Moléculas que usam átomos (referência)
+## 2. Moléculas que usam átomos
 
-Para contraste, estas moléculas estão alinhadas com o design atómico:
+Todas as moléculas usam pelo menos um átomo. Exemplos: **Select** (Button), **Empty** (Text), **ToggleGroup** (Button), **Tabs** (Button), **Card** (Text), **Collapsible** (Button), **InputButton** (Input, Button), **InputOTP** (Text), **Drawer** (Button, Text), **Dialog** (Button, Text), **Command** (Dialog, Text), **Table** (Text), **Toast** (Text, Button), **Popover** (Button), **DropdownMenu** (Button), **Form** (Label), **Carousel** (Button), **Pagination** (Button, Select), **Combobox** (Button, Popover, Command), **List** (Text, Skeleton).
 
-- **DropdownMenu** — usa Button
-- **Form** — usa Label
-- **Carousel** — usa Button
-- **Pagination** — usa Button, Select
-- **Combobox** — usa Button, Popover, Command
-- **Textarea** — usa IconButton (Textarea é átomo que compõe com IconButton)
-
-O organismo **DataTable** usa Button, Checkbox, Pagination, Spinner, Popover, IconButton, Table.
+O organismo **DataTable** usa Button, Checkbox, Pagination, Spinner, Popover, IconButton, Table. O organismo **Chart** usa Card.
 
 ---
 
 ## 3. Organismos que não usam moléculas
 
-- **Chart** (`packages/ui/src/chart.tsx`): importa apenas `recharts` e `./lib/utils`. Não usa nenhuma molécula nem átomo do DS; é um organismo “standalone” baseado em Recharts.
+**Nenhum.** **Chart** foi refatorado para usar a molécula **Card** (ChartContainer envolve o gráfico em Card). **DataTable** usa moléculas (Pagination, Popover, Table) e átomos. **LoginFormCompleto** (apps/docs) usa Form, Input e Button.
 
-Organismos alinhados:
 
-- **DataTable**: usa moléculas (Pagination, Popover, Table) e átomos (Button, Checkbox, Spinner, IconButton).
-- **LoginFormCompleto** (em `apps/docs/stories/components/LoginFormCompleto.tsx`): usa Form (molécula), Input e Button (átomos).
+## 4. Refactors sugeridos por componente (aplicados)
 
-**Total: 1 organismo** (Chart) que não usa moléculas (nem átomos) do DS.
-
----
-
-## 4. Refactors sugeridos por componente
-
-Sugestões para aproximar moléculas e organismos do design atómico, quando fizer sentido.
+Os refactors abaixo foram aplicados; a tabela mantém-se como referência histórica.
 
 ### Moléculas
 
@@ -104,9 +70,21 @@ Sugestões para aproximar moléculas e organismos do design atómico, quando fiz
 
 ---
 
-## 5. Decisão de política
+## 5. Decisão de política (regra obrigatória)
 
-- **Aceitar exceções**: algumas moléculas podem permanecer “primitive-only” (só Radix/HTML + `cn`) e Chart como organismo baseado em lib externa; documentar aqui e no README do DS.
-- **Ou** definir a regra “todas as moléculas devem usar ≥1 átomo” e refactorar gradualmente conforme a tabela acima.
+- **Regra obrigatória:** Todas as moléculas devem usar pelo menos um átomo; todos os organismos devem usar pelo menos uma molécula; templates devem usar pelo menos um organismo ou uma molécula do DS para formar a página.
+- Sem exceções: componentes que não cumprirem devem ser refatorados conforme a secção 4.
 
-Atualizar esta secção quando a equipa decidir a política.
+---
+
+## 6. Templates
+
+- **Onde estão:** Templates de página vivem em `apps/docs/stories/templates/` (ex.: Login).
+- **Regra:** Um template deve usar pelo menos um organismo ou uma molécula do DS para formar a page (e em geral também átomos).
+- **Templates existentes:**
+
+| Template | Ficheiro | O que usa |
+| -------- | -------- | --------- |
+| **Login** | `apps/docs/stories/templates/Login.stories.tsx` | Layout (`LoginPageLayout`) com **LoginFormCompleto**, que usa **Form** (molécula), **Input** e **Button** (átomos). |
+
+Novos templates devem seguir a mesma regra (compor com organismo ou molécula do DS).

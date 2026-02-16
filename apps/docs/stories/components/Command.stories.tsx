@@ -1,8 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { Command } from "@surface/ui/command";
 import { Button } from "@surface/ui/button";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
+
+function CommandSemanticExample({ wrap }: { wrap: (id: string, children: ReactNode) => ReactNode }) {
+	return (
+		<div className="w-full max-w-[360px] rounded-md border border-border">
+			<Command className="rounded-lg border shadow-md">
+				{wrap("command-input", <Command.Input placeholder="Buscar comando…" />)}
+				{wrap("command-list", (
+					<Command.List>
+						{wrap("command-empty", <Command.Empty>Nenhum resultado.</Command.Empty>)}
+						{wrap("command-group", (
+							<Command.Group heading="Ações">
+								{wrap("command-item", <Command.Item value="guardar">Guardar <Command.Shortcut>Cmd+S</Command.Shortcut></Command.Item>)}
+								<Command.Item value="abrir">Abrir… <Command.Shortcut>Cmd+O</Command.Shortcut></Command.Item>
+							</Command.Group>
+						))}
+					</Command.List>
+				))}
+			</Command>
+		</div>
+	);
+}
 
 const meta: Meta<typeof Command> = {
 	title: "Components/Molecules/Command",
@@ -200,6 +222,23 @@ export const Overview: Story = {
 							</Command.List>
 						</Command>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "command-input", label: "input", description: "Command.Input — campo de busca" },
+							{ id: "command-list", label: "list", description: "Command.List — container dos resultados" },
+							{ id: "command-empty", label: "empty", description: "Command.Empty — mensagem sem resultados" },
+							{ id: "command-group", label: "group", description: "Command.Group — grupo com heading" },
+							{ id: "command-item", label: "item", description: "Command.Item — cada opção" },
+						]}
+						renderExample={(wrap) => <CommandSemanticExample wrap={wrap} />}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

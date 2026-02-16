@@ -6,7 +6,7 @@ import {
   typographyTokens,
   componentShapeTokens,
 } from "@surface/ui/foundation";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection, TwoColumn, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Button> = {
   title: "Components/Atoms/Button",
@@ -285,6 +285,29 @@ export const VisualTokens: Story = {
             </StoryCard>
           }
         />
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "button-root", label: "root", description: "Button — elemento raiz" },
+              { id: "button-leading", label: "leadingIcon", description: "Ícone ou conteúdo à esquerda" },
+              { id: "button-trailing", label: "trailingIcon", description: "Ícone ou conteúdo à direita" },
+            ]}
+            renderExample={(wrap) => (
+              wrap("button-root", (
+                <Button variant="default" size="default">
+                  {wrap("button-leading", <span className="mr-1.5">↑</span>)}
+                  Enviar
+                  {wrap("button-trailing", <span className="ml-1.5">→</span>)}
+                </Button>
+              ))
+            )}
+          />
+        </StoryCard>
       </StorySection>
     </div>
   ),

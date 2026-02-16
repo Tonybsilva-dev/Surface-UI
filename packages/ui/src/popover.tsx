@@ -15,6 +15,7 @@ import {
 import { createPortal } from "react-dom";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 const POPOVER_CONTENT_DATA_ATTR = "data-surface-popover-content";
 
@@ -88,19 +89,17 @@ export const PopoverTrigger = function PopoverTrigger(
 	}
 
 	return (
-		<button
+		<Button
 			ref={triggerRef as React.Ref<HTMLButtonElement>}
 			type="button"
-			className={cn(
-				"inline-flex items-center justify-center rounded-md border border-border bg-background px-3 py-2 text-sm",
-				className,
-			)}
+			variant="outline"
+			className={className}
 			style={style}
 			onClick={handleClick}
 			aria-expanded={open}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 };
 

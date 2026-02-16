@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Skeleton } from "@surface/ui/skeleton";
 import type { SkeletonVariant } from "@surface/ui/skeleton";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Skeleton> = {
   title: "Components/Atoms/Skeleton",
@@ -133,6 +133,19 @@ export const Overview: Story = {
               <Skeleton variant="rectangular" width={120} height={36} className="rounded-md" />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "skeleton-root", label: "root", description: "Skeleton — placeholder animado" },
+            ]}
+            renderExample={(wrap) => wrap("skeleton-root", <Skeleton variant="rectangular" width={120} height={32} />)}
+          />
         </StoryCard>
       </StorySection>
     </div>

@@ -11,7 +11,7 @@ import {
 	CarouselDots,
 } from "@surface/ui/carousel";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Carousel> = {
 	title: "Components/Molecules/Carousel",
@@ -33,6 +33,11 @@ const meta: Meta<typeof Carousel> = {
 		},
 		showDots: {
 			description: "Mostrar indicadores (dots) por baixo do carrossel.",
+			control: "boolean",
+			table: { category: "UI", type: { summary: "boolean" } },
+		},
+		borderless: {
+			description: "Slides sem borda de card (apenas fundo suave). Quando false, cada slide tem border e bg-card.",
 			control: "boolean",
 			table: { category: "UI", type: { summary: "boolean" } },
 		},
@@ -67,6 +72,7 @@ const meta: Meta<typeof Carousel> = {
 	args: {
 		showArrows: true,
 		showDots: false,
+		borderless: false,
 		orientation: "horizontal",
 		loop: true,
 		align: "center",
@@ -160,10 +166,16 @@ export const Default: Story = {
 		return (
 			<CarouselWrapper>
 				<Carousel opts={opts} setApi={setApi} orientation={args.orientation as "horizontal" | "vertical"}>
-					<CarouselContent>
+					<CarouselContent className={args.borderless ? "rounded-lg overflow-hidden" : undefined}>
 						{slides.map((slide) => (
 							<CarouselItem key={slide.title}>
-								<div className="rounded-md border border-border bg-card p-6">
+								<div
+									className={
+										args.borderless
+											? "rounded-lg bg-muted/80 p-6"
+											: "rounded-md border border-border bg-card p-6"
+									}
+								>
 									<Text variant="titleSmall" className="block mb-2">
 										{slide.title}
 									</Text>
@@ -339,6 +351,30 @@ export const Overview: Story = {
 					<CarouselWrapper>
 						<BorderlessExample />
 					</CarouselWrapper>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						minHeight={260}
+						rows={[
+							{ id: "carousel-content", label: "content", description: "CarouselContent — container dos slides" },
+							{ id: "carousel-item", label: "item", description: "CarouselItem — cada slide" },
+							{ id: "carousel-arrows", label: "arrows", description: "CarouselPrevious + CarouselNext — setas de navegação" },
+							{ id: "carousel-dots", label: "dots", description: "CarouselDots — indicadores (opcional)" },
+						]}
+						renderExample={(wrap) => (
+							<CarouselWrapper className="max-w-md">
+								<Carousel opts={{ align: "center", loop: true, duration: 25, draggable: true }}>
+									{wrap("carousel-content", <CarouselContent>{slides.slice(0, 2).map((s) => wrap("carousel-item", <CarouselItem key={s.title}><div className="rounded-md border border-border bg-card p-4"><Text variant="titleSmall">{s.title}</Text><Text variant="bodySmall" tone="muted" as="p">{s.body}</Text></div></CarouselItem>))}</CarouselContent>)}
+									{wrap("carousel-arrows", <><CarouselPrevious /><CarouselNext /></>)}
+								</Carousel>
+							</CarouselWrapper>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

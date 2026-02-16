@@ -212,6 +212,10 @@ export interface ComboboxContentProps {
 	emptyMessage?: string;
 	popoverClassName?: string;
 	popoverWidth?: number;
+	/** Altura máxima da lista de opções (px). Permite scroll para ver todas. */
+	listMaxHeight?: number;
+	/** Mostrar contagem de opções no rodapé da lista (ex.: "12 opções — desça para ver todas"). */
+	showOptionsCount?: boolean;
 }
 
 export function ComboboxContent(props: ComboboxContentProps): JSX.Element {
@@ -221,6 +225,8 @@ export function ComboboxContent(props: ComboboxContentProps): JSX.Element {
 		emptyMessage = "Nenhum resultado encontrado.",
 		popoverClassName,
 		popoverWidth,
+		listMaxHeight = 300,
+		showOptionsCount = true,
 	} = props;
 	const ctx = useContext(ComboboxContext);
 	const [contentWidth, setContentWidth] = useState<number | undefined>(undefined);
@@ -282,7 +288,10 @@ export function ComboboxContent(props: ComboboxContentProps): JSX.Element {
 					placeholder={searchPlaceholder}
 					className="h-9 shrink-0 border-0 border-b border-border rounded-none"
 				/>
-				<Command.List className="max-h-[300px]">
+				<Command.List
+					className="overflow-x-hidden overflow-y-auto scroll-py-1"
+					style={{ maxHeight: listMaxHeight }}
+				>
 					{ctx.isLoading ? (
 						<Command.Empty>Carregando...</Command.Empty>
 					) : filtered.length === 0 ? (
@@ -313,6 +322,16 @@ export function ComboboxContent(props: ComboboxContentProps): JSX.Element {
 						</Command.Group>
 					)}
 				</Command.List>
+				{showOptionsCount && filtered.length > 0 && (
+					<div
+						className="shrink-0 border-t border-border px-2 py-1.5 text-center text-xs text-muted-foreground"
+						aria-live="polite"
+					>
+						{filtered.length === 1
+							? "1 opção"
+							: `${filtered.length} opções — desça para ver todas`}
+					</div>
+				)}
 			</Command.Root>
 		</Popover.Content>
 	);
@@ -336,6 +355,10 @@ export interface ComboboxProps {
 	triggerWidth?: string;
 	triggerClassName?: string;
 	popoverClassName?: string;
+	/** Altura máxima da lista de opções (px). Permite scroll para ver todas. */
+	listMaxHeight?: number;
+	/** Mostrar contagem no rodapé (ex.: "12 opções — desça para ver todas"). */
+	showOptionsCount?: boolean;
 	"aria-label"?: string;
 }
 
@@ -359,6 +382,8 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
 			triggerWidth = "w-full",
 			triggerClassName,
 			popoverClassName,
+			listMaxHeight = 300,
+			showOptionsCount = true,
 			"aria-label": ariaLabel,
 		},
 		ref,
@@ -384,6 +409,8 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
 					emptyMessage={emptyMessage}
 					popoverClassName={popoverClassName}
 					popoverWidth={popoverWidth}
+					listMaxHeight={listMaxHeight}
+					showOptionsCount={showOptionsCount}
 				/>
 			</ComboboxRoot>
 		);

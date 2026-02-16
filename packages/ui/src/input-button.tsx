@@ -1,6 +1,8 @@
 import type { CSSProperties, InputHTMLAttributes, ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
+import { Input } from "./input";
 
 interface InputButtonContextValue {
 	showInput: boolean;
@@ -64,17 +66,15 @@ export function InputButtonAction(props: InputButtonActionProps): JSX.Element | 
 	if (showInput) return null;
 
 	return (
-		<button
+		<Button
 			type="button"
-			className={cn(
-				"inline-flex h-full items-center justify-center border-0 bg-background px-4 text-sm font-medium text-foreground",
-				className,
-			)}
+			variant="ghost"
+			className={cn("h-full rounded-none", className)}
 			style={style}
 			onClick={() => setShowInput(true)}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 
@@ -94,10 +94,10 @@ export function InputButtonSubmit(props: InputButtonSubmitProps): JSX.Element {
 	const { showInput, setShowInput } = ctx;
 
 	return (
-		<button
+		<Button
 			type="button"
 			className={cn(
-				"inline-flex h-full shrink-0 items-center justify-center border-0 bg-primary px-3 text-sm font-medium text-primary-foreground transition-[min-width,padding] duration-150",
+				"h-full shrink-0 rounded-none transition-[min-width,padding] duration-150",
 				showInput ? "min-w-[72px]" : "min-w-10 px-0",
 				className,
 			)}
@@ -105,7 +105,7 @@ export function InputButtonSubmit(props: InputButtonSubmitProps): JSX.Element {
 			onClick={() => setShowInput(!showInput)}
 		>
 			{showInput ? children : icon}
-		</button>
+		</Button>
 	);
 }
 
@@ -117,7 +117,7 @@ export interface InputButtonInputProps extends InputHTMLAttributes<HTMLInputElem
 }
 
 export function InputButtonInput(props: InputButtonInputProps): JSX.Element | null {
-	const { style, className, ...other } = props;
+	const { style, className, size: _inputSize, ...other } = props;
 	const ctx = useContext(InputButtonContext);
 	if (!ctx) return <input {...other} />;
 	const { showInput } = ctx;
@@ -125,12 +125,10 @@ export function InputButtonInput(props: InputButtonInputProps): JSX.Element | nu
 	if (!showInput) return null;
 
 	return (
-		<input
+		<Input
 			type="text"
-			className={cn(
-				"h-full min-w-0 flex-1 border-0 bg-transparent px-3 text-sm text-foreground outline-none",
-				className,
-			)}
+			size="middle"
+			className={cn("h-full min-w-0 flex-1 border-0 bg-transparent", className)}
 			style={style}
 			{...other}
 		/>

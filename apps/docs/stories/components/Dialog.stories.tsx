@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "@surface/ui/dialog";
 import { Button } from "@surface/ui/button";
 import { Text } from "@surface/ui/text";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Dialog.Root> = {
   title: "Components/Molecules/Dialog",
@@ -151,6 +151,36 @@ export const Overview: Story = {
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Root>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "dialog-trigger", label: "trigger", description: "Dialog.Trigger — abre o modal" },
+              { id: "dialog-overlay", label: "overlay", description: "Overlay escuro atrás do conteúdo" },
+              { id: "dialog-title", label: "title", description: "Dialog.Title — título do modal" },
+              { id: "dialog-description", label: "description", description: "Dialog.Description — descrição a11y" },
+              { id: "dialog-content", label: "content", description: "Dialog.Content — painel do modal" },
+              { id: "dialog-footer", label: "footer (actions)", description: "Dialog.Footer — botões de ação" },
+            ]}
+            renderExample={(wrap) => (
+              <Dialog.Root>
+                {wrap("dialog-trigger", <Dialog.Trigger><Button>Abrir dialog</Button></Dialog.Trigger>)}
+                <Dialog.Content>
+                  <Dialog.Header>
+                    {wrap("dialog-title", <Dialog.Title>Título do dialog</Dialog.Title>)}
+                    {wrap("dialog-description", <Dialog.Description>Descrição opcional.</Dialog.Description>)}
+                  </Dialog.Header>
+                  {wrap("dialog-content", <Dialog.Body><p style={{ margin: 0, fontSize: 14, color: "#666" }}>Corpo do dialog.</p></Dialog.Body>)}
+                  {wrap("dialog-footer", <Dialog.Footer><Button variant="outline">Cancelar</Button><Button>Confirmar</Button></Dialog.Footer>)}
+                </Dialog.Content>
+              </Dialog.Root>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

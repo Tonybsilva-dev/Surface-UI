@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Settings } from "lucide-react";
 import { IconButton } from "@surface/ui/icon-button";
 import type { IconButtonVariant, IconButtonSize } from "@surface/ui/icon-button";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 function iconClassName(size: "default" | "sm" | "md" | "lg"): string {
   return size === "sm" ? "size-[18px]" : size === "lg" ? "size-6" : "size-[22px]";
@@ -16,7 +16,7 @@ const meta: Meta<typeof IconButton> = {
     docs: {
       description: {
         component:
-          "Botão apenas com ícone. Mesmas variantes do Button: default, primary, destructive, outline, secondary, ghost, link. Tamanhos: sm 32px, default/md 40px, lg 48px. Requer aria-label.",
+          "Botão apenas com ícone. Variantes alinhadas ao Button: default (cor primária), destructive, outline, secondary, ghost, link. Tamanhos: sm 32px, default/md 40px, lg 48px. Requer aria-label.",
       },
     },
   },
@@ -36,7 +36,6 @@ const meta: Meta<typeof IconButton> = {
       control: "select",
       options: [
         "default",
-        "primary",
         "destructive",
         "outline",
         "secondary",
@@ -102,7 +101,6 @@ export const Variants: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
       <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" variant="default" />
-      <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Primary" variant="primary" />
       <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Destructive" variant="destructive" />
       <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Outline" variant="outline" />
       <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Secondary" variant="secondary" />
@@ -133,9 +131,9 @@ export const Overview: Story = {
               <h3 className="mb-2 font-semibold">O que é</h3>
               <p>
                 O <strong>IconButton</strong> é um átomo que exibe apenas um ícone como ação
-                clicável. Usa as mesmas variantes visuais do Button (default, primary,
-                destructive, outline, secondary, ghost, link) e tamanhos (sm 32px, default/md 40px,
-                lg 48px). Requer <code>aria-label</code> para acessibilidade.
+                clicável. Variantes alinhadas ao Button: default (cor primária), destructive,
+                outline, secondary, ghost, link. Tamanhos: sm 32px, default/md 40px, lg 48px.
+                Requer <code>aria-label</code> para acessibilidade.
               </p>
             </section>
             <section>
@@ -148,8 +146,7 @@ export const Overview: Story = {
                   <code>aria-label</code> — label acessível (obrigatório).
                 </li>
                 <li>
-                  <code>variant</code> — default, primary, destructive, outline, secondary, ghost,
-                  link.
+                  <code>variant</code> — default, destructive, outline, secondary, ghost, link.
                 </li>
                 <li>
                   <code>size</code> — default, sm, md, lg (área clicável 32px / 40px / 48px).
@@ -184,7 +181,6 @@ export const Overview: Story = {
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap gap-3 items-center">
               <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Default" variant="default" />
-              <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Primary" variant="primary" />
               <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Destructive" variant="destructive" />
               <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Outline" variant="outline" />
               <IconButton icon={<Settings className="size-[22px]" aria-hidden />} aria-label="Secondary" variant="secondary" />
@@ -199,6 +195,20 @@ export const Overview: Story = {
               <IconButton icon={<Settings className="size-6" aria-hidden />} aria-label="Large" size="lg" />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "iconbutton-root", label: "root", description: "IconButton — botão" },
+              { id: "iconbutton-icon", label: "icon", description: "Ícone (children)" },
+            ]}
+            renderExample={(wrap) => wrap("iconbutton-root", <IconButton icon={wrap("iconbutton-icon", <Settings className="size-[22px]" aria-hidden />)} aria-label="Definições" variant="default" />)}
+          />
         </StoryCard>
       </StorySection>
     </div>

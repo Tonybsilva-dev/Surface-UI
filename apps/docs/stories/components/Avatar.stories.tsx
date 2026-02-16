@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Avatar } from "@surface/ui/avatar";
 import type { AvatarSize } from "@surface/ui/avatar";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Avatar> = {
   title: "Components/Atoms/Avatar",
@@ -156,6 +156,20 @@ export const Overview: Story = {
               <Avatar size="md" />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "avatar-root", label: "root", description: "Avatar — container" },
+              { id: "avatar-image", label: "image/initials", description: "Imagem ou iniciais" },
+            ]}
+            renderExample={(wrap) => wrap("avatar-root", <Avatar initials="AB" size="md" />)}
+          />
         </StoryCard>
       </StorySection>
     </div>

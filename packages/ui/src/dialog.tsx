@@ -9,6 +9,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
+import { Text } from "./text";
 
 interface DialogContextValue {
 	open: boolean;
@@ -69,14 +71,15 @@ export function DialogTrigger(props: DialogTriggerProps): JSX.Element {
 	const { setOpen } = ctx;
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="ghost"
 			className={className}
 			style={style}
 			onClick={() => setOpen(true)}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 
@@ -146,7 +149,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
 			>
 				{children}
 				{!hideCloseButton ? (
-					<DialogClose className="absolute right-5 top-4 inline-flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-md border-0 bg-transparent p-0 text-lg text-muted-foreground cursor-pointer" />
+					<DialogClose className="absolute right-5 top-4 h-8 w-8 min-h-8 min-w-8 p-0 text-lg" />
 				) : null}
 			</div>
 		</>
@@ -169,15 +172,17 @@ export function DialogClose(props: DialogCloseProps): JSX.Element {
 	if (!ctx) return <></>;
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="ghost"
+			size="icon"
 			className={className}
 			style={style}
 			onClick={() => ctx.setOpen(false)}
 			aria-label="Fechar"
 		>
 			{children ?? "×"}
-		</button>
+		</Button>
 	);
 }
 
@@ -259,13 +264,15 @@ export function DialogTitle(props: DialogTitleProps): JSX.Element {
 	const { children, style, className } = props;
 	const ctx = useContext(DialogContext);
 	return (
-		<h2
+		<Text
 			id={ctx?.titleId}
-			className={cn("m-0 text-lg font-medium leading-snug text-foreground", className)}
+			variant="titleMedium"
+			as="h2"
+			className={cn("m-0", className)}
 			style={style}
 		>
 			{children}
-		</h2>
+		</Text>
 	);
 }
 
@@ -281,13 +288,16 @@ export function DialogDescription(props: DialogDescriptionProps): JSX.Element {
 	const { children, style, className } = props;
 	const ctx = useContext(DialogContext);
 	return (
-		<p
+		<Text
 			id={ctx?.descriptionId}
-			className={cn("m-0 mt-1 text-base leading-normal text-muted-foreground", className)}
+			variant="bodyMedium"
+			tone="muted"
+			as="p"
+			className={cn("m-0 mt-1", className)}
 			style={style}
 		>
 			{children}
-		</p>
+		</Text>
 	);
 }
 

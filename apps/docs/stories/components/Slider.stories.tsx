@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Slider } from "@surface/ui/slider";
 import type { SliderSize } from "@surface/ui/slider";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection, TwoColumn, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Slider> = {
   title: "Components/Atoms/Slider",
@@ -98,6 +98,7 @@ export const Sizes: Story = {
 
 export const Overview: Story = {
   render: () => (
+    <>
     <StorySection title="Slider (overview)">
       <TwoColumn
         left={
@@ -118,5 +119,25 @@ export const Overview: Story = {
         }
       />
     </StorySection>
+    <StorySection title="Semantic DOM">
+      <StoryCard title="Exemplo completo [elements]">
+        <p className="mb-4 text-sm text-muted-foreground">
+          Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+        </p>
+        <SemanticDomSection
+          rows={[
+            { id: "slider-root", label: "root", description: "Slider — container" },
+            { id: "slider-track", label: "track", description: "Faixa" },
+            { id: "slider-thumb", label: "thumb", description: "Pointeiro" },
+          ]}
+          renderExample={(wrap) => (
+            <div className="w-full max-w-xs pt-6">
+              {wrap("slider-root", <Slider min={0} max={100} defaultValue={50} />)}
+            </div>
+          )}
+        />
+      </StoryCard>
+    </StorySection>
+    </>
   ),
 };

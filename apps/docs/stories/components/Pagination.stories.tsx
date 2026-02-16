@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { Pagination } from "@surface/ui/pagination";
 import type { PaginationAlign, PaginationSize } from "@surface/ui/pagination";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Pagination> = {
 	title: "Components/Molecules/Pagination",
@@ -41,6 +42,35 @@ const meta: Meta<typeof Pagination> = {
 export default meta;
 
 type Story = StoryObj<typeof Pagination>;
+
+/** Exemplo Semantic DOM: Pagination com children e wrap (useState no topo). */
+function PaginationSemanticExample({
+	wrap,
+}: {
+	wrap: (id: string, children: ReactNode) => ReactNode;
+}) {
+	const [page, setPage] = useState(2);
+	const [pageSize, setPageSize] = useState(10);
+	return (
+		<Pagination
+			page={page}
+			onPageChange={setPage}
+			pageSize={pageSize}
+			onPageSizeChange={setPageSize}
+			total={50}
+			showTotal={false}
+			showSizeChanger
+			pageSizeOptions={[10, 20, 50]}
+		>
+			<div className="flex items-center gap-2">
+				{wrap("pagination-previous", <Pagination.Prev />)}
+				{wrap("pagination-pages", <Pagination.Pages />)}
+				{wrap("pagination-next", <Pagination.Next />)}
+			</div>
+			{wrap("pagination-pagesize", <Pagination.PageSize />)}
+		</Pagination>
+	);
+}
 
 /** Layout padrão: info + Prev + números de página + Next + PageSize. */
 export const Default: Story = {
@@ -438,6 +468,24 @@ export const Overview: Story = {
 						tamanho, quick jumper e alinhamento.
 					</p>
 					<OverviewPaginationExample />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "pagination-previous", label: "previous", description: "Botão página anterior" },
+							{ id: "pagination-next", label: "next", description: "Botão página seguinte" },
+							{ id: "pagination-pages", label: "page list", description: "Lista de números de página" },
+							{ id: "pagination-pagesize", label: "pageSize (select)", description: "Seletor de itens por página" },
+						]}
+						renderExample={(wrap) => (
+							<PaginationSemanticExample wrap={wrap} />
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

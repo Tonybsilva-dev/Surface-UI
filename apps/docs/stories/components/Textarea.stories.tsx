@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { TextArea } from "@surface/ui/textarea";
 import type { TextAreaSize, TextAreaStatus } from "@surface/ui/textarea";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof TextArea> = {
   title: "Components/Atoms/Textarea",
@@ -225,6 +225,26 @@ export const Overview: Story = {
               />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "textarea-root", label: "root", description: "TextArea.Root — container" },
+              { id: "textarea-label", label: "label", description: "Label associado" },
+              { id: "textarea-hint", label: "hint", description: "Texto de ajuda" },
+            ]}
+            renderExample={(wrap) => (
+              <div className="w-full max-w-sm space-y-2">
+                {wrap("textarea-label", <label className="text-sm font-medium">Descrição</label>)}
+                {wrap("textarea-root", <TextArea placeholder="Escreva aqui" rows={3} style={{ width: "100%" }} />)}
+              </div>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

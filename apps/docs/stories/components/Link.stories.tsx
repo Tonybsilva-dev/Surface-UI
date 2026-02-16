@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Link } from "@surface/ui/link";
 import type { LinkVariant } from "@surface/ui/link";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Link> = {
   title: "Components/Atoms/Link",
@@ -183,6 +183,19 @@ export const Overview: Story = {
               </Link>
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "link-root", label: "root", description: "Link — âncora" },
+            ]}
+            renderExample={(wrap) => wrap("link-root", <Link href="#">Ir para suporte</Link>)}
+          />
         </StoryCard>
       </StorySection>
     </div>

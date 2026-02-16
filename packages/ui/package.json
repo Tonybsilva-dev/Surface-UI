@@ -225,6 +225,11 @@
       "import": "./dist/carousel.mjs",
       "require": "./dist/carousel.js"
     },
+    "./list": {
+      "types": "./dist/list.d.mts",
+      "import": "./dist/list.mjs",
+      "require": "./dist/list.js"
+    },
     "./password-strength": {
       "types": "./dist/password-strength.d.mts",
       "import": "./dist/password-strength.mjs",

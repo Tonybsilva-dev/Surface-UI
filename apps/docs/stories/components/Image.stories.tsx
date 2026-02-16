@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Image } from "@surface/ui/image";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Image> = {
   title: "Components/Atoms/Image",
@@ -189,6 +189,21 @@ export const Overview: Story = {
               />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "image-root", label: "root", description: "Image — wrapper" },
+              { id: "image-img", label: "img", description: "Elemento img" },
+              { id: "image-fallback", label: "fallback", description: "Conteúdo quando falha" },
+            ]}
+            renderExample={(wrap) => wrap("image-root", <Image src="https://placehold.co/120x80" alt="Exemplo" className="rounded-md" />)}
+          />
         </StoryCard>
       </StorySection>
     </div>

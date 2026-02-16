@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Chip } from "@surface/ui/chip";
 import type { ChipVariant, ChipSize } from "@surface/ui/chip";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Chip> = {
   title: "Components/Atoms/Chip",
@@ -149,6 +149,21 @@ export const Overview: Story = {
             <Chip variant="error">Erro</Chip>
             <Chip onRemove={() => {}}>Removível</Chip>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "chip-root", label: "root", description: "Chip — container" },
+              { id: "chip-leading", label: "leading", description: "Conteúdo à esquerda" },
+              { id: "chip-trailing", label: "trailing (remove)", description: "Botão remover" },
+            ]}
+            renderExample={(wrap) => wrap("chip-root", <Chip onRemove={() => {}}>{wrap("chip-leading", "Tag")}</Chip>)}
+          />
         </StoryCard>
       </StorySection>
     </div>

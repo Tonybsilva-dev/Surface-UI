@@ -2,6 +2,7 @@ import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { createContext, useContext, useId } from "react";
 import { ResponsiveContainer, Tooltip, Legend, type LegendProps } from "recharts";
 import { cn } from "./lib/utils";
+import { Card } from "./card";
 
 export type ChartConfig = Record<
 	string,
@@ -45,7 +46,8 @@ export function ChartContainer(props: ChartContainerProps): JSX.Element {
 
 	return (
 		<ChartContext.Provider value={{ config }}>
-			<div
+			<Card
+				variant="outlined"
 				data-surface-chart={chartId}
 				className={cn(
 					"relative h-full min-h-[200px] w-full text-xs text-foreground",
@@ -59,7 +61,7 @@ export function ChartContainer(props: ChartContainerProps): JSX.Element {
 						{children}
 					</ResponsiveContainer>
 				</div>
-			</div>
+			</Card>
 		</ChartContext.Provider>
 	);
 }

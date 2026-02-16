@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Spinner } from "@surface/ui/spinner";
 import type { SpinnerSize } from "@surface/ui/spinner";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Spinner> = {
   title: "Components/Atoms/Spinner",
@@ -180,6 +180,19 @@ export const Overview: Story = {
               <Spinner spinning={false} tip="Spinning desligado" />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "spinner-root", label: "root", description: "Spinner — indicador de carregamento" },
+            ]}
+            renderExample={(wrap) => wrap("spinner-root", <Spinner size="md" />)}
+          />
         </StoryCard>
       </StorySection>
     </div>

@@ -6,7 +6,7 @@ import {
 	type MaskPresetName,
 } from "@surface/ui/masked-input";
 import { Label } from "@surface/ui/label";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof MaskedInput> = {
 	title: "Components/Atoms/MaskedInput",
@@ -498,6 +498,25 @@ export const Overview: Story = {
 						Campos mascarados no mesmo formulário. O estado é controlado pelo valor formatado (value + onAccept com masked).
 					</p>
 					<FormularioCadastroDemo />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "masked-root", label: "root", description: "MaskedInput — container" },
+							{ id: "masked-prefix", label: "prefix (ex.: R$)", description: "Conteúdo à esquerda" },
+							{ id: "masked-input", label: "input", description: "Campo mascarado" },
+						]}
+						renderExample={(wrap) => (
+							<div className="w-full max-w-[200px]">
+								{wrap("masked-root", <MaskedInput mask="cpf" placeholder="000.000.000-00" aria-label="CPF" />)}
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

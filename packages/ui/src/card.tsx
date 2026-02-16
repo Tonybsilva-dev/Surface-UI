@@ -6,6 +6,7 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { forwardRef } from "react";
 import { cn } from "./lib/utils";
+import { Text } from "./text";
 
 export type CardVariant = "elevated" | "outlined" | "filled";
 
@@ -80,13 +81,13 @@ export interface CardTitleProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const CardTitle = forwardRef<HTMLDivElement, CardTitleProps>(
-	function CardTitle({ className, ...other }, ref) {
+	function CardTitle({ className, children, ...other }, ref) {
 		return (
-			<div
-				className={cn("font-semibold leading-none tracking-tight", className)}
-				ref={ref}
-				{...other}
-			/>
+			<div className={cn(className)} ref={ref} {...other}>
+				<Text variant="titleMedium" as="span">
+					{children}
+				</Text>
+			</div>
 		);
 	},
 );
@@ -98,13 +99,13 @@ export interface CardDescriptionProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const CardDescription = forwardRef<HTMLDivElement, CardDescriptionProps>(
-	function CardDescription({ className, ...other }, ref) {
+	function CardDescription({ className, children, ...other }, ref) {
 		return (
-			<div
-				className={cn("text-sm text-muted-foreground", className)}
-				ref={ref}
-				{...other}
-			/>
+			<div className={cn(className)} ref={ref} {...other}>
+				<Text variant="bodySmall" tone="muted" as="span">
+					{children}
+				</Text>
+			</div>
 		);
 	},
 );

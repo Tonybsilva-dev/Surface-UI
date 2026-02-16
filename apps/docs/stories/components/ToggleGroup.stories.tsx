@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@surface/ui/toggle-group";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof ToggleGroup> = {
 	title: "Components/Molecules/ToggleGroup",
@@ -220,6 +220,27 @@ export const Overview: Story = {
 							<ToggleGroupAlignDemo />
 						</div>
 					</div>
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "togglegroup-root", label: "root", description: "ToggleGroup — container do grupo" },
+							{ id: "togglegroup-item", label: "item(s)", description: "ToggleGroupItem — cada opção" },
+						]}
+						renderExample={(wrap) => (
+							wrap("togglegroup-root", (
+								<ToggleGroup type="single" defaultValue="month" variant="outline">
+									{wrap("togglegroup-item", <ToggleGroupItem value="month">Por mês</ToggleGroupItem>)}
+									<ToggleGroupItem value="day">Por dia</ToggleGroupItem>
+								</ToggleGroup>
+							))
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

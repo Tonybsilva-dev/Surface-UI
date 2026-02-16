@@ -10,6 +10,7 @@ import type {
 } from "react";
 import { forwardRef } from "react";
 import { cn } from "./lib/utils";
+import { Text } from "./text";
 
 export interface TableProps extends HTMLAttributes<HTMLTableElement> {}
 
@@ -146,13 +147,13 @@ export interface TableCaptionProps
 	extends HTMLAttributes<HTMLTableCaptionElement> {}
 
 const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
-	function TableCaption({ className, ...props }, ref) {
+	function TableCaption({ className, children, ...props }, ref) {
 		return (
-			<caption
-				ref={ref}
-				className={cn("mt-4 text-sm text-muted-foreground", className)}
-				{...props}
-			/>
+			<caption ref={ref} className={cn("mt-4", className)} {...props}>
+				<Text variant="bodySmall" tone="muted" as="span">
+					{children}
+				</Text>
+			</caption>
 		);
 	},
 );

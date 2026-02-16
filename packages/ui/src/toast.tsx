@@ -1,7 +1,9 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "./lib/utils";
+import { Text } from "./text";
+import { Button } from "./button";
 
 export type ToastType = "success" | "error" | "warning" | "info" | "default";
 
@@ -49,19 +51,23 @@ function ToastItemView({
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-between gap-3 min-w-[280px] max-w-[420px] rounded-md border bg-card px-4 py-3 text-sm text-foreground shadow-[var(--shadow-2)]",
+				"flex items-center justify-between gap-3 min-w-[280px] max-w-[420px] rounded-md border bg-card px-4 py-3 text-foreground shadow-[var(--shadow-2)]",
 				toastBorderClasses[item.type],
 			)}
 		>
-			<span className="min-w-0 flex-1">{item.message}</span>
-			<button
+			<Text variant="bodySmall" as="span" className="min-w-0 flex-1">
+				{item.message}
+			</Text>
+			<Button
 				type="button"
+				variant="ghost"
+				size="icon"
 				aria-label="Fechar"
 				onClick={() => onDismiss(item.id)}
-				className="shrink-0 size-6 border-0 bg-transparent p-0 text-lg leading-none text-muted-foreground cursor-pointer"
+				className="shrink-0 size-6 min-h-6 min-w-6 p-0 text-lg leading-none"
 			>
 				×
-			</button>
+			</Button>
 		</div>
 	);
 }

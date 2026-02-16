@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast, toast } from "@surface/ui/toast";
 import { Button } from "@surface/ui/button";
-import { StoryCard, StorySection, TwoColumn } from "../foundation/shared";
+import { StoryCard, StorySection, TwoColumn, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Toast.Provider> = {
   title: "Components/Molecules/Toast",
@@ -72,6 +72,22 @@ export const Overview: Story = {
           </StoryCard>
         }
       />
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            O toast é renderizado num portal. No painel: title, description, action/close. O exemplo mostra o botão que dispara o toast.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "toast-trigger", label: "trigger", description: "Botão que dispara o toast" },
+              { id: "toast-title", label: "title", description: "Título do toast (no conteúdo)" },
+              { id: "toast-description", label: "description", description: "Descrição ou mensagem" },
+              { id: "toast-action", label: "action / close", description: "Botão de ação ou fechar" },
+            ]}
+            renderExample={(wrap) => wrap("toast-trigger", <Button onClick={() => toast.success("Guardado.")}>Mostrar toast</Button>)}
+          />
+        </StoryCard>
+      </StorySection>
     </StorySection>
   ),
 };

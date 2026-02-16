@@ -2,6 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext } from "react";
 import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 type ToggleGroupType = "single";
 
@@ -112,8 +113,9 @@ export function ToggleGroupItem(props: ToggleGroupItemProps): JSX.Element {
 	};
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant={ctx.variant === "outline" ? "outline" : "ghost"}
 			aria-pressed={isOn}
 			data-state={isOn ? "on" : "off"}
 			disabled={disabled}
@@ -126,7 +128,7 @@ export function ToggleGroupItem(props: ToggleGroupItemProps): JSX.Element {
 			{...rest}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 

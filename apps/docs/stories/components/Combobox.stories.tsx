@@ -4,7 +4,7 @@ import {
 	Combobox,
 	type ComboboxOption,
 } from "@surface/ui/combobox";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Combobox> = {
 	title: "Components/Molecules/Combobox",
@@ -59,6 +59,16 @@ const meta: Meta<typeof Combobox> = {
 			control: "text",
 			table: { type: { summary: "string" } },
 		},
+		listMaxHeight: {
+			description: "Altura máxima da lista de opções (px). Permite scroll para ver todas.",
+			control: { type: "number", min: 120, max: 500, step: 20 },
+			table: { type: { summary: "number" } },
+		},
+		showOptionsCount: {
+			description: "Mostrar no rodapé a contagem (ex.: \"12 opções — desça para ver todas\").",
+			control: "boolean",
+			table: { type: { summary: "boolean" } },
+		},
 	},
 	args: {
 		placeholder: "Selecione uma fruta",
@@ -68,6 +78,8 @@ const meta: Meta<typeof Combobox> = {
 		isLoading: false,
 		loadingMessage: "Carregando...",
 		triggerWidth: "w-full",
+		listMaxHeight: 300,
+		showOptionsCount: true,
 		"aria-label": "Escolher fruta",
 	},
 };
@@ -112,6 +124,8 @@ export const Default: Story = {
 					isLoading={args.isLoading}
 					loadingMessage={args.loadingMessage}
 					triggerWidth={args.triggerWidth}
+					listMaxHeight={args.listMaxHeight}
+					showOptionsCount={args.showOptionsCount}
 					aria-label={args["aria-label"]}
 				/>
 			</div>
@@ -396,6 +410,34 @@ export const Overview: Story = {
 						os valores selecionados são mostrados em baixo para demonstrar o controlo.
 					</p>
 					<OverviewFormDemo />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou na zona do exemplo para destacar. O trigger é a zona clicável; search/list/empty aparecem ao abrir o popover.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "combobox-trigger", label: "trigger", description: "Combobox.Trigger — botão que abre o popover" },
+							{ id: "combobox-search", label: "search input", description: "Campo de busca dentro do Content" },
+							{ id: "combobox-list", label: "list", description: "Lista de opções (Command.List)" },
+							{ id: "combobox-empty", label: "empty message", description: "Mensagem quando não há resultados" },
+						]}
+						renderExample={(wrap) => (
+							<div className="max-w-[320px]">
+								{wrap("combobox-trigger", (
+									<Combobox
+										options={countryOptions.slice(0, 5)}
+										placeholder="Selecione o país"
+										searchPlaceholder="Buscar país..."
+										emptyMessage="Nenhum país encontrado."
+										aria-label="Escolher país"
+									/>
+								))}
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

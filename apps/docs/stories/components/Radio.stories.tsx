@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Radio, RadioGroup } from "@surface/ui/radio";
 
 import type { RadioSize } from "@surface/ui/radio";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Radio> = {
   title: "Components/Atoms/Radio",
@@ -204,6 +204,25 @@ export const Overview: Story = {
               <RadioOverviewPeriod />
             </div>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "radio-root", label: "root", description: "Radio — input + indicador" },
+              { id: "radio-label", label: "label", description: "Texto associado (children)" },
+            ]}
+            renderExample={(wrap) => (
+              <RadioGroup value="a" onChange={() => {}} name="sem">
+                {wrap("radio-root", wrap("radio-label", <Radio value="a">Opção A</Radio>))}
+                <Radio value="b">Opção B</Radio>
+              </RadioGroup>
+            )}
+          />
         </StoryCard>
       </StorySection>
     </div>

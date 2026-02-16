@@ -9,6 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "./lib/utils";
+import { Button } from "./button";
 
 export type SelectSize = "sm" | "default";
 
@@ -86,30 +87,29 @@ export function SelectTrigger(props: SelectTriggerProps): JSX.Element {
 	const { open, disabled, triggerRef, size } = ctx;
 
 	return (
-		<button
+		<Button
 			ref={triggerRef as React.Ref<HTMLButtonElement>}
 			type="button"
+			variant="outline"
+			size={size === "sm" ? "sm" : "default"}
 			role="combobox"
 			aria-expanded={open}
 			aria-haspopup="listbox"
 			disabled={disabled}
-			className={cn(
-				"inline-flex min-w-[120px] items-center justify-between gap-2 rounded-none border border-border bg-background px-3 py-2 text-sm text-foreground",
-				size === "sm" ? "h-8" : "h-10",
-				disabled && "cursor-not-allowed opacity-[var(--disabled-opacity)]",
-				className,
-			)}
+			className={cn("min-w-[120px] justify-between gap-2", className)}
 			style={style}
 			onClick={() => ctx.setOpen(!open)}
+			trailingIcon={
+				<span aria-hidden className="ml-1">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+						<title>Expandir</title>
+						<path d="M6 9l6 6 6-6" />
+					</svg>
+				</span>
+			}
 		>
 			{children}
-			<span aria-hidden className="ml-1">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-					<title>Expandir</title>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</span>
-		</button>
+		</Button>
 	);
 }
 

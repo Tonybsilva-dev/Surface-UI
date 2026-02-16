@@ -10,7 +10,7 @@ import { Text } from "@surface/ui/text";
 import { DropdownMenu } from "@surface/ui/dropdown-menu";
 import { IconButton } from "@surface/ui/icon-button";
 import { Tabs } from "@surface/ui/tabs";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 interface UserItem {
 	id: string;
@@ -749,6 +749,40 @@ export const Overview: Story = {
 						(DropdownMenu).
 					</p>
 					<OverviewExampleDataTable />
+				</StoryCard>
+			</StorySection>
+			<StorySection title="Semantic DOM">
+				<StoryCard title="Exemplo completo [elements]">
+					<p className="mb-4 text-sm text-muted-foreground">
+						Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+					</p>
+					<SemanticDomSection
+						rows={[
+							{ id: "datatable-toolbar", label: "toolbar", description: "Barra superior (filtros, refresh, colunas)" },
+							{ id: "datatable-table", label: "table", description: "Tabela (cabeçalho e linhas)" },
+							{ id: "datatable-pagination", label: "pagination", description: "Navegação e itens por página" },
+						]}
+						renderExample={(wrap) => (
+							<div className="w-full max-w-2xl">
+								{wrap("datatable-toolbar", wrap("datatable-table", wrap("datatable-pagination", (
+									<DataTable<UserItem>
+										columns={[
+											{ accessorKey: "name", header: "Nome", cell: renderDefaultNameCell },
+											{ accessorKey: "email", header: "E-mail", cell: renderDefaultEmailCell },
+										]}
+										data={mockUsers.slice(0, 2)}
+										pagination={{
+											page: 1,
+											pageSize: 10,
+											total: 2,
+											onPageChange: () => {},
+											onPageSizeChange: () => {},
+										}}
+									/>
+								))))}
+							</div>
+						)}
+					/>
 				</StoryCard>
 			</StorySection>
 		</div>

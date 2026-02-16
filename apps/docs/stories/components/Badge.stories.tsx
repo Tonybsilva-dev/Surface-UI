@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Badge } from "@surface/ui/badge";
 import type { BadgeVariant, BadgeSize } from "@surface/ui/badge";
-import { StoryCard, StorySection } from "../foundation/shared";
+import { StoryCard, StorySection, SemanticDomSection } from "../foundation/shared";
 
 const meta: Meta<typeof Badge> = {
   title: "Components/Atoms/Badge",
@@ -258,6 +258,19 @@ export const Overview: Story = {
               </span>
             </Badge>
           </div>
+        </StoryCard>
+      </StorySection>
+      <StorySection title="Semantic DOM">
+        <StoryCard title="Exemplo completo [elements]">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Passe o rato numa linha do painel ou numa zona do exemplo para destacar.
+          </p>
+          <SemanticDomSection
+            rows={[
+              { id: "badge-root", label: "root", description: "Badge — container (count ou dot)" },
+            ]}
+            renderExample={(wrap) => wrap("badge-root", <Badge count={5} variant="primary"><span className="size-8 rounded bg-muted inline-flex" aria-hidden /></Badge>)}
+          />
         </StoryCard>
       </StorySection>
     </div>
