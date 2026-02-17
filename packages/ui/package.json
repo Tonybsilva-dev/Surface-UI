@@ -2,186 +2,193 @@
   "name": "@surface/ui",
   "version": "0.0.0",
   "private": true,
-  "sideEffects": ["**/foundation/theme.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "build": "node ../../node_modules/tsup/dist/cli-default.js",
+    "build": "NODE_OPTIONS='--max-old-space-size=8192' node ../../node_modules/tsup/dist/cli-default.js",
     "clean": "rm -rf dist .turbo",
     "lint": "eslint src/",
     "ds:coverage": "node scripts/ds-coverage.cjs"
   },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
     "./button": {
-      "types": "./dist/button.d.mts",
+      "types": "./dist/Button/index.d.mts",
       "import": "./dist/button.mjs",
       "require": "./dist/button.js"
     },
     "./divider": {
-      "types": "./dist/divider.d.mts",
+      "types": "./dist/Divider/index.d.mts",
       "import": "./dist/divider.mjs",
       "require": "./dist/divider.js"
     },
     "./icon-button": {
-      "types": "./dist/icon-button.d.mts",
+      "types": "./dist/IconButton/index.d.mts",
       "import": "./dist/icon-button.mjs",
       "require": "./dist/icon-button.js"
     },
     "./badge": {
-      "types": "./dist/badge.d.mts",
+      "types": "./dist/Badge/index.d.mts",
       "import": "./dist/badge.mjs",
       "require": "./dist/badge.js"
     },
     "./text": {
-      "types": "./dist/text.d.mts",
+      "types": "./dist/Text/index.d.mts",
       "import": "./dist/text.mjs",
       "require": "./dist/text.js"
     },
     "./link": {
-      "types": "./dist/link.d.mts",
+      "types": "./dist/Link/index.d.mts",
       "import": "./dist/link.mjs",
       "require": "./dist/link.js"
     },
     "./checkbox": {
-      "types": "./dist/checkbox.d.mts",
+      "types": "./dist/Checkbox/index.d.mts",
       "import": "./dist/checkbox.mjs",
       "require": "./dist/checkbox.js"
     },
     "./chip": {
-      "types": "./dist/chip.d.mts",
+      "types": "./dist/Chip/index.d.mts",
       "import": "./dist/chip.mjs",
       "require": "./dist/chip.js"
     },
     "./avatar": {
-      "types": "./dist/avatar.d.mts",
+      "types": "./dist/Avatar/index.d.mts",
       "import": "./dist/avatar.mjs",
       "require": "./dist/avatar.js"
     },
     "./skeleton": {
-      "types": "./dist/skeleton.d.mts",
+      "types": "./dist/Skeleton/index.d.mts",
       "import": "./dist/skeleton.mjs",
       "require": "./dist/skeleton.js"
     },
     "./spinner": {
-      "types": "./dist/spinner.d.mts",
+      "types": "./dist/Spinner/index.d.mts",
       "import": "./dist/spinner.mjs",
       "require": "./dist/spinner.js"
     },
     "./switch": {
-      "types": "./dist/switch.d.mts",
+      "types": "./dist/Switch/index.d.mts",
       "import": "./dist/switch.mjs",
       "require": "./dist/switch.js"
     },
     "./radio": {
-      "types": "./dist/radio.d.mts",
+      "types": "./dist/Radio/index.d.mts",
       "import": "./dist/radio.mjs",
       "require": "./dist/radio.js"
     },
     "./progress": {
-      "types": "./dist/progress.d.mts",
+      "types": "./dist/Progress/index.d.mts",
       "import": "./dist/progress.mjs",
       "require": "./dist/progress.js"
     },
     "./tooltip": {
-      "types": "./dist/tooltip.d.mts",
+      "types": "./dist/Tooltip/index.d.mts",
       "import": "./dist/tooltip.mjs",
       "require": "./dist/tooltip.js"
     },
     "./card": {
-      "types": "./dist/card.d.mts",
+      "types": "./dist/Card/index.d.mts",
       "import": "./dist/card.mjs",
       "require": "./dist/card.js"
     },
     "./empty": {
-      "types": "./dist/empty.d.mts",
+      "types": "./dist/Empty/index.d.mts",
       "import": "./dist/empty.mjs",
       "require": "./dist/empty.js"
     },
     "./input": {
-      "types": "./dist/input.d.mts",
+      "types": "./dist/Input/index.d.mts",
       "import": "./dist/input.mjs",
       "require": "./dist/input.js"
     },
     "./masked-input": {
-      "types": "./dist/masked-input.d.mts",
+      "types": "./dist/MaskedInput/index.d.mts",
       "import": "./dist/masked-input.mjs",
       "require": "./dist/masked-input.js"
     },
     "./table": {
-      "types": "./dist/table.d.mts",
+      "types": "./dist/Table/index.d.mts",
       "import": "./dist/table.mjs",
       "require": "./dist/table.js"
     },
     "./pagination": {
-      "types": "./dist/pagination.d.mts",
+      "types": "./dist/Pagination/index.d.mts",
       "import": "./dist/pagination.mjs",
       "require": "./dist/pagination.js"
     },
     "./data-table": {
-      "types": "./dist/data-table.d.mts",
+      "types": "./dist/DataTable/index.d.mts",
       "import": "./dist/data-table.mjs",
       "require": "./dist/data-table.js"
     },
     "./drawer": {
-      "types": "./dist/drawer.d.mts",
+      "types": "./dist/Drawer/index.d.mts",
       "import": "./dist/drawer.mjs",
       "require": "./dist/drawer.js"
     },
     "./dialog": {
-      "types": "./dist/dialog.d.mts",
+      "types": "./dist/Dialog/index.d.mts",
       "import": "./dist/dialog.mjs",
       "require": "./dist/dialog.js"
     },
     "./dropdown-menu": {
-      "types": "./dist/dropdown-menu.d.mts",
+      "types": "./dist/DropdownMenu/index.d.mts",
       "import": "./dist/dropdown-menu.mjs",
       "require": "./dist/dropdown-menu.js"
     },
     "./toast": {
-      "types": "./dist/toast.d.mts",
+      "types": "./dist/Toast/index.d.mts",
       "import": "./dist/toast.mjs",
       "require": "./dist/toast.js"
     },
     "./tabs": {
-      "types": "./dist/tabs.d.mts",
+      "types": "./dist/Tabs/index.d.mts",
       "import": "./dist/tabs.mjs",
       "require": "./dist/tabs.js"
     },
     "./label": {
-      "types": "./dist/label.d.mts",
+      "types": "./dist/Label/index.d.mts",
       "import": "./dist/label.mjs",
       "require": "./dist/label.js"
     },
     "./icon": {
-      "types": "./dist/icon.d.mts",
+      "types": "./dist/Icon/index.d.mts",
       "import": "./dist/icon.mjs",
       "require": "./dist/icon.js"
     },
     "./textarea": {
-      "types": "./dist/textarea.d.mts",
+      "types": "./dist/Textarea/index.d.mts",
       "import": "./dist/textarea.mjs",
       "require": "./dist/textarea.js"
     },
     "./slider": {
-      "types": "./dist/slider.d.mts",
+      "types": "./dist/Slider/index.d.mts",
       "import": "./dist/slider.mjs",
       "require": "./dist/slider.js"
     },
     "./image": {
-      "types": "./dist/image.d.mts",
+      "types": "./dist/Image/index.d.mts",
       "import": "./dist/image.mjs",
       "require": "./dist/image.js"
     },
     "./select": {
-      "types": "./dist/select.d.mts",
+      "types": "./dist/Select/index.d.mts",
       "import": "./dist/select.mjs",
       "require": "./dist/select.js"
     },
     "./input-button": {
-      "types": "./dist/input-button.d.mts",
+      "types": "./dist/InputButton/index.d.mts",
       "import": "./dist/input-button.mjs",
       "require": "./dist/input-button.js"
     },
     "./input-otp": {
-      "types": "./dist/input-otp.d.mts",
+      "types": "./dist/InputOTP/index.d.mts",
       "import": "./dist/input-otp.mjs",
       "require": "./dist/input-otp.js"
     },
@@ -191,47 +198,47 @@
       "require": "./dist/toggle-group.js"
     },
     "./popover": {
-      "types": "./dist/popover.d.mts",
+      "types": "./dist/Popover/index.d.mts",
       "import": "./dist/popover.mjs",
       "require": "./dist/popover.js"
     },
     "./command": {
-      "types": "./dist/command.d.mts",
+      "types": "./dist/Command/index.d.mts",
       "import": "./dist/command.mjs",
       "require": "./dist/command.js"
     },
     "./combobox": {
-      "types": "./dist/combobox.d.mts",
+      "types": "./dist/Combobox/index.d.mts",
       "import": "./dist/combobox.mjs",
       "require": "./dist/combobox.js"
     },
     "./chart": {
-      "types": "./dist/chart.d.mts",
+      "types": "./dist/Chart/index.d.mts",
       "import": "./dist/chart.mjs",
       "require": "./dist/chart.js"
     },
     "./form": {
-      "types": "./dist/form.d.mts",
+      "types": "./dist/Form/index.d.mts",
       "import": "./dist/form.mjs",
       "require": "./dist/form.js"
     },
     "./collapsible": {
-      "types": "./dist/collapsible.d.mts",
+      "types": "./dist/Collapsible/index.d.mts",
       "import": "./dist/collapsible.mjs",
       "require": "./dist/collapsible.js"
     },
     "./carousel": {
-      "types": "./dist/carousel.d.mts",
+      "types": "./dist/Carousel/index.d.mts",
       "import": "./dist/carousel.mjs",
       "require": "./dist/carousel.js"
     },
     "./list": {
-      "types": "./dist/list.d.mts",
+      "types": "./dist/List/index.d.mts",
       "import": "./dist/list.mjs",
       "require": "./dist/list.js"
     },
     "./password-strength": {
-      "types": "./dist/password-strength.d.mts",
+      "types": "./dist/PasswordStrength/index.d.mts",
       "import": "./dist/password-strength.mjs",
       "require": "./dist/password-strength.js"
     },

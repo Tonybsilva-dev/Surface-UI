@@ -8,11 +8,12 @@ const tailwindcss = typeof tailwindcssModule === "function" ? tailwindcssModule 
 const _log = (msg, data) => {
   try {
     console.error("[storybook-config]", msg, typeof data === "object" ? JSON.stringify(data) : data);
-  } catch (_) {}
+  } catch (_) { }
 };
 // #endregion
 
-const uiPath = resolve(__dirname, "../../../packages/ui/");
+const uiPath = resolve(__dirname, "../../../packages/ui");
+const uiDistPath = resolve(uiPath, "dist");
 const uiThemeSource = resolve(uiPath, "src/foundation/theme.css");
 
 let config;
@@ -66,6 +67,11 @@ try {
             {
               find: "@surface/ui/foundation/theme.css",
               replacement: uiThemeSource,
+            },
+            // Resolver @surface/ui e subpaths para o dist (evita falha de resolve em build)
+            {
+              find: "@surface/ui",
+              replacement: uiDistPath,
             },
             {
               find: "ui",
